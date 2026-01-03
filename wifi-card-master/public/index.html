@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1a1a2e" />
+  <meta name="description"
+    content="Generate beautiful, printable WiFi QR code cards. Share your network credentials securely with guests - just scan and connect!" />
+  <meta name="keywords" content="WiFi, QR Code, WiFi Card, Network, Guest WiFi, Print WiFi" />
+  <meta name="author" content="WiFi Card" />
+  <meta property="og:title" content="WiFi Card - Generate Printable WiFi QR Codes" />
+  <meta property="og:description" content="Create beautiful WiFi cards with QR codes. Perfect for homes, hotels, and offices." />
+  <meta property="og:type" content="website" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="icon" href="./images/wifi.ico" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  
+  <title>WiFi Card - Generate Printable WiFi QR Codes</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app. Feel free to view the
+    <a href="https://github.com/BROHUHA/wifiQR">source code</a>.</noscript>
+
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  <script>
+    // Internet Explorer 6-11
+    const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+
+    if (isIE) {
+      document.getElementById('root').innerHTML =
+        'Internet Explorer is not supported. Download Firefox/Chrome/Opera.';
+      document.body.style.fontSize = '50px';
+    }
+  </script>
+</body>
+
+</html>
