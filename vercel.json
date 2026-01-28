@@ -1,0 +1,5 @@
+{
+    "buildCommand": "CI=false NODE_OPTIONS=--openssl-legacy-provider npm run build",
+    "framework": "create-react-app",
+    "installCommand": "npm install --legacy-peer-deps"
+}

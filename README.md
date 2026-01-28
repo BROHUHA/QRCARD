@@ -20,6 +20,22 @@
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome"/>
 </p>
 
+<p align="center">
+  <a href="https://qrcard.vercel.app">
+    <img src="https://img.shields.io/badge/Try_Live_Demo-FF5A5F?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"/>
+  </a>
+</p>
+
+---
+
+## Demo
+
+https://github.com/BROHUHA/wifiQR/assets/demo.mp4
+
+<p align="center">
+  <i>Create and download beautiful QR cards in seconds</i>
+</p>
+
 ---
 
 ## What is QR Card?
