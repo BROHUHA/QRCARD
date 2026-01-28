@@ -78,6 +78,12 @@ export const WifiCard = (props) => {
             paddingRight={10}
             paddingLeft={10}
             textAlign={props.settings.portrait ? 'center' : 'unset'}
+            style={{
+              fontWeight: 900,
+              WebkitTextStroke: '1.5px black',
+              paintOrder: 'stroke fill',
+              color: '#FF5A5F'
+            }}
           >
             {t('wifi.login')}
           </Heading>
@@ -152,10 +158,9 @@ export const WifiCard = (props) => {
               autoCapitalize="none"
               spellCheck={false}
               className={`
-                ${
-                  (props.settings.hidePassword ||
-                    !props.settings.encryptionMode) &&
-                  'hidden'
+                ${(props.settings.hidePassword ||
+                  !props.settings.encryptionMode) &&
+                'hidden'
                 }
               `}
               height={

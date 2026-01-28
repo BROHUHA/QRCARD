@@ -1,42 +1,23 @@
 /* ============================================
-   WiFi Card Components - Light Theme
-   Bordered style with shadows
+   WiFi Card Components - Neobrutalism Theme
    ============================================ */
 
-@font-face {
-  font-family: 'Source Serif';
-  src: url(./SourceSerif4-Semibold.otf);
-}
-
-/* ============================================
-   WiFi Card
-   ============================================ */
+/* Card Area */
 #print-area {
   background: #ffffff;
-  border: 3px solid #1f2937;
-  border-radius: 16px;
-  box-shadow: 6px 6px 0 #1f2937;
+  border: 3px solid #000000;
+  border-radius: 0px;
+  /* Sharp corners */
+  box-shadow: 8px 8px 0px 0px #000000;
+  /* Hard shadow */
   margin: 1.5rem 0;
   padding: 2rem;
-  transition: all 0.15s ease;
-  animation: cardPop 0.5s ease;
-}
-
-@keyframes cardPop {
-  0% {
-    transform: scale(0.95) translateY(15px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
+  transition: all 0.2s ease;
 }
 
 #print-area:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 #1f2937;
+  transform: translate(-2px, -2px);
+  box-shadow: 12px 12px 0px 0px #000;
 }
 
 /* Card Header */
@@ -45,22 +26,18 @@
   align-items: center;
   gap: 12px;
   padding-bottom: 1.25rem;
-  border-bottom: 3px dashed #e5e7eb;
+  border-bottom: 3px solid #000;
+  /* Solid thick border */
   margin-bottom: 1.5rem;
-}
-
-#print-area>div:first-child img {
-  transition: transform 0.15s ease;
-}
-
-#print-area>div:first-child img:hover {
-  transform: rotate(15deg) scale(1.1);
+  background-color: #fff;
 }
 
 #print-area>div:first-child h2 {
-  color: #1f2937;
-  font-weight: 800;
-  font-size: 1.4rem !important;
+  color: #000;
+  /* Pure black */
+  font-weight: 900;
+  font-size: 1.6rem !important;
+  text-transform: uppercase;
   margin: 0;
 }
 
@@ -75,63 +52,42 @@
 .qrcode {
   background: white;
   padding: 14px !important;
-  border-radius: 14px;
-  border: 3px solid #22d3ee;
-  box-shadow: 4px 4px 0 #1f2937;
-  transition: all 0.15s ease;
+  border: 3px solid #000;
+  border-radius: 0px;
+  box-shadow: 6px 6px 0px 0px #000;
+  /* Hard shadow */
   max-width: 165px;
   margin-bottom: 0 !important;
 }
 
-.qrcode:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #1f2937;
-}
-
 /* Form Fields */
 textarea {
-  background: #fefce8 !important;
-  border: 3px solid #1f2937 !important;
-  border-radius: 12px !important;
-  font-family: 'Source Serif', Georgia, serif !important;
-  font-size: 1.2em !important;
+  background: #fff !important;
+  border: 3px solid #000 !important;
+  border-radius: 0px !important;
+  font-family: 'Inter', monospace !important;
+  font-size: 1.1em !important;
   padding: 14px 16px !important;
   height: 56px !important;
   min-height: 0px !important;
-  overflow: hidden;
   resize: none;
-  transition: all 0.15s ease !important;
-  color: #1f2937 !important;
-  font-weight: 600 !important;
-  box-shadow: 4px 4px 0 #1f2937 !important;
-}
-
-textarea:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 3px 3px 0 #1f2937 !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  box-shadow: 4px 4px 0px 0px #000 !important;
 }
 
 textarea:focus {
   outline: none !important;
-  border-color: #22d3ee !important;
-  background: #ffffff !important;
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #22d3ee !important;
-}
-
-textarea::placeholder {
-  color: #9ca3af;
-  font-weight: 500;
-}
-
-textarea#password {
-  height: 72px !important;
+  background: #FFC900 !important;
+  /* Yellow on focus */
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0px 0px #000 !important;
 }
 
 /* Labels */
 label {
-  color: #1f2937 !important;
-  font-weight: 700 !important;
+  color: #000 !important;
+  font-weight: 800 !important;
   font-size: 0.9rem !important;
   text-transform: uppercase;
   margin-bottom: 8px !important;
@@ -141,8 +97,8 @@ label {
 hr {
   border: none;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
-  margin: 1.25rem 0;
+  background: #000;
+  margin: 1.5rem 0;
 }
 
 /* Tip */
@@ -150,227 +106,91 @@ hr {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #1f2937;
+  color: #000;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
   padding: 14px 18px;
-  background: #ecfdf5;
-  border-radius: 12px;
-  border: 2px solid #1f2937;
+  background: #E0E7F1;
+  /* Greyish blue */
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px 0px #000;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* ============================================
-   Settings Panel
-   ============================================ */
+/* Settings Panel */
 #settings {
   background: #ffffff;
-  border: 3px solid #1f2937;
-  border-radius: 16px;
+  border: 3px solid #000;
+  border-radius: 0px;
   padding: 2rem;
   margin-bottom: 1rem;
-  box-shadow: 6px 6px 0 #1f2937;
-  transition: all 0.15s ease;
+  box-shadow: 8px 8px 0px 0px #000;
 }
 
 #settings:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 #1f2937;
+  transform: translate(-1px, -1px);
+  box-shadow: 10px 10px 0px 0px #000;
 }
 
-#settings label {
-  color: #1f2937 !important;
-  text-transform: none;
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
-}
-
-#settings label span {
-  margin-right: 12px;
-}
-
-/* Select - Themed Dropdown */
+/* Select */
 #settings select {
-  background: #fefce8;
-  border: 3px solid #1f2937;
-  border-radius: 12px;
-  color: #1f2937 !important;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 0px;
+  color: #000 !important;
   padding: 14px 45px 14px 18px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s ease;
-  width: 100%;
-  max-width: 320px;
-  box-shadow: 4px 4px 0 #1f2937;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231f2937' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  text-decoration: none !important;
-  line-height: 1.4;
-}
-
-#settings select:hover {
-  background-color: #fef9c3;
-  transform: translate(1px, 1px);
-  box-shadow: 3px 3px 0 #1f2937;
-}
-
-#settings select:focus {
-  outline: none;
-  border-color: #22d3ee;
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #22d3ee;
-}
-
-#settings select option {
-  background: #ffffff;
-  color: #1f2937;
-  padding: 14px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
+  box-shadow: 4px 4px 0px 0px #000;
 }
 
 /* Checkboxes */
-#settings input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
-  accent-color: #22d3ee;
-  cursor: pointer;
-}
-
-#settings>label {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border-radius: 10px;
-  font-size: 1.1rem !important;
-  margin-bottom: 4px;
-}
-
-#settings>label:hover {
-  background: #fefce8;
-}
-
-/* Radio */
-#settings input[type="radio"] {
-  width: 22px;
-  height: 22px;
-  accent-color: #22d3ee;
-  cursor: pointer;
-}
-
-/* Radio Group */
-#settings>div[role="group"] {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: #f9fafb;
-  border-radius: 14px;
-  border: 3px solid #e5e7eb;
-  box-shadow: 3px 3px 0 #e5e7eb;
-  transition: all 0.15s ease;
-}
-
-#settings>div[role="group"]:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 2px 2px 0 #e5e7eb;
-}
-
-#settings>div[role="group"]>label:first-child {
+#settings label {
   font-weight: 700 !important;
   text-transform: uppercase;
-  font-size: 0.9rem !important;
-  color: #6b7280 !important;
-  margin-bottom: 12px;
+  font-size: 0.85rem !important;
 }
 
-#settings>div[role="group"] label {
-  font-size: 1.05rem !important;
-  padding: 8px 0;
-  cursor: pointer;
-}
-
-/* ============================================
-   Print
-   ============================================ */
 @media print {
   body * {
     visibility: hidden;
   }
 
   #print-area,
-  #print-area * {
+  #print-area *,
+  #url-card-print-area,
+  #url-card-print-area * {
     visibility: visible;
   }
 
-  #print-area {
+  #print-area,
+  #url-card-print-area {
     position: absolute;
     left: 0;
     top: 0;
     background: white !important;
-    border: 3px solid #1f2937 !important;
+    border: 3px solid #000 !important;
     box-shadow: none !important;
     transform: none !important;
-    margin: 0 !important;
-    animation: none !important;
-  }
-
-  textarea {
-    border: 2px solid #ccc !important;
-    background: white !important;
-    box-shadow: none !important;
-    transform: none !important;
-  }
-
-  .qrcode {
-    box-shadow: none !important;
-    transform: none !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 }
 
-/* ============================================
-   Responsive
-   ============================================ */
 @media (max-width: 550px) {
   #print-area {
     padding: 1.5rem;
     margin: 1rem 0;
-    box-shadow: 4px 4px 0 #1f2937;
+    box-shadow: 6px 6px 0px 0px #000;
   }
 
   .details {
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-  }
-
-  #settings {
-    padding: 1.5rem;
-    box-shadow: 4px 4px 0 #1f2937;
-  }
-
-  #settings label {
-    font-size: 1rem !important;
-  }
-
-  #settings select {
-    font-size: 1rem;
-    padding: 12px 14px;
-    max-width: 100%;
-  }
-
-  textarea {
-    box-shadow: 3px 3px 0 #1f2937 !important;
   }
 }
