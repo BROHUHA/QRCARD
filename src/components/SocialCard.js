@@ -24,9 +24,9 @@ const PLATFORMS = [
     {
         id: 'telegram',
         name: 'Telegram',
-        inputType: 'phone',
+        inputType: 'username',
         prefix: 'https://t.me/',
-        placeholder: '+1234567890',
+        placeholder: 'username',
         color: '#0088cc',
         bgColor: '#e3f2fd'
     },
@@ -69,9 +69,9 @@ const PLATFORMS = [
     {
         id: 'snapchat',
         name: 'Snapchat',
-        inputType: 'phone',
+        inputType: 'username',
         prefix: 'https://snapchat.com/add/',
-        placeholder: '+1234567890',
+        placeholder: 'username',
         color: '#FFFC00',
         bgColor: '#fffde7'
     },
