@@ -1,202 +1,339 @@
+![ci](https://github.com/bndw/wifi-card/workflows/ci/badge.svg)
+
+# <img width="32px" src="./public/images/wifi.png"> WiFi Card
+
+>  **Generate beautiful, printable WiFi QR code cards** - Share your network credentials securely with guests!
+
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=900&size=45&duration=3000&pause=1000&color=FF5A5F&center=true&vCenter=true&multiline=true&width=500&height=100&lines=QR+CARD" alt="QR Card" />
+  <a href="https://wificard.io/">
+    <img alt="wificard" src="public/demo.gif" width="600">
+  </a>
 </p>
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=20&duration=2500&pause=800&color=000000&center=true&vCenter=true&width=600&lines=Create+stunning+QR+codes+for+WiFi%2C+Links%2C+%26+Social+Media;Neobrutalist+Design+%E2%80%94+Bold%2C+Modern%2C+Distinctive;100%25+Free+%26+Open+Source;No+Data+Sent+to+Servers" alt="Typing SVG" />
-</p>
-
-<p align="center">
-  <a href="#features"><img src="https://img.shields.io/badge/Features-FF5A5F?style=for-the-badge" alt="Features"/></a>
-  <a href="#demo"><img src="https://img.shields.io/badge/Demo-FFC900?style=for-the-badge&logoColor=black" alt="Demo"/></a>
-  <a href="#installation"><img src="https://img.shields.io/badge/Install-88CCCA?style=for-the-badge" alt="Install"/></a>
-  <a href="#contributing"><img src="https://img.shields.io/badge/Contribute-000000?style=for-the-badge" alt="Contribute"/></a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/github/license/BROHUHA/wifiQR?style=flat-square&color=FF5A5F" alt="License"/>
-  <img src="https://img.shields.io/github/stars/BROHUHA/wifiQR?style=flat-square&color=FFC900" alt="Stars"/>
-  <img src="https://img.shields.io/github/forks/BROHUHA/wifiQR?style=flat-square&color=88CCCA" alt="Forks"/>
-  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome"/>
-</p>
-
-<p align="center">
-  <a href="https://qrcard.vercel.app">
-    <img src="https://img.shields.io/badge/Try_Live_Demo-FF5A5F?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"/>
+  <a href="https://thiswebsitedoesnottrackyou.com/">
+    <img width="300" alt="This website does not track you" src="https://user-images.githubusercontent.com/4248167/184430158-849d4b2c-de43-483f-86fe-0743b23bc40c.png">
   </a>
 </p>
 
 ---
 
-## Demo
+##  Features
 
-![Demo](public/demo.gif)
-
-<p align="center">
-  <i>Create and download beautiful QR cards in seconds</i>
-</p>
+-  **QR Code Generation** - Instant WiFi connection by scanning
+-  **Modern UI** - Beautiful glassmorphism design with animations
+-  **Multi-language** - Support for 30+ languages
+-  **Print Ready** - Optimized for printing
+-  **Download as Image** - Save as PNG for digital sharing
+-  **Privacy First** - All processing happens in your browser
+-  **Flexible Layout** - Portrait and landscape orientations
+-  **Multiple Encryption** - WPA/WPA2/WPA3, WEP, WPA2-EAP support
 
 ---
 
-## What is QR Card?
+##  Technology Stack
 
-**QR Card** is a free, privacy-first tool that generates beautiful, printable QR code cards. Perfect for:
+This project is built with modern web technologies:
 
-| **Home** | **Business** | **Social** |
-|:---:|:---:|:---:|
-| Give guests instant WiFi access without reading out passwords | Share your website or portfolio link professionally | Grow your following on Instagram, WhatsApp, TikTok & more |
+| Technology | Purpose | Documentation |
+|------------|---------|---------------|
+| **React 17** | UI Framework | [reactjs.org](https://reactjs.org/) |
+| **Evergreen UI** | Component Library | [evergreen.segment.com](https://evergreen.segment.com/) |
+| **i18next** | Internationalization | [i18next.com](https://www.i18next.com/) |
+| **qrcode.react** | QR Code Generation | [npm](https://www.npmjs.com/package/qrcode.react) |
+| **html-to-image** | Image Export | [npm](https://www.npmjs.com/package/html-to-image) |
+| **downloadjs** | File Downloads | [npm](https://www.npmjs.com/package/downloadjs) |
 
-<br/>
+---
 
-## Features
+##  Project Architecture
 
-<table>
-<tr>
-<td width="50%">
-
-### Neobrutalist Design
-- High-contrast, trendy UI
-- Bold borders & hard shadows
-- Vibrant accent colors
-- Smooth micro-animations
-
-</td>
-<td width="50%">
-
-### Three Card Types
-- **WiFi Card** — WPA/WPA2/WEP support
-- **URL Card** — Any link or website
-- **Social Card** — 10+ platforms supported
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### Customization
-- Portrait or Landscape mode
-- Hide/Show passwords & details
-- Platform-specific branding
-- Responsive on all devices
-
-</td>
-<td width="50%">
-
-### Privacy First
-- **Zero data collection**
-- No server uploads
-- 100% client-side generation
-- Open source & auditable
-
-</td>
-</tr>
-</table>
-
-<br/>
-
-## Supported Social Platforms
-
-<p align="center">
-  <img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp"/>
-  <img src="https://img.shields.io/badge/Telegram-0088CC?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"/>
-  <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"/>
-  <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="X"/>
-  <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-</p>
-<p align="center">
-  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"/>
-  <img src="https://img.shields.io/badge/Snapchat-FFFC00?style=for-the-badge&logo=snapchat&logoColor=black" alt="Snapchat"/>
-  <img src="https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white" alt="TikTok"/>
-  <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube"/>
-  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
-</p>
-
-<br/>
-
-## Tech Stack
-
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=react,js,html,css,nodejs" alt="Tech Stack"/>
-</p>
-
-| Technology | Purpose |
-|------------|---------|
-| **React** | Frontend Framework |
-| **Evergreen UI** | Component Library |
-| **qrcode.react** | QR Code Generation |
-| **react-i18next** | Internationalization |
-| **html-to-image** | HD Export |
-
-<br/>
-
-## Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/BROHUHA/wifiQR.git
-
-# Navigate to the project
-cd wifiQR
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm start
+```
+wifi-card/
+├── public/                    # Static assets
+│   ├── images/               # Icon and logo files
+│   ├── index.html            # HTML template with meta tags
+│   └── manifest.json         # PWA manifest
+│
+├── src/
+│   ├── components/           # React components
+│   │   ├── WifiCard.js      # Main card with QR code
+│   │   ├── Settings.js      # Configuration options
+│   │   ├── style.css        # Component-specific styles
+│   │   └── SourceSerif4-Semibold.otf  # Custom font
+│   │
+│   ├── images/              # Image assets
+│   ├── App.js               # Root component
+│   ├── i18n.js              # i18next configuration
+│   ├── translations.js      # Language translations
+│   ├── nodeToImageDownloader.js  # Image export utility
+│   ├── style.css            # Global styles
+│   └── index.js             # App entry point
+│
+├── package.json             # Dependencies and scripts
+└── README.md               # This file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Component Breakdown
 
-<br/>
+#### `App.js` - Main Application
+The root component that:
+- Manages application state (SSID, password, settings)
+- Handles form validation
+- Controls print and download functionality
+- Manages language direction (LTR/RTL)
 
-## Build for Production
+#### `WifiCard.js` - WiFi Card Component
+Renders the printable card containing:
+- QR code generated from WiFi credentials
+- Editable SSID and password fields
+- Visual instructions for users
+
+#### `Settings.js` - Configuration Panel
+Provides controls for:
+- Language selection
+- Card orientation (portrait/landscape)
+- Password visibility toggle
+- Hidden SSID option
+- Encryption mode selection
+
+---
+
+##  How It Works
+
+### QR Code Format
+
+WiFi QR codes follow the standard format:
+
+```
+WIFI:T:<encryption>;S:<ssid>;P:<password>;H:<hidden>;;
+```
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| `T` | Encryption type | `WPA`, `WEP`, or empty |
+| `S` | Network SSID | `MyNetwork` |
+| `P` | Password | `mypassword123` |
+| `H` | Hidden network | `true` or `false` |
+
+For **WPA2-EAP** networks, additional parameters:
+```
+WIFI:T:WPA2-EAP;S:<ssid>;P:<password>;H:<hidden>;E:<eapMethod>;I:<identity>;;
+```
+
+### Encryption Modes
+
+| Mode | Description |
+|------|-------------|
+| **WPA/WPA2/WPA3** | Modern, secure encryption (recommended) |
+| **WPA2-EAP** | Enterprise authentication with identity |
+| **WEP** | Legacy encryption (not recommended) |
+| **None** | Open network without password |
+
+### State Management
+
+The app uses React's `useState` hook to manage:
+- `settings` - All WiFi configuration options
+- `errors` - Form validation error messages
+
+```javascript
+const [settings, setSettings] = useState({
+  ssid: '',
+  password: '',
+  encryptionMode: 'WPA',
+  eapMethod: 'PWD',
+  eapIdentity: '',
+  hidePassword: false,
+  hiddenSSID: false,
+  portrait: false,
+});
+```
+
+### Internationalization (i18n)
+
+The app supports 30+ languages using `react-i18next`:
+
+1. **Language Detection** - Auto-detects browser language
+2. **RTL Support** - Right-to-left languages (Arabic, Persian, Urdu)
+3. **Dynamic Switching** - Change language without reload
+
+---
+
+##  Getting Started
+
+### Prerequisites
+
+- Node.js 16+ (for npm) or Yarn
+- Modern web browser
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/bndw/wifi-card.git
+   cd wifi-card
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install --legacy-peer-deps
+   # or
+   yarn install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
+
+4. **Open in browser**
+   ```
+   http://localhost:3000
+   ```
+
+> **Note for Node.js 17+**: If you encounter OpenSSL errors, use:
+> ```bash
+> set NODE_OPTIONS=--openssl-legacy-provider && npm start
+> ```
+
+### Docker
+
+Run with Docker on http://localhost:8080:
 
 ```bash
-# Create optimized production build
+make run
+```
+
+### Production Build
+
+```bash
 npm run build
-
-# Or use Docker
-docker build -t qr-card .
-docker run -p 80:80 qr-card
+# or
+yarn build
 ```
 
-<br/>
+---
 
-## Contributing
+##  Design System
 
-Contributions are what make the open source community amazing! Any contributions you make are **greatly appreciated**.
+The UI features a modern, professional design:
 
-```
-1. Fork the Project
-2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
-3. Commit your Changes (git commit -m 'Add some AmazingFeature')
-4. Push to the Branch (git push origin feature/AmazingFeature)
-5. Open a Pull Request
-```
+### Color Palette
 
-<br/>
+| Variable | Value | Usage |
+|----------|-------|-------|
+| `--primary-gradient` | Purple → Pink | Buttons, accents |
+| `--background-gradient` | Dark blue → Purple | Page background |
+| `--glass-bg` | `rgba(255,255,255,0.08)` | Glassmorphism panels |
+| `--accent-color` | `#667eea` | Links, focus states |
 
-## License
+### Typography
 
-Distributed under the **MIT License**. See `LICENSE.md` for more information.
+- **Headings**: Inter (600-700 weight)
+- **Body**: Inter (400-500 weight)
+- **WiFi Details**: Source Serif 4 (custom font)
 
-<br/>
+### Effects
+
+- **Glassmorphism** - Frosted glass cards with backdrop blur
+- **Animations** - Smooth fade-in and slide-up on load
+- **Hover States** - Subtle lift and shadow transitions
+
+---
+
+##  Contributing
+
+We welcome contributions! Here's how to help:
+
+### Adding a New Language
+
+1. Add translation to [`./src/translations.js`](./src/translations.js):
+
+   ```javascript
+   {
+      id: 'de-DE',              // Locale code
+      name: 'German - Deutsch', // Format: 'English - Native'
+      rtl: false,               // true for RTL languages
+      translation: {
+         // Translation keys...
+      }
+   }
+   ```
+
+2. Add entry to the [Supported Languages](#supported-languages) table below.
+
+### Code Contributions
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes
+4. Run Prettier: `npm run format`
+5. Commit: `git commit -m 'Add amazing feature'`
+6. Push: `git push origin feature/amazing-feature`
+7. Open a Pull Request
+
+### Code Style
+
+This project uses [Prettier](https://prettier.io/) for formatting. Prettier runs automatically as a pre-commit hook.
+
+---
+
+##  Supported Languages
+
+| Language | Author Credit |
+|----------|---------------|
+| English | [bndw](https://github.com/bndw) |
+| Chinese | [Baoyuantop](https://github.com/Baoyuantop) |
+| Spanish | [oscfdezdz](https://github.com/oscfdezdz) |
+| Portuguese | [pedrorenan](https://github.com/pedrorenan) |
+| Portuguese (Brazil) | [ismaelpereira](https://github.com/ismaelpereira) |
+| Japanese | [hatsu38](https://github.com/hatsu38) |
+| Russian | [Teraskull](https://github.com/Teraskull) |
+| Ukrainian | [Teraskull](https://github.com/Teraskull) |
+| Dutch | [wouterbrink](https://github.com/wouterbrink) |
+| French | [Divlo](https://github.com/Divlo) |
+| Turkish | [Riza Ergun](https://github.com/rizaergun) |
+| Hindi | [Pushpender](https://github.com/PushpenderSaini0) |
+| Catalan | [aniol](https://github.com/aniol) |
+| German | [devofthings](https://github.com/devofthings) |
+| Greek | [nautilus7](https://github.com/nautilus7) |
+| Indonesian | [nyancodeid](https://github.com/nyancodeid) |
+| Persian (Farsi) | [RaminR77](https://github.com/raminr77/) |
+| Polish | [olekstomek](https://github.com/olekstomek) |
+| Arabic | [Ahmed Tokyo](https://github.com/a-tokyo) |
+| Occitan | [ensag-dev](https://github.com/ensag-dev) |
+| Italian | [Domenico Pascucci](https://github.com/pasmimmo) |
+| Korean | [Seungbin Oh](https://github.com/sboh1214) |
+| Norwegian | [tplive](https://github.com/tplive) |
+| Hungarian | [munkacsimark](https://github.com/munkacsimark) |
+| Serbian | [demanderbag](https://github.com/demanderbag) |
+| Urdu | [mHassan11](https://github.com/mHassan11) |
+| Swedish | [ddund](https://github.com/ddund) |
+| Thai | [l2D](https://github.com/l2D) |
+| Traditional Chinese (Taiwan) | [Dxball](https://github.com/dxball) |
+| Simplified Cantonese | [ous50](https://github.com/ous50) |
+| Punjabi | [phoenixgill34](https://github.com/phoenixgill34/) |
+| Danish | [dk90103](https://github.com/dk90103/) |
+
+---
+
+##  License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+---
+
+##  Acknowledgments
+
+- Original project by [ABIN](https://github.com/BROHUHA)
+- All language contributors listed above
+- [Evergreen UI](https://evergreen.segment.com/) for the component library
+- [QRCode.react](https://github.com/zpao/qrcode.react) for QR generation
 
 ---
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=18&duration=3000&pause=1000&color=FF5A5F&center=true&vCenter=true&width=400&lines=Made+with+love+by+Abin+Binoy" alt="Made with love" />
-</p>
-
-<p align="center">
-  <a href="https://abinbinoy.vercel.app">
-    <img src="https://img.shields.io/badge/Portfolio-FF5A5F?style=for-the-badge&logo=About.me&logoColor=white" alt="Portfolio"/>
-  </a>
-  <a href="https://github.com/BROHUHA/wifiQR">
-    <img src="https://img.shields.io/badge/View_Source-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
-  </a>
-</p>
-
-<p align="center">
-  <b>Star this repo if you find it useful!</b>
+  Made with ❤️ for the open-source community
 </p>
