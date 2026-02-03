@@ -21,16 +21,16 @@
 </p>
 
 <p align="center">
-  <a href="https://allqr.vercel.app">
+  <a href="https://qrcard.vercel.app">
     <img src="https://img.shields.io/badge/Try_Live_Demo-FF5A5F?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"/>
   </a>
 </p>
 
 ---
 
-## Live at
+## Demo
 
-https://allqr.vercel.app
+![Demo](public/demo.gif)
 
 <p align="center">
   <i>Create and download beautiful QR cards in seconds</i>
