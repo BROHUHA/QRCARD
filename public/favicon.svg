@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Smooth Dark Outer Capsule -->
+  <rect width="64" height="64" rx="16" fill="#0A0A0C"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  
+  <!-- Subtle Ambient Glow -->
+  <circle cx="32" cy="32" r="24" fill="#34D399" opacity="0.12" filter="blur(8px)"/>
+
+  <!-- Top-Left Finder Pattern -->
+  <rect x="12" y="12" width="16" height="16" rx="4" stroke="#FFFFFF" stroke-width="3"/>
+  <rect x="17" y="17" width="6" height="6" rx="1.5" fill="#34D399"/>
+
+  <!-- Top-Right Finder Pattern -->
+  <rect x="36" y="12" width="16" height="16" rx="4" stroke="#FFFFFF" stroke-width="3"/>
+  <rect x="41" y="17" width="6" height="6" rx="1.5" fill="#FFFFFF"/>
+
+  <!-- Bottom-Left Finder Pattern -->
+  <rect x="12" y="36" width="16" height="16" rx="4" stroke="#FFFFFF" stroke-width="3"/>
+  <rect x="17" y="41" width="6" height="6" rx="1.5" fill="#FFFFFF"/>
+
+  <!-- Optical Matrix Data Modules -->
+  <rect x="36" y="36" width="4" height="4" rx="1" fill="#34D399"/>
+  <rect x="44" y="36" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  <rect x="48" y="40" width="4" height="4" rx="1" fill="#34D399"/>
+  <rect x="36" y="44" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  <rect x="40" y="48" width="4" height="4" rx="1" fill="#34D399"/>
+  <rect x="48" y="48" width="4" height="4" rx="1" fill="#FFFFFF"/>
+  
+  <!-- Center Accent Bridge -->
+  <circle cx="32" cy="20" r="2" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="20" cy="32" r="2" fill="#34D399" opacity="0.9"/>
+</svg>

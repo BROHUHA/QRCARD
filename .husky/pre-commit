@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 # Format using prettier
-make fmt.write
+npx prettier --write ./src

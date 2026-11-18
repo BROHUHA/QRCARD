@@ -1,0 +1,43 @@
+/* ==========================================================================
+   PORTFOLIO DESIGN SYSTEM — TYPOGRAPHY & FONT CONFIGURATION
+   ========================================================================== */
+
+/* 1. Official Signature Brush Font: Grindy Brush */
+@font-face {
+  font-family: "Grindy Brush";
+  src: url("./grindy-brush/grindy-brush.otf") format("opentype"),
+       url("./grindy-brush/Grindy Brush.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2. Primary Modern Sans-Serif: Poppins / System Grotesk Fallback */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: local("Poppins"), local("Poppins-Bold"), local("sans-serif");
+}
+
+/* 3. Utility Classes */
+.font-brush {
+  font-family: "Grindy Brush", cursive, sans-serif !important;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.font-sans-editorial {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+/* High-Impact Hero Headline */
+.editorial-title {
+  font-family: "Grindy Brush", cursive, sans-serif;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.95;
+  text-transform: none;
+  user-select: none;
+}

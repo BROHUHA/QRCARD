@@ -1,798 +1,396 @@
-/* ============================================
-   WiFi Card - Neobrutalism Theme
-   ============================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Signature Brush Font: Grindy Brush */
+@font-face {
+  font-family: "Grindy Brush";
+  src: url("/fonts/grindy-brush/grindy-brush.otf") format("opentype"),
+       url("/fonts/grindy-brush/Grindy Brush.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
-  /* Neobrutalism Palette */
-  --neo-bg: #88ccca;
-  /* Muted teal background */
-  --neo-bg-alt: #E0E7F1;
-  --neo-white: #ffffff;
-  --neo-black: #000000;
-  --neo-accent: #FF5A5F;
-  /* Red/Pink accent */
-  --neo-accent-2: #FFC900;
-  /* Yellow accent */
-  --neo-border: 3px solid #000000;
-  --neo-shadow: 4px 4px 0px 0px #000000;
-  --neo-shadow-hover: 2px 2px 0px 0px #000000;
-  --neo-shadow-active: 0px 0px 0px 0px #000000;
-
-  /* Sizing */
-  --header-h: 70px;
-  --radius: 12px;
-  /* Neobrutalism often uses sharp corners or specific rounding */
-  --radius-sm: 8px;
-  --app-max-width: 450px;
+  --bg-dark: #050505;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-card-hover: rgba(255, 255, 255, 0.2);
 }
 
-body {
-  background: var(--neo-bg);
-  color: var(--neo-black);
-  font-family: 'Public Sans', 'Inter', sans-serif;
-  /* Bold, readable fonts */
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-/* App Container */
-.app {
-  width: 100%;
-  max-width: 1200px;
-  /* Standard desktop width */
-  min-height: 85vh;
-  background: var(--neo-white);
-  border: var(--neo-border);
-  box-shadow: 8px 8px 0px 0px #000000;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-@media (max-width: 768px) {
-  .app {
-    max-width: 100%;
-    border-width: 3px 0 0 0;
-    /* Full bleed on mobile, maybe just top border or none */
-    box-shadow: none;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #030303;
+    color: #ffffff;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
-}
 
-/* Header */
-.header {
-  height: var(--header-h);
-  background: var(--neo-white);
-  border-bottom: var(--neo-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  padding: 0 2rem;
-  position: relative;
-  /* top: 0; */
-  z-index: 100;
-  transition: background 0.3s ease;
-}
+  body {
+    background-color: #030303;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  font-weight: 900;
-  font-size: 1.5rem;
-  color: var(--neo-black);
-  text-transform: uppercase;
-  letter-spacing: -1px;
-}
-
-.logo-icon {
-  width: 44px;
-  height: 44px;
-  background: var(--neo-accent-2);
-  border: var(--neo-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--neo-shadow);
-  transition: all 0.2s ease;
-}
-
-/* Desktop Navigation */
-.desktop-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-.nav-item {
-  background: transparent;
-  border: none;
-  font-family: inherit;
-  font-weight: 800;
-  font-size: 1rem;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 10px 16px;
-  color: var(--neo-black);
-  border: 3px solid transparent;
-  transition: all 0.1s;
-}
-
-.nav-item:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-}
-
-.nav-item.active {
-  background: var(--neo-black);
-  color: var(--neo-white);
-  border: 3px solid var(--neo-black);
-  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.2);
-}
-
-/* Hamburger (Mobile Only) */
-.hamburger {
-  display: none;
-  /* Hidden by default on desktop */
-  width: 44px;
-  height: 44px;
-  background: var(--neo-white);
-  border: var(--neo-border);
-  box-shadow: var(--neo-shadow);
-  cursor: pointer;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px;
-  transition: all 0.1s;
-  border-radius: 8px;
-  /* Curve added */
-}
-
-.hamburger:active {
-  transform: translate(4px, 4px);
-  box-shadow: var(--neo-shadow-active);
-}
-
-.hamburger-line {
-  width: 100%;
-  height: 4px;
-  background: var(--neo-black);
-  border-radius: 2px;
-  /* Slight curve to lines too */
-}
-
-/* Responsive Switching */
-@media (max-width: 768px) {
-  .desktop-nav {
+  /* Remove all webkit scrollbar guides and dual scrollbars */
+  ::-webkit-scrollbar {
     display: none;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .header {
-    padding: 0 1rem;
+    width: 0px;
+    height: 0px;
+    background: transparent;
   }
 }
 
-/* Mobile Nav Overlay */
-.mobile-nav {
-  position: absolute;
-  /* Kept absolute to stay within app container */
-  top: 70px;
-  /* Match header height explicitly */
-  left: 0;
-  right: 0;
-  background: var(--neo-white);
-  border-bottom: var(--neo-border);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transform: translateY(-150%);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 90;
-  box-shadow: 0 10px 0 0 rgba(0, 0, 0, 0.1);
+/* Typography Utility Classes */
+.font-brush {
+  font-family: "Grindy Brush", cursive, -apple-system, sans-serif !important;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
-.mobile-nav.open {
-  transform: translateY(0);
-}
-
-/* ... existing mobile nav item styles ... */
-
-.mobile-nav-item {
-  padding: 1rem;
-  background: var(--neo-white);
-  border: var(--neo-border);
-  box-shadow: var(--neo-shadow);
+.font-heading {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
   font-weight: 800;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  color: var(--neo-black);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.1s;
+  letter-spacing: -0.025em;
 }
 
-.mobile-nav-item:hover {
-  background: var(--neo-accent-2);
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #000;
+.font-mono {
+  font-family: 'JetBrains Mono', 'Space Mono', ui-monospace, monospace;
+  letter-spacing: -0.015em;
 }
 
-.mobile-nav-item:active {
-  transform: translate(2px, 2px);
-  box-shadow: var(--neo-shadow-active);
+/* Background Grids & Ambient Lighting */
+.dark-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 50%, transparent 100%);
 }
 
-.mobile-nav-item.active {
-  background: var(--neo-accent);
-  color: white;
+.ambient-spotlight {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 255, 255, 0.12), transparent 70%);
 }
 
-.mobile-nav-item.active .hamburger-line {
-  background: white;
+.ambient-spotlight-bottom {
+  background: radial-gradient(ellipse 80% 50% at 50% 120%, rgba(255, 255, 255, 0.06), transparent 70%);
 }
 
-/* Actions */
-.actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* Two columns on desktop */
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-@media (max-width: 600px) {
-  .actions {
-    grid-template-columns: 1fr;
-    /* Stack on mobile */
-  }
-}
-
-/* Buttons - Click Down Animation */
-.btn {
-  width: 100%;
-  padding: 1rem;
-  border: var(--neo-border);
-  box-shadow: var(--neo-shadow);
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.1s;
-  border-radius: 12px;
-  /* Rounded */
-}
-
-.btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #000;
-}
-
-.btn-primary {
-  background: var(--neo-accent);
-  color: white;
-}
-
-.btn-primary:active {
-  transform: translate(4px, 4px) !important;
-  box-shadow: var(--neo-shadow-active) !important;
-}
-
-.btn-secondary {
-  background: var(--neo-white);
-  color: var(--neo-black);
-}
-
-.btn-secondary:active {
-  transform: translate(4px, 4px) !important;
-  box-shadow: var(--neo-shadow-active) !important;
-}
-
-/* Footer */
-.footer {
-  margin-top: auto;
-  padding: 2rem;
-  background: var(--neo-black);
-  color: var(--neo-white);
-  text-align: center;
-  border-top: var(--neo-border);
-}
-
-.footer a {
-  color: var(--neo-accent-2);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-/* Neobrutalist Dropdown Styles (referenced in SocialSettings.js) */
-.neo-dropdown-trigger {
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--neo-white);
-  border: var(--neo-border);
-  box-shadow: var(--neo-shadow);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 700;
-  font-size: 1rem;
-  transition: all 0.1s;
-  user-select: none;
-  border-radius: 8px;
-  /* Rounded */
-}
-
-.neo-dropdown-trigger:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px #000;
-}
-
-.neo-dropdown-menu {
-  position: absolute;
-  top: 110%;
-  /* Slight gap */
-  left: 0;
-  right: 0;
-  background: var(--neo-white);
-  border: var(--neo-border);
-  /* border-top: none; Remove this, we want full border for detached look */
-  box-shadow: var(--neo-shadow);
-  z-index: 1000;
-  /* Ensure it floats above everything */
-  max-height: 250px;
-  overflow-y: auto;
-  margin-top: 0;
-  /* Attach directly */
-  border-radius: 8px;
-  /* Rounded */
-}
-
-/* Custom Scrollbar for Dropdown */
-.neo-dropdown-menu::-webkit-scrollbar {
-  width: 12px;
-  border-left: 3px solid #000;
-}
-
-.neo-dropdown-menu::-webkit-scrollbar-track {
-  background: #E0E7F1;
-}
-
-.neo-dropdown-menu::-webkit-scrollbar-thumb {
-  background: #000;
-  border: 1px solid #fff;
-}
-
-.neo-dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background: #333;
-}
-
-.neo-dropdown-item {
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  border-bottom: 3px solid #000;
-  transition: background 0.1s;
-}
-
-.neo-dropdown-item:last-child {
-  border-bottom: none;
-}
-
-.neo-dropdown-item:hover {
-  background: var(--neo-accent-2);
-}
-
-.neo-dropdown-item.selected {
-  background: var(--neo-black);
-  color: var(--neo-white);
-}
-
-.neo-dropdown-item.selected svg {
-  color: var(--neo-white) !important;
-}
-
-/* Evergreen Overrides for Neobrutalism consistency */
-/* Checkboxes */
-label[class*="ub- label"] {
-  /* Evergreen label class hack if needed, but generic label works */
-  font-weight: 700 !important;
-  color: black !important;
-}
-
-/* Inputs usually have this class or similar */
-input[type="text"],
-input[type="url"],
-textarea,
-select {
-  border: var(--neo-border) !important;
-  box-shadow: 3px 3px 0px 0px #000 !important;
-  border-radius: 8px !important;
-  /* Small round curve */
-  font-weight: 700 !important;
-  color: #000 !important;
-}
-
-/* Fix for SelectField arrow if possible, or just style the select itself */
-.neo-select select {
-  border-radius: 8px !important;
-  border: 3px solid #000 !important;
-  background-color: #fff !important;
-  box-shadow: 3px 3px 0px 0px #000 !important;
-}
-
-/* Preloader */
-.preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--neo-white);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.preloader-content {
-  text-align: center;
-}
-
-.preloader-logo {
-  animation: bounce 1s infinite alternate;
-  margin-bottom: 1rem;
-}
-
-.preloader h2 {
-  font-weight: 900;
-  text-transform: uppercase;
-  margin: 1rem 0;
-  font-size: 2rem;
-}
-
-.loader-bar {
-  width: 200px;
-  height: 6px;
-  background: #eee;
-  border: 2px solid #000;
+/* AUTHENTIC LIQUID GLASS (Exact match to reference image mockup) */
+.liquid-glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(12, 12, 12, 0.75) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6),
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(255, 255, 255, 0.02);
   position: relative;
   overflow: hidden;
-  margin: 0 auto;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.loader-bar::after {
+.liquid-glass::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  bottom: 0;
-  width: 40%;
-  background: #000;
-  animation: loadSlide 1s infinite linear;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
-@keyframes bounce {
-  from {
-    transform: translateY(0);
-  }
-
-  to {
-    transform: translateY(-10px);
-  }
+.liquid-glass:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6),
+    0 30px 60px -15px rgba(0, 0, 0, 0.9),
+    0 0 35px rgba(255, 255, 255, 0.05);
+  transform: translateY(-4px);
 }
 
-@keyframes loadSlide {
-  0% {
-    left: -40%;
-  }
-
-  100% {
-    left: 100%;
-  }
+/* Active Highlighted Liquid Glass (Elevated Center Card) */
+.liquid-glass-active {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 40%, rgba(15, 15, 15, 0.85) 100%);
+  backdrop-filter: blur(35px) saturate(200%);
+  -webkit-backdrop-filter: blur(35px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 
+    inset 0 2px 3px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.8),
+    0 35px 80px -15px rgba(0, 0, 0, 0.95),
+    0 0 40px rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Generic Click Animation Class */
-.click-btn {
-  transition: all 0.1s;
-  cursor: pointer;
-  user-select: none;
+.liquid-glass-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
-.click-btn:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: inset 2px 2px 0px 0px rgba(0, 0, 0, 0.1) !important;
+.liquid-glass-active:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 
+    inset 0 2px 3px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.8),
+    0 40px 90px -15px rgba(0, 0, 0, 0.95),
+    0 0 50px rgba(255, 255, 255, 0.12);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  box-shadow: 5px 5px 0px 0px #000 !important;
-  transform: translate(-1px, -1px);
-}
-
-/* Selection Screen */
-.selection-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
-  text-align: center;
-  /* subtle dot pattern background */
-  background-image: radial-gradient(#000000 1px, transparent 1px);
-  background-size: 30px 30px;
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-.selection-header {
-  margin-bottom: 3rem;
-  background: var(--neo-white);
-  padding: 2rem;
-  border: var(--neo-border);
-  box-shadow: var(--neo-shadow);
-  z-index: 10;
-}
-
-.selection-header h1 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin: 1rem 0 0.5rem;
-}
-
-.selection-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  width: 100%;
-  max-width: 1000px;
-  perspective: 1000px;
-}
-
-@media (max-width: 768px) {
-  .selection-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.selection-card {
-  background: var(--neo-white);
-  border: var(--neo-border);
-  box-shadow: var(--neo-shadow);
-  padding: 2.5rem 2rem;
-  border-radius: 12px;
-  /* Rounded corners */
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  text-align: center;
-  opacity: 0;
-  animation: cardEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-/* Stagger animations */
-.selection-card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.selection-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.selection-card:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-@keyframes cardEnter {
-  from {
-    opacity: 0;
-    transform: translateY(50px) rotateX(10deg);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
-  }
-}
-
-.selection-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 12px 12px 0px 0px #000;
-  z-index: 2;
-}
-
-.selection-card:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px 0px #000;
-}
-
-.selection-icon {
-  width: 90px;
-  height: 90px;
-  border-radius: 20px;
-  /* Small curve instead of circle */
-  border: 4px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  box-shadow: 4px 4px 0 0 #000;
-  transition: transform 0.3s ease;
-}
-
-.selection-card:hover .selection-icon {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.selection-card h3 {
-  font-size: 1.8rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.selection-card p {
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-/* Cleaner Hero (Replacing .hero) */
-.hero-clean {
-  text-align: center;
-  margin-bottom: 2rem;
-  padding: 1rem 0;
-}
-
-.hero-clean h1 {
-  font-weight: 900;
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  line-height: 1.1;
-}
-
-.hero-clean p {
-  font-size: 1.1rem;
-  opacity: 0.7;
-  font-weight: 500;
-}
-
-.simple-footer {
-  margin-top: 4rem;
-  font-size: 1rem;
-  font-weight: 700;
-  background: var(--neo-white);
-  padding: 0.5rem 1rem;
-  border: 2px solid #000;
-  box-shadow: 4px 4px 0 0 #000;
-  border-radius: 8px;
-}
-
-/* Modal / Panel Styles */
-.modal-backdrop {
+/* Progressive Liquid Glass Gradient Blur System (Reduced Height: 84px, Smooth Blending) */
+.liquid-glass-progressive {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: 10000;
-  animation: fadeIn 0.2s ease-out;
+  height: 84px;
+  pointer-events: none;
+  z-index: 40;
+  overflow: hidden;
 }
 
-.panel-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 500px;
-  background: var(--neo-white);
-  border: var(--neo-border);
-  box-shadow: 10px 10px 0 0 #000;
-  z-index: 10001;
-  padding: 2rem;
-  border-radius: 12px;
-  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  max-height: 90vh;
-  /* Prevent overflow on small screens */
-  overflow-y: auto;
+/* Layer 1: Dense optical blur at the top peak, smoothly fading */
+.liquid-glass-blur-1 {
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 18%,
+    rgba(0, 0, 0, 0.25) 34%,
+    rgba(0, 0, 0, 0) 50%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.7) 18%,
+    rgba(0, 0, 0, 0.25) 34%,
+    rgba(0, 0, 0, 0) 50%
+  );
 }
 
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -40%) scale(0.9);
+/* Layer 2: Medium mid-range optical diffusion */
+.liquid-glass-blur-2 {
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.75) 25%,
+    rgba(0, 0, 0, 0.35) 48%,
+    rgba(0, 0, 0, 0) 70%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.75) 25%,
+    rgba(0, 0, 0, 0.35) 48%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+/* Layer 3: Soft ambient diffusion */
+.liquid-glass-blur-3 {
+  backdrop-filter: blur(5px) saturate(140%);
+  -webkit-backdrop-filter: blur(5px) saturate(140%);
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.65) 40%,
+    rgba(0, 0, 0, 0.2) 65%,
+    rgba(0, 0, 0, 0) 85%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.65) 40%,
+    rgba(0, 0, 0, 0.2) 65%,
+    rgba(0, 0, 0, 0) 85%
+  );
+}
+
+/* Layer 4: Micro-blur feathering to 0px with mathematical smoothness */
+.liquid-glass-blur-4 {
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.5) 55%,
+    rgba(0, 0, 0, 0.1) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.5) 55%,
+    rgba(0, 0, 0, 0.1) 82%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Liquid Glass Specular Top Sheen */
+.liquid-glass-sheen {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.015) 30%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.6) 45%,
+    rgba(0, 0, 0, 0) 80%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.6) 45%,
+    rgba(0, 0, 0, 0) 80%
+  );
+}
+
+/* Chrome Metallic Gradient Text */
+.chrome-text {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #9E9E9E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sleek Pill Glow Buttons */
+.btn-chrome-primary {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-chrome-primary:hover {
+  background: #f0f0f0;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-chrome-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-chrome-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   HIGH-PRECISION OPTICAL SPECIMEN PRINT ENGINE
+   Isolates and centers ONLY the active card specimen with 100% color fidelity
+   ========================================================================== */
+@media print {
+  @page {
+    size: auto;
+    margin: 10mm;
   }
 
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
-}
 
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #000;
-  padding-bottom: 1rem;
-}
+  /* Hide entire application shell, background grids, forms, and toolbars */
+  header,
+  footer,
+  nav,
+  .dark-grid-bg,
+  .ambient-spotlight,
+  .ambient-spotlight-bottom,
+  .preloader-overlay,
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+  }
 
-.panel-header h3 {
-  font-size: 1.5rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
+  /* Expand main layout to center the card on the printed page */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+  }
 
-.panel-close {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
+  /* Hide the left-column form container on print */
+  .lg\:col-span-5 {
+    display: none !important;
+  }
 
-.panel-close:hover {
-  background: #eee;
-}
+  /* Right-column wrapper spans 100% centered */
+  .lg\:col-span-7 {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    position: static !important;
+  }
 
-.panel-list {
-  padding-left: 1.5rem;
-  font-weight: 500;
-  line-height: 1.6;
-}
+  /* Isolate and center ONLY the active card specimen */
+  #live-specimen-card {
+    visibility: visible !important;
+    display: flex !important;
+    margin: auto !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    transform: none !important;
+  }
 
-.panel-list li {
-  margin-bottom: 0.5rem;
-}
-
-/* Nav Item Polish */
-.nav-item {
-  border-radius: 6px;
-  /* Soften nav items slightly */
+  #live-specimen-card * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
 }
