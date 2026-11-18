@@ -50,7 +50,9 @@ export const WifiCard = ({ id, settings }) => {
 
   // Text and QR info block shared across layouts
   const renderTextBlock = () => (
-    <div className={`space-y-3.5 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
+    <div
+      className={`space-y-3.5 w-full flex-1 ${cfg.textAlign || 'text-left'}`}
+    >
       <div>
         <div
           className={`text-[10px] font-mono uppercase tracking-widest opacity-60 font-semibold ${subTextColor}`}
@@ -58,7 +60,9 @@ export const WifiCard = ({ id, settings }) => {
           Network Name
         </div>
         <div
-          className={`font-heading font-extrabold tracking-tight break-all mt-0.5 ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+          className={`font-heading font-extrabold tracking-tight break-all mt-0.5 ${
+            cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'
+          } ${textColor}`}
         >
           {ssid || 'NETWORK'}
         </div>
@@ -71,7 +75,7 @@ export const WifiCard = ({ id, settings }) => {
           >
             Password
           </div>
-          <div className="inline-flex items-center">
+          <div className={`inline-flex items-center ${!isHorizontal ? 'justify-center' : ''}`}>
             <div
               className={`px-3 py-1.5 rounded-xl font-mono text-xs sm:text-sm border transition-all ${
                 isLightCard
@@ -87,7 +91,9 @@ export const WifiCard = ({ id, settings }) => {
 
       <div className="pt-1">
         <div
-          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor} ${
+            !isHorizontal ? 'justify-center' : ''
+          }`}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
           <span>Scan with camera to connect</span>

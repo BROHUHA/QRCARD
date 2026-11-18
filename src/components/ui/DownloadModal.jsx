@@ -97,7 +97,7 @@ export const DownloadModal = ({
   onDownload,
   activeTab = 'social',
 }) => {
-  const [format, setFormat] = useState('png'); // 'png' | 'jpeg' | 'svg'
+  const [format, setFormat] = useState('jpeg'); // 'jpeg' | 'png' | 'svg'
   const [downloading, setDownloading] = useState(false);
 
   if (!isOpen) return null;
@@ -228,12 +228,12 @@ export const DownloadModal = ({
           </label>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { id: 'png', name: 'PNG Image', desc: '4X Lossless Ultra-HD' },
               {
                 id: 'jpeg',
                 name: 'JPEG Photo',
-                desc: 'High Quality Compressed',
+                desc: 'Fast, compact & optimized',
               },
+              { id: 'png', name: 'PNG Image', desc: '4X Lossless Ultra-HD' },
               {
                 id: 'svg',
                 name: 'SVG Vector',

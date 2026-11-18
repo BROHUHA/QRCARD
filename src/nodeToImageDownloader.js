@@ -1,4 +1,4 @@
-import { toPng, toJpeg, toSvg } from 'html-to-image';
+import { toCanvas, toSvg } from 'html-to-image';
 import confetti from 'canvas-confetti';
 
 const FONT_CSS_URL =
@@ -58,20 +58,20 @@ const getEmbeddedFontCSS = async () => {
 
 // Target export pixel dimensions for each aspect ratio at 4X Ultra-HD
 const EXPORT_DIMENSIONS = {
-  'auto': null, // Use DOM node's natural dimensions
+  auto: null, // Use DOM node's natural dimensions
   '1:1': { width: 2160, height: 2160 },
   '9:16': { width: 2160, height: 3840 },
   '4:5': { width: 2160, height: 2700 },
   '16:9': { width: 3840, height: 2160 },
   '3:2': { width: 3600, height: 2400 },
   '3:4': { width: 2700, height: 3600 },
-  'card': { width: 3425, height: 2160 },
+  card: { width: 3425, height: 2160 },
 };
 
 export const downloadHDCard = async (
   nodeId,
   imageName = 'specimen-card',
-  { format = 'png', pixelRatio = 4, aspectRatio = 'auto' } = {}
+  { format = 'jpeg', pixelRatio = 4, aspectRatio = 'auto' } = {}
 ) => {
   if (!nodeId) return;
 
@@ -113,32 +113,22 @@ export const downloadHDCard = async (
 
     // Determine final export canvas dimensions
     const exportDims = EXPORT_DIMENSIONS[aspectRatio];
-    let canvasWidth, canvasHeight, effectivePixelRatio;
+    let effectivePixelRatio;
 
     if (exportDims) {
-      // Fixed-dimension export: compute pixel ratio from target size
-      canvasWidth = exportDims.width;
-      canvasHeight = exportDims.height;
-      // Use the larger scale factor to ensure the card fills the canvas
-      effectivePixelRatio = Math.max(
-        canvasWidth / sourceWidth,
-        canvasHeight / sourceHeight
-      );
+      // Calculate scaling ratio based on the target width
+      effectivePixelRatio = Math.max(1, exportDims.width / sourceWidth);
     } else {
       // Auto mode: use the standard 4x pixel ratio on natural card size
       effectivePixelRatio = pixelRatio || 4;
-      canvasWidth = sourceWidth * effectivePixelRatio;
-      canvasHeight = sourceHeight * effectivePixelRatio;
     }
 
-    const options = {
+    const captureOptions = {
       quality: 1,
       pixelRatio: effectivePixelRatio,
       backgroundColor: null,
       width: sourceWidth,
       height: sourceHeight,
-      canvasWidth: canvasWidth,
-      canvasHeight: canvasHeight,
       cacheBust: true,
       fontEmbedCSS: fontEmbedCSS || undefined,
       style: {
@@ -154,16 +144,49 @@ export const downloadHDCard = async (
     let dataUrl;
     const cleanFormat = (format || 'png').toLowerCase();
 
-    if (cleanFormat === 'jpeg' || cleanFormat === 'jpg') {
-      dataUrl = await toJpeg(node, {
-        ...options,
-        quality: 0.98,
-        backgroundColor: '#FFFFFF',
-      });
-    } else if (cleanFormat === 'svg') {
-      dataUrl = await toSvg(node, options);
+    if (cleanFormat === 'svg') {
+      dataUrl = await toSvg(node, captureOptions);
     } else {
-      dataUrl = await toPng(node, options);
+      const renderedCanvas = await toCanvas(node, captureOptions);
+      let finalCanvas = renderedCanvas;
+
+      if (exportDims) {
+        // Guarantee EXACT target dimensions without floating-point distortion
+        const targetCanvas = document.createElement('canvas');
+        targetCanvas.width = exportDims.width;
+        targetCanvas.height = exportDims.height;
+        const ctx = targetCanvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        if (cleanFormat === 'jpeg' || cleanFormat === 'jpg') {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, exportDims.width, exportDims.height);
+        }
+
+        ctx.drawImage(
+          renderedCanvas,
+          0,
+          0,
+          exportDims.width,
+          exportDims.height
+        );
+        finalCanvas = targetCanvas;
+      } else if (cleanFormat === 'jpeg' || cleanFormat === 'jpg') {
+        const targetCanvas = document.createElement('canvas');
+        targetCanvas.width = renderedCanvas.width;
+        targetCanvas.height = renderedCanvas.height;
+        const ctx = targetCanvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, renderedCanvas.width, renderedCanvas.height);
+        ctx.drawImage(renderedCanvas, 0, 0);
+        finalCanvas = targetCanvas;
+      }
+
+      dataUrl =
+        cleanFormat === 'jpeg' || cleanFormat === 'jpg'
+          ? finalCanvas.toDataURL('image/jpeg', 0.98)
+          : finalCanvas.toDataURL('image/png');
     }
 
     // Pure ESM download trigger
@@ -175,7 +198,7 @@ export const downloadHDCard = async (
         : '';
     const dimTag = exportDims
       ? `-${exportDims.width}x${exportDims.height}`
-      : `-${canvasWidth}x${canvasHeight}`;
+      : `-${Math.round(sourceWidth * effectivePixelRatio)}x${Math.round(sourceHeight * effectivePixelRatio)}`;
     const fileExt = cleanFormat === 'jpeg' ? 'jpg' : cleanFormat;
     link.download = `${imageName}${ratioTag}${dimTag}-${timestamp}.${fileExt}`;
     link.href = dataUrl;

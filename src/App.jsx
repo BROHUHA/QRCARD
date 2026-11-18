@@ -216,9 +216,9 @@ export default function App() {
   // 4. Social Media Settings State
   const [socialSettings, setSocialSettings] = useState({
     platform: 'instagram',
-    value: 'optical.studio',
-    displayName: 'Studio Design',
-    bio: 'Digital Design & Optical Systems',
+    value: '',
+    displayName: '',
+    bio: '',
     verified: true,
     theme: 'opal-mint',
     templateId: 'opal-mint',
@@ -239,6 +239,7 @@ export default function App() {
     showCenterLogo: true,
     portrait: false,
     hideDisplayName: false,
+    hideHyperlink: true,
   });
 
   // 5. Email Dispatch Settings State
@@ -251,10 +252,13 @@ export default function App() {
 
   // 6. URL Settings State
   const [urlSettings, setUrlSettings] = useState({
-    url: 'https://allqr.studio',
-    title: 'DIGITAL GATEWAY',
+    url: '',
+    title: '',
+    description: '',
     portrait: false,
     hideTitle: false,
+    hideWebLink: true,
+    hideHyperlink: true,
   });
 
   // 7. Plain Text Settings State
@@ -380,7 +384,7 @@ export default function App() {
 
   const handleExecuteDownload = async (
     ratio = selectedRatio,
-    format = 'png'
+    format = 'jpeg'
   ) => {
     if (!validate()) return;
     const filename = `allqr-${activeTab}-${Date.now()}`;

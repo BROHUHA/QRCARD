@@ -43,7 +43,9 @@ export const EmailCard = ({ id, settings }) => {
     <div className={`space-y-3 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
       <div>
         <div
-          className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+          className={`font-heading font-extrabold tracking-tight break-all ${
+            cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'
+          } ${textColor}`}
         >
           {email || 'recipient@mail.com'}
         </div>
@@ -51,7 +53,11 @@ export const EmailCard = ({ id, settings }) => {
 
       <div className="space-y-2 text-xs">
         {subject && (
-          <div className="flex items-baseline gap-2 flex-wrap">
+          <div
+            className={`flex items-baseline gap-2 flex-wrap ${
+              !isHorizontal ? 'justify-center' : ''
+            }`}
+          >
             <span
               className={`text-[10px] font-mono uppercase opacity-60 font-semibold ${subTextColor}`}
             >
@@ -65,6 +71,8 @@ export const EmailCard = ({ id, settings }) => {
         {body && (
           <div
             className={`text-xs opacity-75 italic border-l-2 pl-2.5 mt-1 line-clamp-3 max-w-sm ${
+              !isHorizontal ? 'mx-auto' : ''
+            } ${
               isLightCard ? 'border-slate-400' : 'border-white/30'
             } ${subTextColor}`}
           >
@@ -75,7 +83,9 @@ export const EmailCard = ({ id, settings }) => {
 
       <div className="pt-1">
         <div
-          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor} ${
+            !isHorizontal ? 'justify-center' : ''
+          }`}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
           <span>Scan with camera to compose email</span>

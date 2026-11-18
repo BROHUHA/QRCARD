@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Share2,
   User,
@@ -9,6 +9,8 @@ import {
   Palette,
   ArrowRight,
   ArrowLeft,
+  Link2Off,
+  Loader2,
 } from 'lucide-react';
 import { PLATFORMS_CONFIG } from './ui/socialConfig';
 import { SocialIcon } from './ui/SocialIcons';
@@ -22,12 +24,93 @@ export const SocialSettings = ({
   errors = {},
 }) => {
   const [activeStepTab, setActiveStepTab] = useState('payload'); // 'payload' | 'style'
+  const [isFetchingAvatar, setIsFetchingAvatar] = useState(false);
+  const [avatarFound, setAvatarFound] = useState(false);
+  const [fetchStatus, setFetchStatus] = useState(null); // null | { type: 'loading'|'success'|'error', message: string }
 
   const currentTheme = themeSettings || settings;
   const updateTheme = setThemeSettings || setSettings;
 
+  const fetchProfileImage = async (overrideValue) => {
+    const rawVal = overrideValue !== undefined ? overrideValue : settings.value;
+    if (!rawVal || settings.platform === 'whatsapp') {
+      setAvatarFound(false);
+      setFetchStatus(null);
+      return;
+    }
+
+    const cleanUser = rawVal
+      .replace(/^@/, '')
+      .replace(/^https?:\/\/[^/]+\//, '')
+      .trim();
+
+    if (!cleanUser || cleanUser.length < 2) {
+      setAvatarFound(false);
+      setFetchStatus({
+        type: 'error',
+        message: 'Please enter a valid username first',
+      });
+      return;
+    }
+
+    setIsFetchingAvatar(true);
+    setFetchStatus({
+      type: 'loading',
+      message: 'Fetching profile picture...',
+    });
+
+    try {
+      const res = await fetch(
+        `/api/profile-image?platform=${encodeURIComponent(
+          settings.platform
+        )}&username=${encodeURIComponent(cleanUser)}`
+      );
+      if (!res.ok) {
+        setAvatarFound(false);
+        setFetchStatus({
+          type: 'error',
+          message: 'Profile picture not accessible for this handle',
+        });
+        return;
+      }
+      const data = await res.json();
+      if (data.success && data.dataUri) {
+        setAvatarFound(true);
+        setFetchStatus({
+          type: 'success',
+          message: 'Profile picture found & set as card background',
+        });
+        updateTheme((prev) => ({
+          ...prev,
+          bgImage: data.dataUri,
+          bgPreset: 'custom-image',
+          bgImageBlur: prev.bgImageBlur ?? 4,
+          bgImageOverlay: prev.bgImageOverlay ?? 0.35,
+        }));
+      } else {
+        setAvatarFound(false);
+        setFetchStatus({
+          type: 'error',
+          message: 'Profile picture not accessible for this handle',
+        });
+      }
+    } catch (err) {
+      setAvatarFound(false);
+      setFetchStatus({
+        type: 'error',
+        message: 'Error fetching profile picture',
+      });
+    } finally {
+      setIsFetchingAvatar(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    if (name === 'value') {
+      setFetchStatus(null);
+      setAvatarFound(false);
+    }
     setSettings((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -37,6 +120,28 @@ export const SocialSettings = ({
   const currentPlat =
     PLATFORMS_CONFIG.find((p) => p.id === settings.platform) ||
     PLATFORMS_CONFIG[0];
+
+  const handleSelectPlatform = (platId) => {
+    setFetchStatus(null);
+    setAvatarFound(false);
+    setSettings((prev) => {
+      let nextValue = prev.value;
+      if (platId === 'whatsapp') {
+        if (!nextValue || !/^\+?\d[\d\s-]{5,}/.test(nextValue)) {
+          nextValue = '';
+        }
+      } else if (prev.platform === 'whatsapp') {
+        if (nextValue === '+12 3455678') {
+          nextValue = '';
+        }
+      }
+      return {
+        ...prev,
+        platform: platId,
+        value: nextValue,
+      };
+    });
+  };
 
   return (
     <div className="space-y-5 text-white">
@@ -90,9 +195,7 @@ export const SocialSettings = ({
                   <button
                     key={plat.id}
                     type="button"
-                    onClick={() =>
-                      setSettings((prev) => ({ ...prev, platform: plat.id }))
-                    }
+                    onClick={() => handleSelectPlatform(plat.id)}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium border transition-all cursor-pointer truncate ${
                       isSelected
                         ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)] font-bold scale-[1.02]'
@@ -117,27 +220,94 @@ export const SocialSettings = ({
           {/* 2. USERNAME OR IDENTIFIER */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center justify-between">
-              <span>Username or Number *</span>
+              <span>
+                {currentPlat.id === 'whatsapp'
+                  ? 'Phone Number *'
+                  : 'Username or Handle *'}
+              </span>
               <span className="text-[10px] text-neutral-400 font-mono">
-                Format: {currentPlat.prefix}
+                {currentPlat.id === 'whatsapp'
+                  ? 'e.g. +12 3455678'
+                  : currentPlat.prefix
+                  ? `Format: ${currentPlat.prefix}handle`
+                  : 'Direct handle'}
               </span>
             </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500 font-mono text-xs">
-                {currentPlat.prefix}
-              </div>
+            <div className="relative flex items-center">
+              {currentPlat.prefix && (
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-500 font-mono text-xs">
+                  {currentPlat.prefix}
+                </div>
+              )}
               <input
                 type="text"
                 name="value"
-                value={settings.value}
+                value={settings.value || ''}
                 onChange={handleChange}
-                placeholder="your_handle"
-                className="w-full pl-16 pr-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-mono text-sm outline-none transition-all"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    fetchProfileImage();
+                  }
+                }}
+                placeholder={
+                  currentPlat.id === 'whatsapp'
+                    ? '+12 3455678'
+                    : 'username'
+                }
+                className={`w-full ${
+                  currentPlat.prefix ? 'pl-9' : 'px-4'
+                } ${
+                  currentPlat.id !== 'whatsapp' ? 'pr-24' : 'pr-4'
+                } py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-mono text-sm outline-none transition-all`}
               />
+              {currentPlat.id !== 'whatsapp' && (
+                <button
+                  type="button"
+                  onClick={() => fetchProfileImage()}
+                  disabled={isFetchingAvatar || !settings.value?.trim()}
+                  className="absolute right-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold font-mono text-white border border-white/15 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 shadow-sm"
+                  title="Fetch profile picture manually"
+                >
+                  {isFetchingAvatar ? (
+                    <>
+                      <Loader2 size={12} className="animate-spin text-amber-300" />
+                      <span>Fetching</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={12} className="text-amber-300" />
+                      <span>Fetch</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
             {errors.value && (
               <p className="text-xs text-[#ff0047] font-medium">
                 {errors.value}
+              </p>
+            )}
+            {fetchStatus && (
+              <p
+                className={`text-[10px] font-mono flex items-center gap-1.5 mt-1 ${
+                  fetchStatus.type === 'loading'
+                    ? 'text-neutral-400 animate-pulse'
+                    : fetchStatus.type === 'success'
+                    ? 'text-emerald-400'
+                    : 'text-amber-400/90'
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    fetchStatus.type === 'loading'
+                      ? 'bg-amber-400'
+                      : fetchStatus.type === 'success'
+                      ? 'bg-emerald-400'
+                      : 'bg-amber-400'
+                  }`}
+                />
+                <span>{fetchStatus.message}</span>
               </p>
             )}
           </div>
@@ -152,7 +322,7 @@ export const SocialSettings = ({
               <input
                 type="text"
                 name="displayName"
-                value={settings.displayName}
+                value={settings.displayName || ''}
                 onChange={handleChange}
                 placeholder="e.g. Studio Design"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-sans text-sm outline-none transition-all"
@@ -200,6 +370,20 @@ export const SocialSettings = ({
                 type="checkbox"
                 name="showCenterLogo"
                 checked={settings.showCenterLogo !== false}
+                onChange={handleChange}
+                className="w-4 h-4 rounded accent-white bg-black/40 border-white/20 cursor-pointer"
+              />
+            </label>
+
+            <label className="flex items-center justify-between cursor-pointer py-1 text-xs text-neutral-300">
+              <span className="flex items-center gap-2">
+                <Link2Off size={14} className="text-neutral-400" />
+                <span>Hide Hyperlink URL</span>
+              </span>
+              <input
+                type="checkbox"
+                name="hideHyperlink"
+                checked={settings.hideHyperlink !== false}
                 onChange={handleChange}
                 className="w-4 h-4 rounded accent-white bg-black/40 border-white/20 cursor-pointer"
               />

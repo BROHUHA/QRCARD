@@ -11,7 +11,7 @@ export const PLATFORMS_CONFIG = [
   {
     id: 'whatsapp',
     name: 'WhatsApp',
-    prefix: '+phone',
+    prefix: '',
     baseUrl: 'https://wa.me/',
     brandColor: '#25D366',
     gradient: 'from-[#25D366] to-[#128C7E]',
@@ -29,7 +29,7 @@ export const PLATFORMS_CONFIG = [
   {
     id: 'github',
     name: 'GitHub',
-    prefix: 'user',
+    prefix: '@',
     baseUrl: 'https://github.com/',
     brandColor: '#FFFFFF',
     gradient: 'from-[#24292F] to-[#57606A]',
@@ -74,7 +74,7 @@ export const PLATFORMS_CONFIG = [
   {
     id: 'discord',
     name: 'Discord',
-    prefix: 'invite',
+    prefix: '',
     baseUrl: 'https://discord.gg/',
     brandColor: '#5865F2',
     gradient: 'from-[#5865F2] to-[#4752C4]',
@@ -92,7 +92,7 @@ export const PLATFORMS_CONFIG = [
   {
     id: 'spotify',
     name: 'Spotify',
-    prefix: 'user/',
+    prefix: '',
     baseUrl: 'https://open.spotify.com/user/',
     brandColor: '#1DB954',
     gradient: 'from-[#1DB954] to-[#14833B]',
@@ -101,7 +101,7 @@ export const PLATFORMS_CONFIG = [
   {
     id: 'behance',
     name: 'Behance',
-    prefix: 'user',
+    prefix: '@',
     baseUrl: 'https://behance.net/',
     brandColor: '#0057FF',
     gradient: 'from-[#0057FF] to-[#003BB0]',

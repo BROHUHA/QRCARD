@@ -124,7 +124,14 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
+
   const startXRef = useRef(0);
+  const startYRef = useRef(0);
+  const startTimeRef = useRef(0);
+  const isHorizontalSwipeRef = useRef(null); // null = undetermined, true = horizontal swipe, false = vertical scroll
+  const isMouseDownRef = useRef(false);
+  const hasMovedRef = useRef(false);
+
   const total = SPECIMEN_CARDS.length;
 
   useEffect(() => {
@@ -136,24 +143,24 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
 
-  // Responsive card geometry: exact mathematical centering on any viewport
+  // Responsive card geometry: snug fit & visible edge peeking on mobile
   const cardWidth = isMobile
-    ? Math.min(Math.max(windowWidth - 72, 280), 330)
+    ? Math.min(windowWidth - 52, 320)
     : isTablet
-    ? 370
-    : 410;
+    ? 360
+    : 400;
 
-  const cardGap = isMobile ? 16 : 24;
+  const cardGap = isMobile ? 12 : 20;
   const cardStep = cardWidth + cardGap;
   const centerOffset = (windowWidth - cardWidth) / 2;
   const currentTranslateX = centerOffset - activeIndex * cardStep + dragOffset;
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev > 0 ? prev - 1 : total - 1));
+    setActiveIndex((prev) => Math.max(0, prev - 1));
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev < total - 1 ? prev + 1 : 0));
+    setActiveIndex((prev) => Math.min(total - 1, prev + 1));
   };
 
   // Keyboard arrow controls
@@ -164,39 +171,131 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [total]);
 
-  // MANUAL DRAGGING & SLIDING (Mouse + Touch)
-  const handleDragStart = (clientX) => {
-    setIsDragging(true);
-    startXRef.current = clientX;
+  // TOUCH GESTURE HANDLING WITH DIRECTION LOCKING (SILKY 60-120FPS)
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    startXRef.current = touch.clientX;
+    startYRef.current = touch.clientY;
+    startTimeRef.current = Date.now();
+    isHorizontalSwipeRef.current = null;
+    hasMovedRef.current = false;
+    setIsDragging(false);
     setDragOffset(0);
   };
 
-  const handleDragMove = (clientX) => {
-    if (!isDragging) return;
-    const delta = clientX - startXRef.current;
-    // Dampen drag effect slightly
-    setDragOffset(delta);
+  const handleTouchMove = (e) => {
+    // If determined as vertical page scroll, let browser handle naturally without interference
+    if (isHorizontalSwipeRef.current === false) return;
+
+    const touch = e.touches[0];
+    const diffX = touch.clientX - startXRef.current;
+    const diffY = touch.clientY - startYRef.current;
+
+    // Detect direction intent once movement passes 7px threshold
+    if (isHorizontalSwipeRef.current === null) {
+      const absX = Math.abs(diffX);
+      const absY = Math.abs(diffY);
+      if (absX > 7 || absY > 7) {
+        if (absX >= absY) {
+          isHorizontalSwipeRef.current = true;
+          setIsDragging(true);
+        } else {
+          isHorizontalSwipeRef.current = false;
+          return;
+        }
+      } else {
+        return;
+      }
+    }
+
+    if (isHorizontalSwipeRef.current === true) {
+      if (Math.abs(diffX) > 5) {
+        hasMovedRef.current = true;
+      }
+      // Apply rubber-band damping at boundaries
+      let offset = diffX;
+      if (
+        (activeIndex === 0 && offset > 0) ||
+        (activeIndex === total - 1 && offset < 0)
+      ) {
+        offset = offset * 0.3;
+      }
+      setDragOffset(offset);
+    }
   };
 
-  const handleDragEnd = () => {
-    if (!isDragging) return;
+  const handleTouchEnd = () => {
+    if (isHorizontalSwipeRef.current === true) {
+      const dt = Math.max(Date.now() - startTimeRef.current, 1);
+      const velocity = dragOffset / dt; // px per ms
+
+      // Fast flick or distance threshold
+      if (dragOffset < -40 || velocity < -0.3) {
+        handleNext();
+      } else if (dragOffset > 40 || velocity > 0.3) {
+        handlePrev();
+      }
+    }
+    isHorizontalSwipeRef.current = null;
     setIsDragging(false);
-    if (dragOffset < -60) {
+    setDragOffset(0);
+    setTimeout(() => {
+      hasMovedRef.current = false;
+    }, 50);
+  };
+
+  // MOUSE DRAG HANDLING
+  const handleMouseDown = (e) => {
+    isMouseDownRef.current = true;
+    startXRef.current = e.clientX;
+    startTimeRef.current = Date.now();
+    hasMovedRef.current = false;
+    setIsDragging(true);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isMouseDownRef.current) return;
+    const diffX = e.clientX - startXRef.current;
+    if (Math.abs(diffX) > 5) {
+      hasMovedRef.current = true;
+    }
+    let offset = diffX;
+    if (
+      (activeIndex === 0 && offset > 0) ||
+      (activeIndex === total - 1 && offset < 0)
+    ) {
+      offset = offset * 0.3;
+    }
+    setDragOffset(offset);
+  };
+
+  const handleMouseUp = () => {
+    if (!isMouseDownRef.current) return;
+    isMouseDownRef.current = false;
+    const dt = Math.max(Date.now() - startTimeRef.current, 1);
+    const velocity = dragOffset / dt;
+
+    if (dragOffset < -45 || velocity < -0.3) {
       handleNext();
-    } else if (dragOffset > 60) {
+    } else if (dragOffset > 45 || velocity > 0.3) {
       handlePrev();
     }
+    setIsDragging(false);
     setDragOffset(0);
+    setTimeout(() => {
+      hasMovedRef.current = false;
+    }, 50);
   };
 
   return (
-    <section className="relative w-full pt-4 sm:pt-6 pb-2 sm:pb-6 select-none overflow-hidden">
+    <section className="relative w-full pt-3 sm:pt-6 pb-2 sm:pb-6 select-none overflow-hidden">
       {/* Navigation Breadcrumb / Back Action */}
       {onBackToHome && (
-        <div className="max-w-[1440px] 2xl:max-w-[1680px] mx-auto px-6 sm:px-12 lg:px-16 mb-2 relative z-20">
-          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+        <div className="max-w-[1440px] 2xl:max-w-[1680px] mx-auto px-5 sm:px-12 lg:px-16 mb-1 sm:mb-2 relative z-20">
+          <div className="flex items-center justify-between border-b border-white/[0.08] pb-3 sm:pb-4">
             <button
               type="button"
               onClick={onBackToHome}
@@ -212,35 +311,36 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
         </div>
       )}
 
-      {/* 1. GIANT FROSTED BACKGROUND TEXT (Shifted below header blur) */}
-      <div className="absolute top-6 sm:top-12 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 text-center w-full">
-        <span className="font-heading font-black text-[6rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] leading-none tracking-tighter text-white opacity-20 sm:opacity-25 select-none block">
+      {/* 1. GIANT FROSTED BACKGROUND TEXT */}
+      <div className="absolute top-2 sm:top-10 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 text-center w-full">
+        <span className="font-heading font-black text-[5.5rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] leading-none tracking-tighter text-white opacity-20 sm:opacity-25 select-none block">
           Build
         </span>
       </div>
 
       {/* 2. FOREGROUND CAROUSEL CONTAINER */}
       <PixelReveal delay={50} pixelSize={22} className="w-full">
-        <div className="relative z-10 w-full pt-8 sm:pt-16 pb-4">
-          {/* MANUAL SLIDING TRACK (DRAGGABLE & TOUCH-SWIPEABLE) */}
+        <div className="relative z-10 w-full pt-4 sm:pt-14 pb-2 sm:pb-4">
+          {/* TRACK WRAPPER WITH PAN-Y FOR NATIVE VERTICAL SCROLL */}
           <div
-            className="w-full overflow-hidden cursor-grab active:cursor-grabbing py-4 sm:py-6"
-            onMouseDown={(e) => handleDragStart(e.clientX)}
-            onMouseMove={(e) => handleDragMove(e.clientX)}
-            onMouseUp={handleDragEnd}
-            onMouseLeave={handleDragEnd}
-            onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
-            onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
-            onTouchEnd={handleDragEnd}
+            className="w-full overflow-hidden cursor-grab active:cursor-grabbing py-2 sm:py-5"
+            style={{ touchAction: 'pan-y' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <div
-              className="flex items-stretch justify-start transition-transform will-change-transform"
+              className="flex items-stretch justify-start will-change-transform"
               style={{
                 gap: `${cardGap}px`,
-                transform: `translateX(${currentTranslateX}px)`,
+                transform: `translate3d(${currentTranslateX}px, 0, 0)`,
                 transition: isDragging
                   ? 'none'
-                  : 'transform 550ms cubic-bezier(0.16, 1, 0.3, 1)',
+                  : 'transform 420ms cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
               {SPECIMEN_CARDS.map((card, idx) => {
@@ -251,85 +351,88 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
                   <div
                     key={card.id}
                     onClick={() => {
+                      if (hasMovedRef.current) return;
                       if (!isCenter) setActiveIndex(idx);
                     }}
                     style={{ width: `${cardWidth}px` }}
-                    className={`shrink-0 rounded-[24px] sm:rounded-[32px] p-5 sm:p-7 md:p-8 flex flex-col justify-between select-none transition-all duration-500 transform will-change-transform ${
+                    className={`shrink-0 rounded-[22px] sm:rounded-[32px] p-4 sm:p-7 md:p-8 flex flex-col justify-between select-none transition-[transform,opacity] duration-350 ease-out will-change-transform ${
                       isCenter
-                        ? 'liquid-glass-active scale-100 sm:scale-105 z-20 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),0_0_35px_rgba(255,255,255,0.08)]'
-                        : 'liquid-glass scale-95 opacity-50 sm:opacity-55 hover:opacity-85 hover:scale-[0.98] z-10 cursor-pointer'
+                        ? 'liquid-glass-active scale-100 sm:scale-105 z-20 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.9),0_0_30px_rgba(255,255,255,0.06)]'
+                        : 'liquid-glass scale-95 opacity-50 sm:opacity-55 hover:opacity-85 z-10 cursor-pointer'
                     }`}
                   >
                     {/* Liquid Specular Glow for Center Active Card */}
                     {isCenter && (
-                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-24 bg-white/20 rounded-full blur-2xl pointer-events-none" />
+                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-40 sm:w-48 h-20 sm:h-24 bg-white/15 rounded-full blur-2xl pointer-events-none" />
                     )}
 
-                    <div className="space-y-4 sm:space-y-5 relative z-10">
+                    <div className="space-y-3 sm:space-y-5 relative z-10">
                       {/* Badge & Icon */}
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-400 font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+                        <span className="text-[9px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-400 font-bold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
                           {card.badge}
                         </span>
                         <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all ${
+                          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all ${
                             isCenter
                               ? 'liquid-glass text-white border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.25)]'
                               : 'bg-white/5 text-neutral-400 border border-white/10'
                           }`}
                         >
-                          <IconComp size={16} />
+                          <IconComp size={15} />
                         </div>
                       </div>
 
                       {/* Title & Subtitle */}
                       <div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-heading text-white tracking-tight leading-snug">
+                        <h3 className="text-lg sm:text-2xl md:text-3xl font-extrabold font-heading text-white tracking-tight leading-snug">
                           {card.name}
                         </h3>
-                        <p className="text-[11px] sm:text-xs text-neutral-400 font-mono mt-0.5 sm:mt-1">
+                        <p className="text-[10px] sm:text-xs text-neutral-400 font-mono mt-0.5 sm:mt-1">
                           {card.subtitle}
                         </p>
                       </div>
 
                       {/* Feature Checkmarks */}
-                      <div className="pt-3 border-t border-white/[0.08] space-y-2 sm:space-y-2.5">
+                      <div className="pt-2.5 sm:pt-3 border-t border-white/[0.08] space-y-1.5 sm:space-y-2.5">
                         {card.features.map((feature, fIdx) => (
                           <div
                             key={fIdx}
-                            className="flex items-start gap-2 sm:gap-2.5 text-[11px] sm:text-xs text-neutral-300"
+                            className="flex items-start gap-2 sm:gap-2.5 text-[10.5px] sm:text-xs text-neutral-300"
                           >
                             <div
-                              className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
                                 isCenter
                                   ? 'bg-white/20 text-white shadow-sm'
                                   : 'bg-white/10 text-neutral-400'
                               }`}
                             >
-                              <Check size={10} strokeWidth={3} />
+                              <Check size={9} strokeWidth={3} />
                             </div>
-                            <span className="leading-snug">{feature}</span>
+                            <span className="leading-tight sm:leading-snug">
+                              {feature}
+                            </span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Bottom Action Button */}
-                    <div className="pt-5 sm:pt-6 relative z-10">
+                    <div className="pt-4 sm:pt-6 relative z-10">
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           onSelectType(card.id);
                         }}
-                        className={`w-full py-3 sm:py-3.5 rounded-full text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                        className={`w-full py-2.5 sm:py-3.5 rounded-full text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                           isCenter
                             ? 'btn-chrome-primary shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:scale-[1.02]'
                             : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:border-white/40'
                         }`}
                       >
                         <span>Build {card.name}</span>
-                        <ArrowRight size={14} />
+                        <ArrowRight size={13} />
                       </button>
                     </div>
                   </div>
@@ -339,20 +442,25 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
           </div>
 
           {/* 3. SLEEK BOTTOM INDICATOR DOTS & UNIFIED NAVIGATION CONTROLS */}
-          <div className="mt-6 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4 z-20">
+          <div className="mt-4 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4 z-20">
             {/* Backward Arrow */}
             <button
               type="button"
               onClick={handlePrev}
-              className="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer"
+              disabled={activeIndex === 0}
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer ${
+                activeIndex === 0
+                  ? 'opacity-30 cursor-not-allowed'
+                  : 'opacity-100'
+              }`}
               title="Previous Specimen"
               aria-label="Previous Specimen"
             >
-              <ChevronLeft size={18} />
+              <ChevronLeft size={16} />
             </button>
 
             {/* Pagination Dots */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {SPECIMEN_CARDS.map((c, idx) => (
                 <button
                   key={c.id}
@@ -360,7 +468,7 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
                   onClick={() => setActiveIndex(idx)}
                   className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                     activeIndex === idx
-                      ? 'w-7 sm:w-8 bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]'
+                      ? 'w-6 sm:w-8 bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]'
                       : 'w-1.5 sm:w-2 bg-white/20 hover:bg-white/40'
                   }`}
                   title={c.name}
@@ -372,11 +480,16 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
             <button
               type="button"
               onClick={handleNext}
-              className="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer"
+              disabled={activeIndex === total - 1}
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer ${
+                activeIndex === total - 1
+                  ? 'opacity-30 cursor-not-allowed'
+                  : 'opacity-100'
+              }`}
               title="Next Specimen"
               aria-label="Next Specimen"
             >
-              <ChevronRight size={18} />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>

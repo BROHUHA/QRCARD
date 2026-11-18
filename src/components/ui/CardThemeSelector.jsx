@@ -12,6 +12,7 @@ import {
   Trash2,
   Sliders,
   ImagePlus,
+  Loader2,
 } from 'lucide-react';
 import {
   LIGHT_GRADIENTS,
@@ -69,8 +70,55 @@ export const CardThemeSelector = ({
   bgImageOverlay = 0.25,
   onChangeBgImageOverlay,
 }) => {
-  // Sub-tab state: 'gradient' (Background) | 'image' (Image BG) | 'qr' (QR Code Style) | 'dark' (Dark Glass)
-  const [subTab, setSubTab] = useState(bgImage ? 'image' : 'gradient');
+  // Sub-tab state: 'image' (Image BG first) | 'gradient' (Background) | 'qr' (QR Code Style) | 'qr-bg' (QR Glass)
+  const [subTab, setSubTab] = useState('image');
+  const [urlFetchInput, setUrlFetchInput] = useState('');
+  const [isFetchingUrl, setIsFetchingUrl] = useState(false);
+  const [urlFetchStatus, setUrlFetchStatus] = useState(null);
+
+  const handleFetchFromUrl = async () => {
+    const rawVal = urlFetchInput.trim();
+    if (!rawVal) return;
+    setIsFetchingUrl(true);
+    setUrlFetchStatus({
+      type: 'loading',
+      message: 'Fetching cover image from website...',
+    });
+
+    try {
+      const res = await fetch(
+        `/api/cover-image?url=${encodeURIComponent(rawVal)}`
+      );
+      if (!res.ok) {
+        setUrlFetchStatus({
+          type: 'error',
+          message: 'No cover image found for this URL',
+        });
+        return;
+      }
+      const data = await res.json();
+      if (data.success && data.dataUri) {
+        setUrlFetchStatus({
+          type: 'success',
+          message: 'Cover image set as background',
+        });
+        if (onUploadBgImage) onUploadBgImage(data.dataUri);
+        if (onSelectBgPreset) onSelectBgPreset('custom-image');
+      } else {
+        setUrlFetchStatus({
+          type: 'error',
+          message: 'No cover image found for this URL',
+        });
+      }
+    } catch {
+      setUrlFetchStatus({
+        type: 'error',
+        message: 'Could not fetch image from URL',
+      });
+    } finally {
+      setIsFetchingUrl(false);
+    }
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -87,7 +135,6 @@ export const CardThemeSelector = ({
   const handleRemoveImage = () => {
     if (onUploadBgImage) onUploadBgImage(null);
     if (onSelectBgPreset) onSelectBgPreset('opal-mint');
-    setSubTab('gradient');
   };
 
   const handlePickSampleWallpaper = (url) => {
@@ -167,56 +214,17 @@ export const CardThemeSelector = ({
 
   return (
     <div className="space-y-4 text-white">
-      {/* 1. Header with Top Pill Switcher: [ Pastel Gradients | Image BG | QR Style | Dark Glass ] */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-white/[0.08]">
-        <label className="text-xs font-semibold uppercase tracking-wider text-neutral-300 flex items-center gap-1.5">
-          {subTab === 'qr-bg' ? (
-            <>
-              <Sparkles size={13} className="text-indigo-400" />
-              <span>QR Glass Background</span>
-            </>
-          ) : subTab === 'qr' ? (
-            <>
-              <QrCode size={13} className="text-emerald-400" />
-              <span>QR Code Style</span>
-            </>
-          ) : subTab === 'image' ? (
-            <>
-              <ImageIcon size={13} className="text-amber-400" />
-              <span>Background Image</span>
-            </>
-          ) : (
-            <>
-              <Palette size={13} className="text-indigo-400" />
-              <span>Background Style</span>
-            </>
-          )}
-        </label>
-
-        {/* Top Pill Switcher: [ Pastel Gradients | Image BG | QR Style | QR Glass BG ] */}
-        <div className="flex items-center p-1 rounded-2xl bg-white/5 border border-white/10 shrink-0 flex-wrap gap-0.5">
-          <button
-            type="button"
-            onClick={() => {
-              setSubTab('gradient');
-              if (onSelectBgPreset && bgPreset === 'custom-image')
-                onSelectBgPreset('opal-mint');
-            }}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              subTab === 'gradient'
-                ? 'bg-white text-black shadow-md'
-                : 'text-neutral-400 hover:text-white'
-            }`}
-          >
-            Pastel Gradients
-          </button>
+      {/* 1. Header with Top Pill Switcher: Responsive on Mobile & Desktop [ Image BG | Pastel Gradients | QR Style | QR Glass BG ] */}
+      <div className="pb-2 border-b border-white/[0.08]">
+        {/* Full-width Top Pill Switcher */}
+        <div className="flex items-center p-1 rounded-2xl bg-white/5 border border-white/10 w-full overflow-x-auto scrollbar-none gap-1">
           <button
             type="button"
             onClick={() => {
               setSubTab('image');
               if (onSelectBgPreset && bgImage) onSelectBgPreset('custom-image');
             }}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`flex-1 min-w-fit whitespace-nowrap px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               subTab === 'image'
                 ? 'bg-white text-black shadow-md'
                 : 'text-neutral-400 hover:text-white'
@@ -227,8 +235,23 @@ export const CardThemeSelector = ({
           </button>
           <button
             type="button"
+            onClick={() => {
+              setSubTab('gradient');
+              if (onSelectBgPreset && bgPreset === 'custom-image')
+                onSelectBgPreset('opal-mint');
+            }}
+            className={`flex-1 min-w-fit whitespace-nowrap px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer text-center ${
+              subTab === 'gradient'
+                ? 'bg-white text-black shadow-md'
+                : 'text-neutral-400 hover:text-white'
+            }`}
+          >
+            Pastel Gradients
+          </button>
+          <button
+            type="button"
             onClick={() => setSubTab('qr')}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`flex-1 min-w-fit whitespace-nowrap px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer text-center ${
               subTab === 'qr'
                 ? 'bg-white text-black shadow-md'
                 : 'text-neutral-400 hover:text-white'
@@ -239,7 +262,7 @@ export const CardThemeSelector = ({
           <button
             type="button"
             onClick={() => setSubTab('qr-bg')}
-            className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`flex-1 min-w-fit whitespace-nowrap px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               subTab === 'qr-bg'
                 ? 'bg-white text-black shadow-md'
                 : 'text-neutral-400 hover:text-white'
@@ -257,7 +280,236 @@ export const CardThemeSelector = ({
       </div>
 
       {/* ========================================================
-          TAB 1: PASTEL GRADIENT BACKGROUND (Matching Image 2)
+          TAB 1: CUSTOM IMAGE BACKGROUND UPLOAD & COVER FETCH (FIRST)
+         ======================================================== */}
+      {subTab === 'image' && (
+        <div className="space-y-3.5 animate-fade-in">
+          {/* Quick Web / Image URL Fetch Input */}
+          <div className="space-y-1.5">
+            <label className="text-[11px] font-mono uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+              <span>Fetch Cover / Image by URL</span>
+              <span className="text-[10px] text-neutral-500">https://</span>
+            </label>
+            <div className="relative flex items-center">
+              <input
+                type="url"
+                value={urlFetchInput}
+                onChange={(e) => {
+                  setUrlFetchInput(e.target.value);
+                  if (!e.target.value) setUrlFetchStatus(null);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleFetchFromUrl();
+                  }
+                }}
+                placeholder="Paste website URL or image link..."
+                className="w-full pl-3.5 pr-24 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 text-white placeholder-neutral-500 font-mono text-xs outline-none transition-all"
+              />
+              <button
+                type="button"
+                onClick={handleFetchFromUrl}
+                disabled={isFetchingUrl || !urlFetchInput.trim()}
+                className="absolute right-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-semibold font-mono text-white border border-white/15 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 shadow-sm"
+                title="Fetch cover image from URL"
+              >
+                {isFetchingUrl ? (
+                  <>
+                    <Loader2 size={12} className="animate-spin text-amber-300" />
+                    <span>Fetching</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={12} className="text-amber-300" />
+                    <span>Fetch</span>
+                  </>
+                )}
+              </button>
+            </div>
+            {urlFetchStatus && (
+              <p
+                className={`text-[10px] font-mono flex items-center gap-1.5 mt-1 ${
+                  urlFetchStatus.type === 'loading'
+                    ? 'text-neutral-400 animate-pulse'
+                    : urlFetchStatus.type === 'success'
+                    ? 'text-emerald-400'
+                    : 'text-amber-400/90'
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    urlFetchStatus.type === 'loading'
+                      ? 'bg-amber-400'
+                      : urlFetchStatus.type === 'success'
+                      ? 'bg-emerald-400'
+                      : 'bg-amber-400'
+                  }`}
+                />
+                <span>{urlFetchStatus.message}</span>
+              </p>
+            )}
+          </div>
+
+          {bgImage ? (
+            <div className="liquid-glass rounded-2xl p-4 border border-white/10 space-y-3.5">
+              {/* Preview with Action Overlay */}
+              <div className="relative h-32 rounded-xl overflow-hidden border border-white/20 group shadow-inner">
+                <img
+                  src={bgImage}
+                  alt="Custom Background"
+                  className="w-full h-full object-cover transition-transform duration-300"
+                  style={{
+                    filter: bgImageBlur ? `blur(${bgImageBlur}px)` : undefined,
+                  }}
+                />
+                <div
+                  className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+                  style={{
+                    backgroundColor: '#000000',
+                    opacity: bgImageOverlay,
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2.5 backdrop-blur-[1px]">
+                  <label className="px-3.5 py-1.5 rounded-xl bg-white text-black text-xs font-bold cursor-pointer hover:bg-neutral-200 shadow-md transition-all flex items-center gap-1.5">
+                    <Upload size={12} />
+                    <span>Replace</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="px-3.5 py-1.5 rounded-xl bg-rose-600/90 text-white text-xs font-bold hover:bg-rose-500 shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Trash2 size={12} />
+                    <span>Remove</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Controls: Contrast Scrim & Frosted Blur */}
+              <div className="space-y-3 pt-1">
+                {/* Contrast Scrim / Readability Tint Slider */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs font-mono text-neutral-300">
+                    <span className="flex items-center gap-1.5">
+                      <Sliders size={12} className="text-indigo-400" />
+                      <span>Readability Tint Overlay</span>
+                    </span>
+                    <span className="text-white font-bold">
+                      {Math.round(bgImageOverlay * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="0.8"
+                    step="0.05"
+                    value={bgImageOverlay}
+                    onChange={(e) =>
+                      onChangeBgImageOverlay &&
+                      onChangeBgImageOverlay(parseFloat(e.target.value))
+                    }
+                    className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  />
+                </div>
+
+                {/* Frosted Glass Blur Slider */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs font-mono text-neutral-300">
+                    <span className="flex items-center gap-1.5">
+                      <Sparkles size={12} className="text-amber-400" />
+                      <span>Frosted Glass Blur</span>
+                    </span>
+                    <span className="text-white font-bold">
+                      {bgImageBlur}px
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="20"
+                    step="1"
+                    value={bgImageBlur}
+                    onChange={(e) =>
+                      onChangeBgImageBlur &&
+                      onChangeBgImageBlur(parseInt(e.target.value, 10))
+                    }
+                    className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  />
+                </div>
+              </div>
+
+              {/* Safety Contrast Indicator */}
+              <div className="flex items-center gap-1.5 pt-1 text-[11px] text-emerald-400 font-mono">
+                <ShieldCheck size={13} className="shrink-0" />
+                <span>
+                  Adjust tint to keep text & QR code high-contrast and easily
+                  scannable.
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {/* File Upload Drag & Drop Area */}
+              <label className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-white/20 hover:border-white/40 bg-white/[0.02] hover:bg-white/[0.05] transition-all cursor-pointer text-center group shadow-inner">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-neutral-300 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all mb-3 shadow-md">
+                  <ImagePlus size={22} />
+                </div>
+                <div className="text-xs font-bold text-white mb-1">
+                  Click or Drop Background Wallpaper
+                </div>
+                <div className="text-[11px] text-neutral-400 font-mono">
+                  PNG, JPG, WebP, SVG up to 10MB
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+
+              {/* Curated Studio Aesthetic Wallpapers for Instant 1-Click Testing */}
+              <div className="space-y-2 pt-1">
+                <div className="text-[11px] font-mono uppercase tracking-wider text-neutral-400">
+                  Or pick curated studio wallpaper
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  {SAMPLE_WALLPAPERS.map((wp) => (
+                    <button
+                      key={wp.id}
+                      type="button"
+                      onClick={() => handlePickSampleWallpaper(wp.url)}
+                      className="group relative h-16 rounded-xl border border-white/10 hover:border-white/40 overflow-hidden cursor-pointer shadow-sm hover:scale-[1.03] transition-all"
+                      title={wp.name}
+                    >
+                      <img
+                        src={wp.url}
+                        alt={wp.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/15 transition-colors flex items-end p-1.5">
+                        <span className="text-[10px] font-semibold text-white truncate drop-shadow-sm">
+                          {wp.name}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================
+          TAB 2: PASTEL GRADIENT BACKGROUND (Matching Image 2)
          ======================================================== */}
       {subTab === 'gradient' && (
         <div className="space-y-3.5 animate-fade-in">
@@ -451,167 +703,7 @@ export const CardThemeSelector = ({
         </div>
       )}
 
-      {/* ========================================================
-          TAB 2: CUSTOM IMAGE BACKGROUND UPLOAD
-         ======================================================== */}
-      {subTab === 'image' && (
-        <div className="space-y-3.5 animate-fade-in">
-          {bgImage ? (
-            <div className="liquid-glass rounded-2xl p-4 border border-white/10 space-y-3.5">
-              {/* Preview with Action Overlay */}
-              <div className="relative h-32 rounded-xl overflow-hidden border border-white/20 group shadow-inner">
-                <img
-                  src={bgImage}
-                  alt="Custom Background"
-                  className="w-full h-full object-cover transition-transform duration-300"
-                  style={{
-                    filter: bgImageBlur ? `blur(${bgImageBlur}px)` : undefined,
-                  }}
-                />
-                <div
-                  className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-                  style={{
-                    backgroundColor: '#000000',
-                    opacity: bgImageOverlay,
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2.5 backdrop-blur-[1px]">
-                  <label className="px-3.5 py-1.5 rounded-xl bg-white text-black text-xs font-bold cursor-pointer hover:bg-neutral-200 shadow-md transition-all flex items-center gap-1.5">
-                    <Upload size={12} />
-                    <span>Replace</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                  </label>
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage}
-                    className="px-3.5 py-1.5 rounded-xl bg-rose-600/90 text-white text-xs font-bold hover:bg-rose-500 shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <Trash2 size={12} />
-                    <span>Remove</span>
-                  </button>
-                </div>
-              </div>
 
-              {/* Controls: Contrast Scrim & Frosted Blur */}
-              <div className="space-y-3 pt-1">
-                {/* Contrast Scrim / Readability Tint Slider */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-xs font-mono text-neutral-300">
-                    <span className="flex items-center gap-1.5">
-                      <Sliders size={12} className="text-indigo-400" />
-                      <span>Readability Tint Overlay</span>
-                    </span>
-                    <span className="text-white font-bold">
-                      {Math.round(bgImageOverlay * 100)}%
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="0.8"
-                    step="0.05"
-                    value={bgImageOverlay}
-                    onChange={(e) =>
-                      onChangeBgImageOverlay &&
-                      onChangeBgImageOverlay(parseFloat(e.target.value))
-                    }
-                    className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
-                  />
-                </div>
-
-                {/* Frosted Glass Blur Slider */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-xs font-mono text-neutral-300">
-                    <span className="flex items-center gap-1.5">
-                      <Sparkles size={12} className="text-amber-400" />
-                      <span>Frosted Glass Blur</span>
-                    </span>
-                    <span className="text-white font-bold">
-                      {bgImageBlur}px
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="20"
-                    step="1"
-                    value={bgImageBlur}
-                    onChange={(e) =>
-                      onChangeBgImageBlur &&
-                      onChangeBgImageBlur(parseInt(e.target.value, 10))
-                    }
-                    className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
-                  />
-                </div>
-              </div>
-
-              {/* Safety Contrast Indicator */}
-              <div className="flex items-center gap-1.5 pt-1 text-[11px] text-emerald-400 font-mono">
-                <ShieldCheck size={13} className="shrink-0" />
-                <span>
-                  Adjust tint to keep text & QR code high-contrast and easily
-                  scannable.
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {/* File Upload Drag & Drop Area */}
-              <label className="flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-white/20 hover:border-white/40 bg-white/[0.02] hover:bg-white/[0.05] transition-all cursor-pointer text-center group shadow-inner">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-neutral-300 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all mb-3 shadow-md">
-                  <ImagePlus size={22} />
-                </div>
-                <div className="text-xs font-bold text-white mb-1">
-                  Click or Drop Background Wallpaper
-                </div>
-                <div className="text-[11px] text-neutral-400 font-mono">
-                  PNG, JPG, WebP, SVG up to 10MB
-                </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
-
-              {/* Curated Studio Aesthetic Wallpapers for Instant 1-Click Testing */}
-              <div className="space-y-2 pt-1">
-                <div className="text-[11px] font-mono uppercase tracking-wider text-neutral-400">
-                  Or pick curated studio wallpaper
-                </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {SAMPLE_WALLPAPERS.map((wp) => (
-                    <button
-                      key={wp.id}
-                      type="button"
-                      onClick={() => handlePickSampleWallpaper(wp.url)}
-                      className="group relative h-16 rounded-xl border border-white/10 hover:border-white/40 overflow-hidden cursor-pointer shadow-sm hover:scale-[1.03] transition-all"
-                      title={wp.name}
-                    >
-                      <img
-                        src={wp.url}
-                        alt={wp.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/15 transition-colors flex items-end p-1.5">
-                        <span className="text-[10px] font-semibold text-white truncate drop-shadow-sm">
-                          {wp.name}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* ========================================================
           TAB 2: QR CODE STYLE & MATERIAL (Moved to Top Pill)

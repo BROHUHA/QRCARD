@@ -15,9 +15,9 @@ import { ASPECT_CONFIG_MAP } from './ui/cardStyleEngine';
 export const SocialCard = ({ id, settings }) => {
   const {
     platform = 'instagram',
-    value = 'optical.studio',
-    displayName = 'Studio Design',
-    bio = 'Digital Design & Optical Systems',
+    value = '',
+    displayName = '',
+    bio = '',
     verified = true,
     theme = 'glacier-blue',
     bgPreset = 'glacier-blue',
@@ -32,17 +32,25 @@ export const SocialCard = ({ id, settings }) => {
     showCenterLogo = true,
     portrait = false,
     hideDisplayName = false,
+    hideHyperlink = true,
   } = settings;
 
   const currentPlat =
     PLATFORMS_CONFIG.find((p) => p.id === platform) || PLATFORMS_CONFIG[0];
 
   const base = currentPlat.baseUrl || 'https://';
-  const cleanVal = value
-    .replace(/^@/, '')
-    .replace(/^https?:\/\/[^/]+\//, '')
-    .replace(/^\+/, '');
-  const finalUrl = `${base}${cleanVal}`;
+  const isPhonePlat = platform === 'whatsapp';
+  const cleanVal = isPhonePlat
+    ? value.replace(/[^\d+]/g, '')
+    : value
+        .replace(/^@/, '')
+        .replace(/^https?:\/\/[^/]+\//, '');
+  const finalUrl = isPhonePlat
+    ? `${base}${cleanVal.replace(/^\+/, '')}`
+    : `${base}${cleanVal}`;
+  const displayHandle = isPhonePlat
+    ? value || '+12 3455678'
+    : cleanVal || 'username';
 
   // Aspect Ratio and Layout Configuration
   const aspectRatio = settings.aspectRatio || 'auto';
@@ -55,31 +63,31 @@ export const SocialCard = ({ id, settings }) => {
   // Social-specific overrides for vertical portrait ratios
   const socialVerticalOverrides = {
     '9:16': {
-      qrSize: 205,
-      nameSize: 'text-2xl sm:text-3xl font-extrabold',
-      handleSize: 'text-sm font-mono',
+      qrSize: 180,
+      nameSize: 'text-xl sm:text-2xl font-extrabold',
+      handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
-      bioClamp: 'text-xs sm:text-sm max-w-xs leading-relaxed',
-      urlSize: 'text-xs sm:text-sm',
+      bioClamp: 'text-xs max-w-xs leading-relaxed line-clamp-2',
+      urlSize: 'text-xs',
     },
     '4:5': {
-      qrSize: 168,
-      nameSize: 'text-xl sm:text-2xl font-black',
-      handleSize: 'text-xs sm:text-sm font-mono',
+      qrSize: 145,
+      nameSize: 'text-lg sm:text-xl font-black',
+      handleSize: 'text-xs font-mono',
       showBio: true,
       bioClamp: 'line-clamp-2 text-xs max-w-xs',
       urlSize: 'text-xs',
     },
     '3:4': {
-      qrSize: 172,
-      nameSize: 'text-xl sm:text-2xl font-bold',
-      handleSize: 'text-xs sm:text-sm font-mono',
+      qrSize: 148,
+      nameSize: 'text-lg sm:text-xl font-bold',
+      handleSize: 'text-xs font-mono',
       showBio: true,
       bioClamp: 'line-clamp-2 text-xs max-w-xs',
       urlSize: 'text-xs',
     },
     '16:9': {
-      qrSize: 160,
+      qrSize: 150,
       nameSize: 'text-xl sm:text-2xl font-bold',
       handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
@@ -87,7 +95,7 @@ export const SocialCard = ({ id, settings }) => {
       urlSize: 'text-xs',
     },
     '3:2': {
-      qrSize: 155,
+      qrSize: 145,
       nameSize: 'text-xl sm:text-2xl font-bold',
       handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
@@ -95,8 +103,8 @@ export const SocialCard = ({ id, settings }) => {
       urlSize: 'text-xs',
     },
     card: {
-      qrSize: 135,
-      nameSize: 'text-lg sm:text-xl font-bold',
+      qrSize: 130,
+      nameSize: 'text-base sm:text-lg font-bold',
       handleSize: 'text-xs font-mono',
       showBio: false,
       bioClamp: '',
@@ -115,7 +123,8 @@ export const SocialCard = ({ id, settings }) => {
     },
   };
 
-  const socialCfg = socialVerticalOverrides[aspectRatio] || socialVerticalOverrides.auto;
+  const socialCfg =
+    socialVerticalOverrides[aspectRatio] || socialVerticalOverrides.auto;
   const qrSize = socialCfg.qrSize || sharedCfg.qrSize;
 
   // Build merged config for layout classes
@@ -244,9 +253,7 @@ export const SocialCard = ({ id, settings }) => {
             styleId={activeQrMaterial}
             size={size}
             className="rounded-2xl"
-            bgFillCustom={
-              qrBgConfig.id !== 'white' ? qrBgConfig.svgFill : null
-            }
+            bgFillCustom={qrBgConfig.id !== 'white' ? qrBgConfig.svgFill : null}
           />
         ) : (
           <SafeQRCode
@@ -367,7 +374,7 @@ export const SocialCard = ({ id, settings }) => {
                 className={`text-[11px] font-mono opacity-65 ${subTextColor}`}
               >
                 {currentPlat.prefix}
-                {cleanVal || 'profile'}
+                {displayHandle}
               </div>
             </div>
           </div>
@@ -478,8 +485,10 @@ export const SocialCard = ({ id, settings }) => {
                 <div
                   className={`${cfg.handleSize} font-mono font-semibold flex items-center justify-start`}
                 >
-                  <span className="opacity-60">{currentPlat.prefix}</span>
-                  <span className={textColor}>{cleanVal || 'username'}</span>
+                  {currentPlat.prefix && (
+                    <span className="opacity-60">{currentPlat.prefix}</span>
+                  )}
+                  <span className={textColor}>{displayHandle}</span>
                 </div>
 
                 {cfg.showBio && bio && (
@@ -493,19 +502,21 @@ export const SocialCard = ({ id, settings }) => {
                 )}
               </div>
 
-              <div
-                className={`w-full ${cfg.footerPadding || 'pt-2'} border-t ${
-                  isLightCard ? 'border-slate-300/60' : 'border-white/[0.08]'
-                }`}
-              >
+              {!hideHyperlink && (
                 <div
-                  className={`${
-                    cfg.urlSize || 'text-xs'
-                  } font-mono truncate max-w-sm ${subTextColor}`}
+                  className={`w-full ${cfg.footerPadding || 'pt-2'} border-t ${
+                    isLightCard ? 'border-slate-300/60' : 'border-white/[0.08]'
+                  }`}
                 >
-                  {finalUrl}
+                  <div
+                    className={`${
+                      cfg.urlSize || 'text-xs'
+                    } font-mono truncate max-w-sm ${subTextColor}`}
+                  >
+                    {finalUrl}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Horizontal Right Column: QR Code */}
@@ -556,8 +567,10 @@ export const SocialCard = ({ id, settings }) => {
                     : 'justify-start'
                 }`}
               >
-                <span className="opacity-60">{currentPlat.prefix}</span>
-                <span className={textColor}>{cleanVal || 'username'}</span>
+                {currentPlat.prefix && (
+                  <span className="opacity-60">{currentPlat.prefix}</span>
+                )}
+                <span className={textColor}>{displayHandle}</span>
               </div>
 
               {cfg.showBio && bio && (
@@ -579,23 +592,25 @@ export const SocialCard = ({ id, settings }) => {
             </div>
 
             {/* Vertical Tier 3: Scan / URL Footer */}
-            <div
-              className={`w-full ${
-                cfg.footerPadding || 'pt-2'
-              } border-t shrink-0 ${
-                isLightCard ? 'border-slate-300/60' : 'border-white/[0.08]'
-              }`}
-            >
+            {!hideHyperlink && (
               <div
-                className={`${
-                  cfg.urlSize || 'text-xs'
-                } font-mono truncate max-w-sm ${subTextColor} ${
-                  cfg.textAlign === 'text-center' ? 'mx-auto' : ''
+                className={`w-full ${
+                  cfg.footerPadding || 'pt-2'
+                } border-t shrink-0 ${
+                  isLightCard ? 'border-slate-300/60' : 'border-white/[0.08]'
                 }`}
               >
-                {finalUrl}
+                <div
+                  className={`${
+                    cfg.urlSize || 'text-xs'
+                  } font-mono truncate max-w-sm ${subTextColor} ${
+                    cfg.textAlign === 'text-center' ? 'mx-auto' : ''
+                  }`}
+                >
+                  {finalUrl}
+                </div>
               </div>
-            </div>
+            )}
           </>
         )}
       </div>

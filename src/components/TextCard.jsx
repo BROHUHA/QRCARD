@@ -13,13 +13,11 @@ export const TextCard = ({ id, settings }) => {
     showCenterLogo = true,
   } = settings;
 
-  const themeResult = resolveCardTheme({
-    aspectRatio: '1:1',
-    ...settings,
-  });
+  const themeResult = resolveCardTheme(settings);
   const {
     cfg,
     isQrOnly,
+    isHorizontal,
     qrSize,
     qrBgConfig,
     activeQrMaterial,
@@ -107,6 +105,8 @@ export const TextCard = ({ id, settings }) => {
               <div className="space-y-1.5">
                 <div
                   className={`p-3 rounded-xl font-mono text-xs border leading-relaxed whitespace-pre-wrap line-clamp-4 max-w-sm ${
+                    !isHorizontal ? 'mx-auto text-left' : ''
+                  } ${
                     isLightCard
                       ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
                       : 'bg-white/10 border-white/15 text-neutral-100'
@@ -118,7 +118,9 @@ export const TextCard = ({ id, settings }) => {
 
               <div className="pt-1">
                 <div
-                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor} ${
+                    !isHorizontal ? 'justify-center' : ''
+                  }`}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                   <span>Scan with camera to copy or read text</span>

@@ -55,12 +55,18 @@ export const VCard = ({ id, settings }) => {
     <div className={`space-y-3 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
       <div>
         <div
-          className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+          className={`font-heading font-extrabold tracking-tight break-all ${
+            cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'
+          } ${textColor}`}
         >
           {fullName}
         </div>
         {(title || company) && (
-          <div className="flex items-center gap-2 mt-1 flex-wrap">
+          <div
+            className={`flex items-center gap-2 mt-1 flex-wrap ${
+              !isHorizontal ? 'justify-center' : 'justify-start'
+            }`}
+          >
             {title && (
               <span className={`text-xs font-medium ${subTextColor}`}>
                 {title}
@@ -84,23 +90,33 @@ export const VCard = ({ id, settings }) => {
       {/* Contact meta lines */}
       <div className="space-y-1.5 text-xs">
         {phone && (
-          <div className="flex items-center gap-2">
+          <div
+            className={`flex items-center gap-2 ${
+              !isHorizontal ? 'justify-center' : ''
+            }`}
+          >
             <Phone size={12} className="opacity-50 shrink-0" />
             <span className="font-mono text-xs">{phone}</span>
           </div>
         )}
         {email && (
-          <div className="flex items-center gap-2">
+          <div
+            className={`flex items-center gap-2 ${
+              !isHorizontal ? 'justify-center' : ''
+            }`}
+          >
             <Mail size={12} className="opacity-50 shrink-0" />
             <span className="font-mono text-xs truncate">{email}</span>
           </div>
         )}
         {website && (
-          <div className="flex items-center gap-2">
+          <div
+            className={`flex items-center gap-2 ${
+              !isHorizontal ? 'justify-center' : ''
+            }`}
+          >
             <Globe size={12} className="opacity-50 shrink-0" />
-            <span className="font-mono text-xs truncate">
-              {website}
-            </span>
+            <span className="font-mono text-xs truncate">{website}</span>
           </div>
         )}
       </div>
