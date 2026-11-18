@@ -20,6 +20,7 @@ export const WifiCard = ({ id, settings }) => {
   const {
     cfg,
     isQrOnly,
+    isHorizontal,
     qrSize,
     qrBgConfig,
     activeQrMaterial,
@@ -46,6 +47,67 @@ export const WifiCard = ({ id, settings }) => {
       : `WIFI:T:${encryptionMode};S:${escapeString(ssid)};P:${escapeString(
           password
         )};H:${hiddenSSID};;`;
+
+  // Text and QR info block shared across layouts
+  const renderTextBlock = () => (
+    <div className={`space-y-3.5 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
+      <div>
+        <div
+          className={`text-[10px] font-mono uppercase tracking-widest opacity-60 font-semibold ${subTextColor}`}
+        >
+          Network Name
+        </div>
+        <div
+          className={`font-heading font-extrabold tracking-tight break-all mt-0.5 ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+        >
+          {ssid || 'NETWORK'}
+        </div>
+      </div>
+
+      {!hidePassword && encryptionMode !== 'None' && (
+        <div className="space-y-1.5">
+          <div
+            className={`text-[10px] font-mono uppercase tracking-widest opacity-60 font-semibold ${subTextColor}`}
+          >
+            Password
+          </div>
+          <div className="inline-flex items-center">
+            <div
+              className={`px-3 py-1.5 rounded-xl font-mono text-xs sm:text-sm border transition-all ${
+                isLightCard
+                  ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
+                  : 'bg-white/10 border-white/15 text-neutral-100'
+              }`}
+            >
+              {password || '(No password required)'}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="pt-1">
+        <div
+          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+          <span>Scan with camera to connect</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderQrBlock = () => (
+    <div className="shrink-0 flex items-center justify-center">
+      <SpecimenQRCode
+        value={wifiPayload}
+        size={qrSize}
+        qrMaterial={activeQrMaterial}
+        qrBgConfig={qrBgConfig}
+        centerIcon={<Wifi size={16} />}
+        showCenterLogo={showCenterLogo}
+      />
+    </div>
+  );
 
   return (
     <SpecimenCardContainer id={id} themeResult={themeResult}>
@@ -109,64 +171,17 @@ export const WifiCard = ({ id, settings }) => {
               showCenterLogo={showCenterLogo}
             />
           </div>
-        ) : (
+        ) : isHorizontal ? (
+          /* Horizontal layout: Text left, QR right */
           <>
-            <div className={`space-y-3.5 w-full flex-1 ${cfg.textAlign}`}>
-              <div>
-                <div
-                  className={`text-[10px] font-mono uppercase tracking-widest opacity-60 font-semibold ${subTextColor}`}
-                >
-                  Network Name
-                </div>
-                <div
-                  className={`font-heading font-extrabold tracking-tight break-all mt-0.5 ${cfg.nameSize} ${textColor}`}
-                >
-                  {ssid || 'NETWORK'}
-                </div>
-              </div>
-
-              {!hidePassword && encryptionMode !== 'None' && (
-                <div className="space-y-1.5">
-                  <div
-                    className={`text-[10px] font-mono uppercase tracking-widest opacity-60 font-semibold ${subTextColor}`}
-                  >
-                    Password
-                  </div>
-                  <div className="inline-flex items-center">
-                    <div
-                      className={`px-3 py-1.5 rounded-xl font-mono text-xs sm:text-sm border transition-all ${
-                        isLightCard
-                          ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
-                          : 'bg-white/10 border-white/15 text-neutral-100'
-                      }`}
-                    >
-                      {password || '(No password required)'}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="pt-1">
-                <div
-                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                  <span>Scan with camera to connect</span>
-                </div>
-              </div>
-            </div>
-
-            {/* QR Code Container */}
-            <div className="shrink-0 flex items-center justify-center">
-              <SpecimenQRCode
-                value={wifiPayload}
-                size={qrSize}
-                qrMaterial={activeQrMaterial}
-                qrBgConfig={qrBgConfig}
-                centerIcon={<Wifi size={16} />}
-                showCenterLogo={showCenterLogo}
-              />
-            </div>
+            {renderTextBlock()}
+            {renderQrBlock()}
+          </>
+        ) : (
+          /* Vertical layout: Text top, QR center, stacked */
+          <>
+            {renderTextBlock()}
+            {renderQrBlock()}
           </>
         )}
       </div>

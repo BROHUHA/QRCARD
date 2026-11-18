@@ -8,6 +8,14 @@ import {
 } from './designerTemplates';
 import { TACTILE_STYLES } from './tactileStyles';
 
+// Determine if the aspect ratio should use a horizontal (side-by-side) layout
+export const isHorizontalAspect = (ratio) =>
+  ['16:9', '3:2', 'card', 'auto'].includes(ratio);
+
+// Determine if the aspect ratio should use a vertical (stacked) layout
+export const isVerticalAspect = (ratio) =>
+  ['1:1', '9:16', '4:5', '3:4'].includes(ratio);
+
 export const ASPECT_CONFIG_MAP = {
   '1:1': {
     container:
@@ -27,6 +35,7 @@ export const ASPECT_CONFIG_MAP = {
     nameSize: 'text-2xl sm:text-3xl font-extrabold',
     metaSize: 'text-sm font-mono',
     footerPadding: 'pt-3',
+    layout: 'vertical',
   },
   '4:5': {
     container:
@@ -39,6 +48,7 @@ export const ASPECT_CONFIG_MAP = {
     nameSize: 'text-xl sm:text-2xl font-black',
     metaSize: 'text-xs sm:text-sm font-mono',
     footerPadding: 'pt-2',
+    layout: 'vertical',
   },
   '3:4': {
     container:
@@ -51,6 +61,7 @@ export const ASPECT_CONFIG_MAP = {
     nameSize: 'text-xl sm:text-2xl font-bold',
     metaSize: 'text-xs sm:text-sm font-mono',
     footerPadding: 'pt-2',
+    layout: 'vertical',
   },
   '16:9': {
     container:
@@ -63,6 +74,7 @@ export const ASPECT_CONFIG_MAP = {
     nameSize: 'text-xl sm:text-2xl font-bold',
     metaSize: 'text-xs sm:text-sm font-mono',
     footerPadding: 'pt-2',
+    layout: 'horizontal',
   },
   '3:2': {
     container:
@@ -75,6 +87,7 @@ export const ASPECT_CONFIG_MAP = {
     nameSize: 'text-xl sm:text-2xl font-bold',
     metaSize: 'text-xs sm:text-sm font-mono',
     footerPadding: 'pt-2',
+    layout: 'horizontal',
   },
   card: {
     container:
@@ -87,17 +100,19 @@ export const ASPECT_CONFIG_MAP = {
     nameSize: 'text-lg sm:text-xl font-bold',
     metaSize: 'text-xs font-mono',
     footerPadding: 'pt-1.5',
+    layout: 'horizontal',
   },
   auto: {
-    container: 'w-full p-6 sm:p-8 text-left',
+    container: 'w-full max-w-[620px] mx-auto p-6 sm:p-8 text-left',
     headerPadding: 'pb-3 mb-3.5',
-    body: 'flex flex-col sm:flex-row justify-between items-center gap-6 text-left',
+    body: 'flex flex-row justify-between items-center gap-6 text-left',
     textAlign: 'text-left',
     alignItems: 'items-start',
-    qrSize: 156,
+    qrSize: 164,
     nameSize: 'text-2xl sm:text-3xl font-extrabold',
     metaSize: 'text-sm sm:text-base font-mono',
     footerPadding: 'pt-2',
+    layout: 'horizontal',
   },
 };
 
@@ -217,9 +232,12 @@ export const resolveCardTheme = (settings = {}) => {
     isLightCard = darkMatch?.id === 'swiss-mono';
   }
 
+  const isHorizontal = cfg.layout === 'horizontal';
+
   return {
     cfg,
     isQrOnly,
+    isHorizontal,
     qrSize: cfg.qrSize,
     qrBgConfig,
     activeBgId,

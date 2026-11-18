@@ -18,6 +18,7 @@ export const EmailCard = ({ id, settings }) => {
   const {
     cfg,
     isQrOnly,
+    isHorizontal,
     qrSize,
     qrBgConfig,
     activeQrMaterial,
@@ -38,9 +39,67 @@ export const EmailCard = ({ id, settings }) => {
     queryStr ? `?${queryStr}` : ''
   }`;
 
+  const renderTextBlock = () => (
+    <div className={`space-y-3 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
+      <div>
+        <div
+          className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+        >
+          {email || 'recipient@mail.com'}
+        </div>
+      </div>
+
+      <div className="space-y-2 text-xs">
+        {subject && (
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span
+              className={`text-[10px] font-mono uppercase opacity-60 font-semibold ${subTextColor}`}
+            >
+              Subject:
+            </span>
+            <span className="font-medium text-xs truncate max-w-sm">
+              {subject}
+            </span>
+          </div>
+        )}
+        {body && (
+          <div
+            className={`text-xs opacity-75 italic border-l-2 pl-2.5 mt-1 line-clamp-3 max-w-sm ${
+              isLightCard ? 'border-slate-400' : 'border-white/30'
+            } ${subTextColor}`}
+          >
+            "{body}"
+          </div>
+        )}
+      </div>
+
+      <div className="pt-1">
+        <div
+          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+          <span>Scan with camera to compose email</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderQrBlock = () => (
+    <div className="shrink-0 flex items-center justify-center">
+      <SpecimenQRCode
+        value={mailtoPayload}
+        size={qrSize}
+        qrMaterial={activeQrMaterial}
+        qrBgConfig={qrBgConfig}
+        centerIcon={<Mail size={16} />}
+        showCenterLogo={showCenterLogo}
+      />
+    </div>
+  );
+
   return (
     <SpecimenCardContainer id={id} themeResult={themeResult}>
-      {/* 1. CARD HEADER (Omitted in 1:1 QR-Only mode) */}
+      {/* 1. CARD HEADER */}
       {!isQrOnly && (
         <div
           className={`flex items-center justify-between border-b ${
@@ -85,7 +144,6 @@ export const EmailCard = ({ id, settings }) => {
         }`}
       >
         {isQrOnly ? (
-          /* 1:1 Pure QR Hero Display */
           <div className="relative shrink-0 flex items-center justify-center animate-fade-in my-auto">
             <SpecimenQRCode
               value={mailtoPayload}
@@ -98,60 +156,8 @@ export const EmailCard = ({ id, settings }) => {
           </div>
         ) : (
           <>
-            <div className={`space-y-3 w-full flex-1 ${cfg.textAlign}`}>
-              <div>
-                <div
-                  className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize} ${textColor}`}
-                >
-                  {email || 'recipient@mail.com'}
-                </div>
-              </div>
-
-              <div className="space-y-2 text-xs">
-                {subject && (
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <span
-                      className={`text-[10px] font-mono uppercase opacity-60 font-semibold ${subTextColor}`}
-                    >
-                      Subject:
-                    </span>
-                    <span className="font-medium text-xs truncate max-w-sm">
-                      {subject}
-                    </span>
-                  </div>
-                )}
-                {body && (
-                  <div
-                    className={`text-xs opacity-75 italic border-l-2 pl-2.5 mt-1 line-clamp-3 max-w-sm ${
-                      isLightCard ? 'border-slate-400' : 'border-white/30'
-                    } ${subTextColor}`}
-                  >
-                    "{body}"
-                  </div>
-                )}
-              </div>
-
-              <div className="pt-1">
-                <div
-                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                  <span>Scan with camera to compose email</span>
-                </div>
-              </div>
-            </div>
-
-            {/* QR Code Container */}
-            <div className="shrink-0 flex items-center justify-center">
-              <SpecimenQRCode
-                value={mailtoPayload}
-                size={qrSize}
-                qrMaterial={activeQrMaterial}
-                qrBgConfig={qrBgConfig}
-                centerIcon={<Mail size={16} />}
-                showCenterLogo={showCenterLogo}
-              />
-            </div>
+            {renderTextBlock()}
+            {renderQrBlock()}
           </>
         )}
       </div>

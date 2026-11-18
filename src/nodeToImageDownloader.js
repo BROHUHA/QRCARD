@@ -56,6 +56,18 @@ const getEmbeddedFontCSS = async () => {
   }
 };
 
+// Target export pixel dimensions for each aspect ratio at 4X Ultra-HD
+const EXPORT_DIMENSIONS = {
+  'auto': null, // Use DOM node's natural dimensions
+  '1:1': { width: 2160, height: 2160 },
+  '9:16': { width: 2160, height: 3840 },
+  '4:5': { width: 2160, height: 2700 },
+  '16:9': { width: 3840, height: 2160 },
+  '3:2': { width: 3600, height: 2400 },
+  '3:4': { width: 2700, height: 3600 },
+  'card': { width: 3425, height: 2160 },
+};
+
 export const downloadHDCard = async (
   nodeId,
   imageName = 'specimen-card',
@@ -96,18 +108,37 @@ export const downloadHDCard = async (
     );
 
     const rect = node.getBoundingClientRect();
-    const targetWidth = Math.round(rect.width);
-    const targetHeight = Math.round(rect.height);
-    const actualPixelRatio = pixelRatio || 4;
+    const sourceWidth = Math.round(rect.width);
+    const sourceHeight = Math.round(rect.height);
+
+    // Determine final export canvas dimensions
+    const exportDims = EXPORT_DIMENSIONS[aspectRatio];
+    let canvasWidth, canvasHeight, effectivePixelRatio;
+
+    if (exportDims) {
+      // Fixed-dimension export: compute pixel ratio from target size
+      canvasWidth = exportDims.width;
+      canvasHeight = exportDims.height;
+      // Use the larger scale factor to ensure the card fills the canvas
+      effectivePixelRatio = Math.max(
+        canvasWidth / sourceWidth,
+        canvasHeight / sourceHeight
+      );
+    } else {
+      // Auto mode: use the standard 4x pixel ratio on natural card size
+      effectivePixelRatio = pixelRatio || 4;
+      canvasWidth = sourceWidth * effectivePixelRatio;
+      canvasHeight = sourceHeight * effectivePixelRatio;
+    }
 
     const options = {
       quality: 1,
-      pixelRatio: actualPixelRatio, // 4X for Ultra-HD print quality
+      pixelRatio: effectivePixelRatio,
       backgroundColor: null,
-      width: targetWidth,
-      height: targetHeight,
-      canvasWidth: targetWidth * actualPixelRatio,
-      canvasHeight: targetHeight * actualPixelRatio,
+      width: sourceWidth,
+      height: sourceHeight,
+      canvasWidth: canvasWidth,
+      canvasHeight: canvasHeight,
       cacheBust: true,
       fontEmbedCSS: fontEmbedCSS || undefined,
       style: {
@@ -142,8 +173,11 @@ export const downloadHDCard = async (
       aspectRatio && aspectRatio !== 'auto'
         ? `-${aspectRatio.replace(':', 'x')}`
         : '';
+    const dimTag = exportDims
+      ? `-${exportDims.width}x${exportDims.height}`
+      : `-${canvasWidth}x${canvasHeight}`;
     const fileExt = cleanFormat === 'jpeg' ? 'jpg' : cleanFormat;
-    link.download = `${imageName}${ratioTag}-${timestamp}.${fileExt}`;
+    link.download = `${imageName}${ratioTag}${dimTag}-${timestamp}.${fileExt}`;
     link.href = dataUrl;
     document.body.appendChild(link);
     link.click();

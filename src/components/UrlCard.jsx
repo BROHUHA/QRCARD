@@ -18,6 +18,7 @@ export const UrlCard = ({ id, settings }) => {
   const {
     cfg,
     isQrOnly,
+    isHorizontal,
     qrSize,
     qrBgConfig,
     activeQrMaterial,
@@ -35,9 +36,57 @@ export const UrlCard = ({ id, settings }) => {
       : `https://${url}`
     : 'https://';
 
+  const renderTextBlock = () => (
+    <div className={`space-y-3 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
+      {!hideTitle && title && (
+        <div>
+          <div
+            className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+          >
+            {title}
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-1.5">
+        <div
+          className={`px-3.5 py-2.5 rounded-xl font-mono text-xs border truncate max-w-sm ${
+            isLightCard
+              ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
+              : 'bg-white/10 border-white/15 text-neutral-100'
+          }`}
+        >
+          {validUrl}
+        </div>
+      </div>
+
+      <div className="pt-1">
+        <div
+          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+          <span>Scan with camera to open in browser</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderQrBlock = () => (
+    <div className="shrink-0 flex items-center justify-center">
+      <SpecimenQRCode
+        value={validUrl}
+        size={qrSize}
+        qrMaterial={activeQrMaterial}
+        qrBgConfig={qrBgConfig}
+        centerIcon={<Globe size={16} />}
+        showCenterLogo={showCenterLogo}
+      />
+    </div>
+  );
+
   return (
     <SpecimenCardContainer id={id} themeResult={themeResult}>
-      {/* 1. CARD HEADER (Omitted in 1:1 QR-Only mode) */}
+      {/* 1. CARD HEADER */}
       {!isQrOnly && (
         <div
           className={`flex items-center justify-between border-b ${
@@ -82,7 +131,6 @@ export const UrlCard = ({ id, settings }) => {
         }`}
       >
         {isQrOnly ? (
-          /* 1:1 Pure QR Hero Display */
           <div className="relative shrink-0 flex items-center justify-center animate-fade-in my-auto">
             <SpecimenQRCode
               value={validUrl}
@@ -95,50 +143,8 @@ export const UrlCard = ({ id, settings }) => {
           </div>
         ) : (
           <>
-            <div className={`space-y-3 w-full flex-1 ${cfg.textAlign}`}>
-              {!hideTitle && title && (
-                <div>
-                  <div
-                    className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize} ${textColor}`}
-                  >
-                    {title}
-                  </div>
-                </div>
-              )}
-
-              <div className="space-y-1.5">
-                <div
-                  className={`px-3.5 py-2.5 rounded-xl font-mono text-xs border truncate max-w-sm ${
-                    isLightCard
-                      ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
-                      : 'bg-white/10 border-white/15 text-neutral-100'
-                  }`}
-                >
-                  {validUrl}
-                </div>
-              </div>
-
-              <div className="pt-1">
-                <div
-                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                  <span>Scan with camera to open in browser</span>
-                </div>
-              </div>
-            </div>
-
-            {/* QR Code Container */}
-            <div className="shrink-0 flex items-center justify-center">
-              <SpecimenQRCode
-                value={validUrl}
-                size={qrSize}
-                qrMaterial={activeQrMaterial}
-                qrBgConfig={qrBgConfig}
-                centerIcon={<Globe size={16} />}
-                showCenterLogo={showCenterLogo}
-              />
-            </div>
+            {renderTextBlock()}
+            {renderQrBlock()}
           </>
         )}
       </div>

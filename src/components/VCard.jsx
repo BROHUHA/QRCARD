@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Phone, Mail, Globe, Briefcase, Building } from 'lucide-react';
+import { User, Phone, Mail, Globe } from 'lucide-react';
 import {
   resolveCardTheme,
   SpecimenCardContainer,
@@ -22,6 +22,7 @@ export const VCard = ({ id, settings }) => {
   const {
     cfg,
     isQrOnly,
+    isHorizontal,
     qrSize,
     qrBgConfig,
     activeQrMaterial,
@@ -50,9 +51,87 @@ export const VCard = ({ id, settings }) => {
 
   const fullName = [firstName, lastName].filter(Boolean).join(' ') || 'Contact';
 
+  const renderTextBlock = () => (
+    <div className={`space-y-3 w-full flex-1 ${cfg.textAlign || 'text-left'}`}>
+      <div>
+        <div
+          className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize || 'text-2xl sm:text-3xl font-extrabold'} ${textColor}`}
+        >
+          {fullName}
+        </div>
+        {(title || company) && (
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
+            {title && (
+              <span className={`text-xs font-medium ${subTextColor}`}>
+                {title}
+              </span>
+            )}
+            {company && (
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${
+                  isLightCard
+                    ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
+                    : 'bg-white/10 border-white/15 text-neutral-200'
+                }`}
+              >
+                {company}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Contact meta lines */}
+      <div className="space-y-1.5 text-xs">
+        {phone && (
+          <div className="flex items-center gap-2">
+            <Phone size={12} className="opacity-50 shrink-0" />
+            <span className="font-mono text-xs">{phone}</span>
+          </div>
+        )}
+        {email && (
+          <div className="flex items-center gap-2">
+            <Mail size={12} className="opacity-50 shrink-0" />
+            <span className="font-mono text-xs truncate">{email}</span>
+          </div>
+        )}
+        {website && (
+          <div className="flex items-center gap-2">
+            <Globe size={12} className="opacity-50 shrink-0" />
+            <span className="font-mono text-xs truncate">
+              {website}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="pt-1">
+        <div
+          className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+          <span>Scan with camera to add directly to contacts</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderQrBlock = () => (
+    <div className="shrink-0 flex items-center justify-center">
+      <SpecimenQRCode
+        value={vcardPayload}
+        size={qrSize}
+        qrMaterial={activeQrMaterial}
+        qrBgConfig={qrBgConfig}
+        centerIcon={<User size={16} />}
+        showCenterLogo={showCenterLogo}
+      />
+    </div>
+  );
+
   return (
     <SpecimenCardContainer id={id} themeResult={themeResult}>
-      {/* 1. CARD HEADER (Omitted in 1:1 QR-Only mode) */}
+      {/* 1. CARD HEADER */}
       {!isQrOnly && (
         <div
           className={`flex items-center justify-between border-b ${
@@ -97,7 +176,6 @@ export const VCard = ({ id, settings }) => {
         }`}
       >
         {isQrOnly ? (
-          /* 1:1 Pure QR Hero Display */
           <div className="relative shrink-0 flex items-center justify-center animate-fade-in my-auto">
             <SpecimenQRCode
               value={vcardPayload}
@@ -110,80 +188,8 @@ export const VCard = ({ id, settings }) => {
           </div>
         ) : (
           <>
-            <div className={`space-y-3 w-full flex-1 ${cfg.textAlign}`}>
-              <div>
-                <div
-                  className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize} ${textColor}`}
-                >
-                  {fullName}
-                </div>
-                {(title || company) && (
-                  <div className="flex items-center gap-2 mt-1 flex-wrap">
-                    {title && (
-                      <span className={`text-xs font-medium ${subTextColor}`}>
-                        {title}
-                      </span>
-                    )}
-                    {company && (
-                      <span
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${
-                          isLightCard
-                            ? 'bg-slate-900/5 border-slate-900/10 text-slate-800'
-                            : 'bg-white/10 border-white/15 text-neutral-200'
-                        }`}
-                      >
-                        {company}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Contact meta lines */}
-              <div className="space-y-1.5 text-xs">
-                {phone && (
-                  <div className="flex items-center gap-2">
-                    <Phone size={12} className="opacity-50 shrink-0" />
-                    <span className="font-mono text-xs">{phone}</span>
-                  </div>
-                )}
-                {email && (
-                  <div className="flex items-center gap-2">
-                    <Mail size={12} className="opacity-50 shrink-0" />
-                    <span className="font-mono text-xs truncate">{email}</span>
-                  </div>
-                )}
-                {website && (
-                  <div className="flex items-center gap-2">
-                    <Globe size={12} className="opacity-50 shrink-0" />
-                    <span className="font-mono text-xs truncate">
-                      {website}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <div className="pt-1">
-                <div
-                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                  <span>Scan with camera to add directly to contacts</span>
-                </div>
-              </div>
-            </div>
-
-            {/* QR Code Container */}
-            <div className="shrink-0 flex items-center justify-center">
-              <SpecimenQRCode
-                value={vcardPayload}
-                size={qrSize}
-                qrMaterial={activeQrMaterial}
-                qrBgConfig={qrBgConfig}
-                centerIcon={<User size={16} />}
-                showCenterLogo={showCenterLogo}
-              />
-            </div>
+            {renderTextBlock()}
+            {renderQrBlock()}
           </>
         )}
       </div>

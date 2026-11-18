@@ -1,15 +1,16 @@
 import React from 'react';
-import { SafeQRCode } from './ui/SafeQRCode';
-import { TactileQRCode } from './ui/TactileQRCode';
 import { BadgeCheck } from 'lucide-react';
 import { PLATFORMS_CONFIG } from './ui/socialConfig';
 import { SocialIcon } from './ui/SocialIcons';
 import {
-  DESIGNER_TEMPLATES,
   LIGHT_GRADIENTS,
   QR_BG_STYLES,
+  DESIGNER_TEMPLATES,
 } from './ui/designerTemplates';
 import { TACTILE_STYLES } from './ui/tactileStyles';
+import { SafeQRCode } from './ui/SafeQRCode';
+import { TactileQRCode } from './ui/TactileQRCode';
+import { ASPECT_CONFIG_MAP } from './ui/cardStyleEngine';
 
 export const SocialCard = ({ id, settings }) => {
   const {
@@ -43,140 +44,93 @@ export const SocialCard = ({ id, settings }) => {
     .replace(/^\+/, '');
   const finalUrl = `${base}${cleanVal}`;
 
-  // Aspect Ratio Configuration & Tailored Layouts
+  // Aspect Ratio and Layout Configuration
   const aspectRatio = settings.aspectRatio || 'auto';
-  const isAspectPortrait = ['1:1', '9:16', '4:5', '3:4'].includes(aspectRatio);
-  const isAspectHorizontal = ['16:9', '3:2', 'card'].includes(aspectRatio);
-  const effectivePortrait = isAspectPortrait
-    ? true
-    : isAspectHorizontal
-    ? false
-    : portrait;
-  const isHorizontal =
-    isAspectHorizontal || (aspectRatio === 'auto' && !effectivePortrait);
   const isQrOnly = aspectRatio === '1:1';
 
-  const aspectConfigMap = {
-    '1:1': {
-      container:
-        'aspect-square max-w-[420px] mx-auto flex flex-col items-center justify-center p-6 sm:p-8 text-center',
-      body: 'flex items-center justify-center w-full h-full my-auto',
-      qrOnly: true,
-      qrSize: 220,
-    },
+  // Use shared config from cardStyleEngine
+  const sharedCfg = ASPECT_CONFIG_MAP[aspectRatio] || ASPECT_CONFIG_MAP.auto;
+  const isHorizontal = sharedCfg.layout === 'horizontal';
+
+  // Social-specific overrides for vertical portrait ratios
+  const socialVerticalOverrides = {
     '9:16': {
-      container:
-        'aspect-[9/16] max-w-[390px] mx-auto flex flex-col justify-between py-8 px-6 sm:py-10 sm:px-7 text-center',
-      headerPadding: 'pb-3.5 mb-4',
-      body: 'flex flex-col items-center justify-between flex-1 min-h-0 w-full py-3',
-      textAlign: 'text-center',
-      alignItems: 'items-center',
       qrSize: 205,
       nameSize: 'text-2xl sm:text-3xl font-extrabold',
       handleSize: 'text-sm font-mono',
       showBio: true,
       bioClamp: 'text-xs sm:text-sm max-w-xs leading-relaxed',
       urlSize: 'text-xs sm:text-sm',
-      footerPadding: 'pt-3',
     },
     '4:5': {
-      container:
-        'aspect-[4/5] max-w-[430px] mx-auto flex flex-col justify-between p-5 sm:p-6 text-center',
-      headerPadding: 'pb-2.5 mb-3',
-      body: 'flex flex-col items-center justify-between flex-1 min-h-0 w-full py-2',
-      textAlign: 'text-center',
-      alignItems: 'items-center',
       qrSize: 168,
       nameSize: 'text-xl sm:text-2xl font-black',
       handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
       bioClamp: 'line-clamp-2 text-xs max-w-xs',
       urlSize: 'text-xs',
-      footerPadding: 'pt-2',
     },
     '3:4': {
-      container:
-        'aspect-[3/4] max-w-[440px] mx-auto flex flex-col justify-between p-5 sm:p-6 text-center',
-      headerPadding: 'pb-2.5 mb-3',
-      body: 'flex flex-col items-center justify-between flex-1 min-h-0 w-full py-2',
-      textAlign: 'text-center',
-      alignItems: 'items-center',
       qrSize: 172,
       nameSize: 'text-xl sm:text-2xl font-bold',
       handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
       bioClamp: 'line-clamp-2 text-xs max-w-xs',
       urlSize: 'text-xs',
-      footerPadding: 'pt-2',
     },
     '16:9': {
-      container:
-        'aspect-[16/9] max-w-[680px] mx-auto flex flex-col justify-between p-6 sm:p-7 text-left',
-      headerPadding: 'pb-2.5 mb-3',
-      body: 'flex flex-row items-center justify-between gap-6 flex-1 min-h-0',
-      textAlign: 'text-left',
-      alignItems: 'items-start',
       qrSize: 160,
       nameSize: 'text-xl sm:text-2xl font-bold',
       handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
       bioClamp: 'text-xs line-clamp-2 max-w-sm',
       urlSize: 'text-xs',
-      footerPadding: 'pt-2',
     },
     '3:2': {
-      container:
-        'aspect-[3/2] max-w-[620px] mx-auto flex flex-col justify-between p-6 sm:p-7 text-left',
-      headerPadding: 'pb-2.5 mb-3',
-      body: 'flex flex-row items-center justify-between gap-6 flex-1 min-h-0',
-      textAlign: 'text-left',
-      alignItems: 'items-start',
       qrSize: 155,
       nameSize: 'text-xl sm:text-2xl font-bold',
       handleSize: 'text-xs sm:text-sm font-mono',
       showBio: true,
       bioClamp: 'text-xs line-clamp-2 max-w-sm',
       urlSize: 'text-xs',
-      footerPadding: 'pt-2',
     },
     card: {
-      container:
-        'aspect-[1.586/1] max-w-[540px] mx-auto flex flex-col justify-between p-4 sm:p-6 text-left',
-      headerPadding: 'pb-2 mb-2',
-      body: 'flex flex-row items-center justify-between gap-4 flex-1 min-h-0',
-      textAlign: 'text-left',
-      alignItems: 'items-start',
       qrSize: 135,
       nameSize: 'text-lg sm:text-xl font-bold',
       handleSize: 'text-xs font-mono',
       showBio: false,
       bioClamp: '',
       urlSize: 'text-[10px] sm:text-xs',
-      footerPadding: 'pt-1.5',
     },
     auto: {
-      container: effectivePortrait
-        ? 'max-w-md mx-auto p-6 sm:p-7 text-center'
-        : 'w-full p-6 sm:p-8 text-left',
-      headerPadding: 'pb-3 mb-3.5',
-      body: effectivePortrait
-        ? 'flex flex-col items-center justify-between gap-5 flex-1 min-h-0 text-center'
-        : 'flex flex-col sm:flex-row justify-between items-center gap-6 text-left',
-      textAlign: effectivePortrait ? 'text-center' : 'text-left',
-      alignItems: effectivePortrait ? 'items-center' : 'items-start',
-      qrSize: effectivePortrait ? 175 : 156,
+      qrSize: isHorizontal ? 164 : 175,
       nameSize: 'text-2xl sm:text-3xl font-extrabold',
       handleSize: 'text-sm sm:text-base font-mono',
       showBio: true,
       bioClamp: 'text-xs max-w-sm',
       urlSize: 'text-xs',
-      footerPadding: 'pt-2',
+    },
+    '1:1': {
+      qrSize: 220,
     },
   };
-  const cfg = aspectConfigMap[aspectRatio] || aspectConfigMap.auto;
-  const qrSize = cfg.qrSize;
 
-  // QR Glass Background Style Resolution (Lucid, Frosted, Gaussian, Inverted, Solid White)
+  const socialCfg = socialVerticalOverrides[aspectRatio] || socialVerticalOverrides.auto;
+  const qrSize = socialCfg.qrSize || sharedCfg.qrSize;
+
+  // Build merged config for layout classes
+  const cfg = {
+    ...sharedCfg,
+    ...socialCfg,
+    container: sharedCfg.container,
+    body: sharedCfg.body,
+    headerPadding: sharedCfg.headerPadding,
+    textAlign: sharedCfg.textAlign || 'text-left',
+    alignItems: sharedCfg.alignItems || 'items-start',
+    footerPadding: sharedCfg.footerPadding || 'pt-2',
+  };
+
+  // QR Glass Background Style Resolution
   const qrBgStyleId = settings.qrBgStyle || 'white';
   const qrBgConfig =
     QR_BG_STYLES.find((s) => s.id === qrBgStyleId) || QR_BG_STYLES[0];
@@ -274,6 +228,62 @@ export const SocialCard = ({ id, settings }) => {
     isLightCard = darkMatch.id === 'swiss-mono';
   }
 
+  // Shared QR renderer
+  const renderQr = (size) => (
+    <div
+      className={`transition-all shadow-xl rounded-2xl overflow-hidden ${
+        isTactileQr
+          ? 'p-0 border border-black/10'
+          : `p-2.5 ${qrBgConfig.frameClass}`
+      }`}
+    >
+      <div className="relative flex items-center justify-center">
+        {isTactileQr ? (
+          <TactileQRCode
+            value={finalUrl}
+            styleId={activeQrMaterial}
+            size={size}
+            className="rounded-2xl"
+            bgFillCustom={
+              qrBgConfig.id !== 'white' ? qrBgConfig.svgFill : null
+            }
+          />
+        ) : (
+          <SafeQRCode
+            value={finalUrl}
+            size={size}
+            level="H"
+            fgColor={qrBgConfig.fgColor}
+            bgColor={qrBgConfig.bgColor}
+          />
+        )}
+
+        {!isTactileQr && showCenterLogo && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div
+              className={`w-8 h-8 rounded-lg p-1 shadow-md border flex items-center justify-center ${
+                qrBgConfig.id === 'inverted-glass'
+                  ? 'bg-neutral-900 border-white/20 text-white'
+                  : 'bg-white border-neutral-300 text-black'
+              }`}
+              style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+            >
+              <SocialIcon
+                platform={platform}
+                size={18}
+                className={
+                  qrBgConfig.id === 'inverted-glass'
+                    ? 'text-white'
+                    : 'text-black'
+                }
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div
       id={id}
@@ -284,7 +294,7 @@ export const SocialCard = ({ id, settings }) => {
           : undefined
       }
     >
-      {/* Background Image Layer with Optional Frosted Blur & Contrast Scrim */}
+      {/* Background Image Layer */}
       {isCustomImage && (
         <>
           <div
@@ -295,7 +305,6 @@ export const SocialCard = ({ id, settings }) => {
               transform: bgImageBlur ? 'scale(1.08)' : undefined,
             }}
           />
-          {/* Contrast Tint Scrim to ensure scan safety & legibility */}
           <div
             className="absolute inset-0 transition-opacity duration-300 pointer-events-none"
             style={{
@@ -306,7 +315,7 @@ export const SocialCard = ({ id, settings }) => {
         </>
       )}
 
-      {/* Dynamic Ambient Glow Behind Card */}
+      {/* Dynamic Ambient Glow */}
       {isBrandTheme ? (
         <div
           className="absolute -top-12 -right-12 w-80 h-80 rounded-full pointer-events-none opacity-45 blur-3xl transition-colors duration-500"
@@ -321,7 +330,7 @@ export const SocialCard = ({ id, settings }) => {
         )
       )}
 
-      {/* 1. CARD HEADER (Omitted in 1:1 QR-Only mode) */}
+      {/* 1. CARD HEADER */}
       {!isQrOnly && (
         <div
           className={`flex items-center justify-between border-b ${
@@ -363,7 +372,6 @@ export const SocialCard = ({ id, settings }) => {
             </div>
           </div>
 
-          {/* Clean Professional Action Badge: No theme name, no specimen text */}
           <div
             className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider flex items-center gap-1.5 ${badgeBg}`}
           >
@@ -376,7 +384,7 @@ export const SocialCard = ({ id, settings }) => {
         </div>
       )}
 
-      {/* 2. MAIN CARD BODY (Tailored alignment per aspect ratio) */}
+      {/* 2. MAIN CARD BODY */}
       <div
         className={`relative z-10 w-full ${
           isQrOnly
@@ -385,7 +393,7 @@ export const SocialCard = ({ id, settings }) => {
         }`}
       >
         {isQrOnly ? (
-          /* 1:1 Pure QR Hero Display (Centered, Edge-to-Edge Fill) */
+          /* 1:1 Pure QR Hero Display */
           <div className="relative shrink-0 flex items-center justify-center animate-fade-in my-auto">
             <div
               className={`transition-all shadow-2xl rounded-2xl overflow-hidden ${
@@ -502,58 +510,7 @@ export const SocialCard = ({ id, settings }) => {
 
             {/* Horizontal Right Column: QR Code */}
             <div className="relative shrink-0 flex items-center justify-center">
-              <div
-                className={`transition-all shadow-xl rounded-2xl overflow-hidden ${
-                  isTactileQr
-                    ? 'p-0 border border-black/10'
-                    : `p-2.5 ${qrBgConfig.frameClass}`
-                }`}
-              >
-                <div className="relative flex items-center justify-center">
-                  {isTactileQr ? (
-                    <TactileQRCode
-                      value={finalUrl}
-                      styleId={activeQrMaterial}
-                      size={qrSize}
-                      className="rounded-2xl"
-                      bgFillCustom={
-                        qrBgConfig.id !== 'white' ? qrBgConfig.svgFill : null
-                      }
-                    />
-                  ) : (
-                    <SafeQRCode
-                      value={finalUrl}
-                      size={qrSize}
-                      level="H"
-                      fgColor={qrBgConfig.fgColor}
-                      bgColor={qrBgConfig.bgColor}
-                    />
-                  )}
-
-                  {!isTactileQr && showCenterLogo && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div
-                        className={`w-8 h-8 rounded-lg p-1 shadow-md border flex items-center justify-center ${
-                          qrBgConfig.id === 'inverted-glass'
-                            ? 'bg-neutral-900 border-white/20 text-white'
-                            : 'bg-white border-neutral-300 text-black'
-                        }`}
-                        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
-                      >
-                        <SocialIcon
-                          platform={platform}
-                          size={18}
-                          className={
-                            qrBgConfig.id === 'inverted-glass'
-                              ? 'text-white'
-                              : 'text-black'
-                          }
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {renderQr(qrSize)}
             </div>
           </>
         ) : (
@@ -618,58 +575,7 @@ export const SocialCard = ({ id, settings }) => {
 
             {/* Vertical Tier 2: QR Hero (Centered) */}
             <div className="relative shrink-0 flex items-center justify-center my-auto py-1">
-              <div
-                className={`transition-all shadow-xl rounded-2xl overflow-hidden ${
-                  isTactileQr
-                    ? 'p-0 border border-black/10'
-                    : `p-2.5 ${qrBgConfig.frameClass}`
-                }`}
-              >
-                <div className="relative flex items-center justify-center">
-                  {isTactileQr ? (
-                    <TactileQRCode
-                      value={finalUrl}
-                      styleId={activeQrMaterial}
-                      size={qrSize}
-                      className="rounded-2xl"
-                      bgFillCustom={
-                        qrBgConfig.id !== 'white' ? qrBgConfig.svgFill : null
-                      }
-                    />
-                  ) : (
-                    <SafeQRCode
-                      value={finalUrl}
-                      size={qrSize}
-                      level="H"
-                      fgColor={qrBgConfig.fgColor}
-                      bgColor={qrBgConfig.bgColor}
-                    />
-                  )}
-
-                  {!isTactileQr && showCenterLogo && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div
-                        className={`w-8 h-8 rounded-lg p-1 shadow-md border flex items-center justify-center ${
-                          qrBgConfig.id === 'inverted-glass'
-                            ? 'bg-neutral-900 border-white/20 text-white'
-                            : 'bg-white border-neutral-300 text-black'
-                        }`}
-                        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
-                      >
-                        <SocialIcon
-                          platform={platform}
-                          size={18}
-                          className={
-                            qrBgConfig.id === 'inverted-glass'
-                              ? 'text-white'
-                              : 'text-black'
-                          }
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {renderQr(qrSize)}
             </div>
 
             {/* Vertical Tier 3: Scan / URL Footer */}
