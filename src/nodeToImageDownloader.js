@@ -16,7 +16,9 @@ const getEmbeddedFontCSS = async () => {
     let cssText = await res.text();
 
     // Extract all font file URLs (woff2) from Google Fonts CSS
-    const urlMatches = Array.from(cssText.matchAll(/url\((https:\/\/[^)]+)\)/g));
+    const urlMatches = Array.from(
+      cssText.matchAll(/url\((https:\/\/[^)]+)\)/g)
+    );
     const fontPromises = urlMatches.map(async (m) => {
       const fontUrl = m[1].replace(/["']/g, '');
       try {
@@ -136,7 +138,10 @@ export const downloadHDCard = async (
     // Pure ESM download trigger
     const link = document.createElement('a');
     const timestamp = new Date().toISOString().slice(0, 10);
-    const ratioTag = aspectRatio && aspectRatio !== 'auto' ? `-${aspectRatio.replace(':', 'x')}` : '';
+    const ratioTag =
+      aspectRatio && aspectRatio !== 'auto'
+        ? `-${aspectRatio.replace(':', 'x')}`
+        : '';
     const fileExt = cleanFormat === 'jpeg' ? 'jpg' : cleanFormat;
     link.download = `${imageName}${ratioTag}-${timestamp}.${fileExt}`;
     link.href = dataUrl;

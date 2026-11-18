@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { User, Phone, Mail, Globe, Briefcase, Building, ArrowRight, ArrowLeft } from 'lucide-react';
+import {
+  User,
+  Phone,
+  Mail,
+  Globe,
+  Briefcase,
+  Building,
+  ArrowRight,
+  ArrowLeft,
+} from 'lucide-react';
 import { CardThemeSelector } from './ui/CardThemeSelector';
 
 export const VCardSettings = ({
@@ -69,7 +78,9 @@ export const VCardSettings = ({
                 className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-sans text-sm outline-none transition-all"
               />
               {errors.name && (
-                <p className="text-xs text-[#ff0047] font-medium">{errors.name}</p>
+                <p className="text-xs text-[#ff0047] font-medium">
+                  {errors.name}
+                </p>
               )}
             </div>
 
@@ -187,7 +198,9 @@ export const VCardSettings = ({
       {activeStepTab === 'style' && (
         <div className="space-y-4 animate-fade-in">
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

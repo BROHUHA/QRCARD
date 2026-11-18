@@ -65,7 +65,12 @@ const getInitialTab = () => {
   if (typeof window === 'undefined') return 'social';
   const path = window.location.pathname;
   const parts = path.split('/').filter(Boolean);
-  if (parts.length >= 2 && ['social', 'wifi', 'vcard', 'url', 'text', 'upi', 'email'].includes(parts[1])) {
+  if (
+    parts.length >= 2 &&
+    ['social', 'wifi', 'vcard', 'url', 'text', 'upi', 'email'].includes(
+      parts[1]
+    )
+  ) {
     return parts[1];
   }
   return 'social';
@@ -87,7 +92,8 @@ export default function App() {
     email: 'auto',
     url: 'auto',
   });
-  const selectedRatio = tabRatios[activeTab] || (activeTab === 'text' ? '1:1' : 'auto');
+  const selectedRatio =
+    tabRatios[activeTab] || (activeTab === 'text' ? '1:1' : 'auto');
   const setSelectedRatio = (ratio) => {
     setTabRatios((prev) => ({
       ...prev,
@@ -156,7 +162,9 @@ export default function App() {
     } else if (activeTab === 'vcard') {
       return `BEGIN:VCARD\nVERSION:3.0\nFN:${vcardSettings.firstName} ${vcardSettings.lastName}\nTEL:${vcardSettings.phone}\nEMAIL:${vcardSettings.email}\nORG:${vcardSettings.company}\nTITLE:${vcardSettings.title}\nURL:${vcardSettings.website}\nEND:VCARD`;
     } else if (activeTab === 'social') {
-      const currentPlat = PLATFORMS_CONFIG.find((p) => p.id === socialSettings.platform) || PLATFORMS_CONFIG[0];
+      const currentPlat =
+        PLATFORMS_CONFIG.find((p) => p.id === socialSettings.platform) ||
+        PLATFORMS_CONFIG[0];
       const base = currentPlat.baseUrl || 'https://';
       const cleanVal = (socialSettings.value || '')
         .replace(/^@/, '')
@@ -164,7 +172,9 @@ export default function App() {
         .replace(/^\+/, '');
       return `${base}${cleanVal}`;
     } else if (activeTab === 'email') {
-      return `mailto:${emailSettings.email}?subject=${encodeURIComponent(emailSettings.subject)}&body=${encodeURIComponent(emailSettings.body)}`;
+      return `mailto:${emailSettings.email}?subject=${encodeURIComponent(
+        emailSettings.subject
+      )}&body=${encodeURIComponent(emailSettings.body)}`;
     } else if (activeTab === 'text') {
       return textSettings.text || 'ALL QR';
     } else {
@@ -260,7 +270,11 @@ export default function App() {
   const navigateTo = (path, replace = false) => {
     if (path === '/privacy') {
       setCurrentRoute('/privacy');
-      window.history[replace ? 'replaceState' : 'pushState']({}, '', '/privacy');
+      window.history[replace ? 'replaceState' : 'pushState'](
+        {},
+        '',
+        '/privacy'
+      );
     } else if (path.startsWith('/build/')) {
       const type = path.replace('/build/', '');
       setActiveTab(type);
@@ -271,7 +285,11 @@ export default function App() {
       window.history[replace ? 'replaceState' : 'pushState']({}, '', '/build');
     } else if (path === '/studio') {
       setCurrentRoute('/studio');
-      window.history[replace ? 'replaceState' : 'pushState']({}, '', `/build/${activeTab}`);
+      window.history[replace ? 'replaceState' : 'pushState'](
+        {},
+        '',
+        `/build/${activeTab}`
+      );
     } else {
       setCurrentRoute('/');
       window.history[replace ? 'replaceState' : 'pushState']({}, '', '/');
@@ -319,25 +337,34 @@ export default function App() {
   const validate = () => {
     const newErrors = {};
     if (activeTab === 'wifi') {
-      if (!wifiSettings.ssid.trim()) newErrors.ssid = 'Network SSID is required';
-      if (wifiSettings.encryptionMode === 'WPA' && wifiSettings.password.length < 8) {
+      if (!wifiSettings.ssid.trim())
+        newErrors.ssid = 'Network SSID is required';
+      if (
+        wifiSettings.encryptionMode === 'WPA' &&
+        wifiSettings.password.length < 8
+      ) {
         newErrors.password = 'WPA requires at least 8 characters';
       }
     } else if (activeTab === 'upi') {
       if (!upiSettings.vpa.trim()) newErrors.vpa = 'UPI ID (VPA) is required';
-      if (!upiSettings.name.trim()) newErrors.name = 'Beneficiary Name is required';
+      if (!upiSettings.name.trim())
+        newErrors.name = 'Beneficiary Name is required';
     } else if (activeTab === 'vcard') {
       if (!vcardSettings.firstName.trim() && !vcardSettings.lastName.trim()) {
         newErrors.name = 'First or Last Name is required';
       }
     } else if (activeTab === 'social') {
-      if (!socialSettings.value.trim()) newErrors.value = 'Handle / Identifier is required';
+      if (!socialSettings.value.trim())
+        newErrors.value = 'Handle / Identifier is required';
     } else if (activeTab === 'email') {
-      if (!emailSettings.email.trim()) newErrors.email = 'Target email is required';
+      if (!emailSettings.email.trim())
+        newErrors.email = 'Target email is required';
     } else if (activeTab === 'url') {
-      if (!urlSettings.url.trim()) newErrors.url = 'Destination URL is required';
+      if (!urlSettings.url.trim())
+        newErrors.url = 'Destination URL is required';
     } else if (activeTab === 'text') {
-      if (!textSettings.text.trim()) newErrors.text = 'Text content cannot be empty';
+      if (!textSettings.text.trim())
+        newErrors.text = 'Text content cannot be empty';
     }
 
     setErrors(newErrors);
@@ -351,7 +378,10 @@ export default function App() {
     setIsDownloadModalOpen(true);
   };
 
-  const handleExecuteDownload = async (ratio = selectedRatio, format = 'png') => {
+  const handleExecuteDownload = async (
+    ratio = selectedRatio,
+    format = 'png'
+  ) => {
     if (!validate()) return;
     const filename = `allqr-${activeTab}-${Date.now()}`;
     await downloadHDCard(CARD_ELEMENT_ID, filename, {
@@ -390,19 +420,61 @@ export default function App() {
 
     switch (activeTab) {
       case 'wifi':
-        return <Settings settings={wifiSettings} setSettings={setWifiSettings} {...commonFormProps} />;
+        return (
+          <Settings
+            settings={wifiSettings}
+            setSettings={setWifiSettings}
+            {...commonFormProps}
+          />
+        );
       case 'upi':
-        return <UpiSettings settings={upiSettings} setSettings={setUpiSettings} {...commonFormProps} />;
+        return (
+          <UpiSettings
+            settings={upiSettings}
+            setSettings={setUpiSettings}
+            {...commonFormProps}
+          />
+        );
       case 'vcard':
-        return <VCardSettings settings={vcardSettings} setSettings={setVcardSettings} {...commonFormProps} />;
+        return (
+          <VCardSettings
+            settings={vcardSettings}
+            setSettings={setVcardSettings}
+            {...commonFormProps}
+          />
+        );
       case 'social':
-        return <SocialSettings settings={socialSettings} setSettings={setSocialSettings} {...commonFormProps} />;
+        return (
+          <SocialSettings
+            settings={socialSettings}
+            setSettings={setSocialSettings}
+            {...commonFormProps}
+          />
+        );
       case 'email':
-        return <EmailSettings settings={emailSettings} setSettings={setEmailSettings} {...commonFormProps} />;
+        return (
+          <EmailSettings
+            settings={emailSettings}
+            setSettings={setEmailSettings}
+            {...commonFormProps}
+          />
+        );
       case 'url':
-        return <UrlSettings settings={urlSettings} setSettings={setUrlSettings} {...commonFormProps} />;
+        return (
+          <UrlSettings
+            settings={urlSettings}
+            setSettings={setUrlSettings}
+            {...commonFormProps}
+          />
+        );
       case 'text':
-        return <TextSettings settings={textSettings} setSettings={setTextSettings} {...commonFormProps} />;
+        return (
+          <TextSettings
+            settings={textSettings}
+            setSettings={setTextSettings}
+            {...commonFormProps}
+          />
+        );
       default:
         return null;
     }
@@ -417,19 +489,54 @@ export default function App() {
 
     switch (activeTab) {
       case 'wifi':
-        return <WifiCard id={CARD_ELEMENT_ID} settings={{ ...wifiSettings, ...commonCardSettings }} />;
+        return (
+          <WifiCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...wifiSettings, ...commonCardSettings }}
+          />
+        );
       case 'upi':
-        return <UpiCard id={CARD_ELEMENT_ID} settings={{ ...upiSettings, ...commonCardSettings }} />;
+        return (
+          <UpiCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...upiSettings, ...commonCardSettings }}
+          />
+        );
       case 'vcard':
-        return <VCard id={CARD_ELEMENT_ID} settings={{ ...vcardSettings, ...commonCardSettings }} />;
+        return (
+          <VCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...vcardSettings, ...commonCardSettings }}
+          />
+        );
       case 'social':
-        return <SocialCard id={CARD_ELEMENT_ID} settings={{ ...socialSettings, ...commonCardSettings }} />;
+        return (
+          <SocialCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...socialSettings, ...commonCardSettings }}
+          />
+        );
       case 'email':
-        return <EmailCard id={CARD_ELEMENT_ID} settings={{ ...emailSettings, ...commonCardSettings }} />;
+        return (
+          <EmailCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...emailSettings, ...commonCardSettings }}
+          />
+        );
       case 'url':
-        return <UrlCard id={CARD_ELEMENT_ID} settings={{ ...urlSettings, ...commonCardSettings }} />;
+        return (
+          <UrlCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...urlSettings, ...commonCardSettings }}
+          />
+        );
       case 'text':
-        return <TextCard id={CARD_ELEMENT_ID} settings={{ ...textSettings, ...commonCardSettings }} />;
+        return (
+          <TextCard
+            id={CARD_ELEMENT_ID}
+            settings={{ ...textSettings, ...commonCardSettings }}
+          />
+        );
       default:
         return null;
     }
@@ -484,7 +591,10 @@ export default function App() {
                 onClick={() => navigateTo('/build')}
                 className="flex items-center gap-2 text-xs font-mono font-bold text-neutral-400 hover:text-white transition-colors cursor-pointer group"
               >
-                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                <ArrowLeft
+                  size={14}
+                  className="group-hover:-translate-x-1 transition-transform"
+                />
                 <span>RETURN TO BUILD ALBUMS</span>
               </button>
             </div>
@@ -492,7 +602,12 @@ export default function App() {
             {/* TWO COLUMN STUDIO WORKSPACE (Wide Fitted) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               {/* LEFT COLUMN: Clean & Understandable Detail Collecting Form */}
-              <PixelReveal triggerKey={activeTab} delay={30} pixelSize={18} className="lg:col-span-5 w-full">
+              <PixelReveal
+                triggerKey={activeTab}
+                delay={30}
+                pixelSize={18}
+                className="lg:col-span-5 w-full"
+              >
                 <div className="liquid-glass rounded-2xl p-6 sm:p-8 space-y-6 no-print">
                   <div className="border-b border-white/10 pb-4 flex items-center justify-between">
                     <div>
@@ -512,7 +627,12 @@ export default function App() {
               </PixelReveal>
 
               {/* RIGHT COLUMN: Live Creation of QR (Sticky Preview & Action Buttons) */}
-              <PixelReveal triggerKey={`${activeTab}-${selectedRatio}`} delay={50} pixelSize={18} className="lg:col-span-7 sticky top-8 w-full">
+              <PixelReveal
+                triggerKey={`${activeTab}-${selectedRatio}`}
+                delay={50}
+                pixelSize={18}
+                className="lg:col-span-7 sticky top-8 w-full"
+              >
                 <div className="flex flex-col gap-4">
                   {/* Live Card: Placed FIRST on mobile, SECOND on desktop */}
                   <div className="w-full flex justify-center py-2 order-1 lg:order-2">
@@ -535,7 +655,11 @@ export default function App() {
                           onClick={handleCopyPayload}
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-neutral-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer font-medium"
                         >
-                          {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                          {copied ? (
+                            <Check size={13} className="text-emerald-400" />
+                          ) : (
+                            <Copy size={13} />
+                          )}
                           <span>{copied ? 'Copied' : 'Copy Payload'}</span>
                         </button>
 

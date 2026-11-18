@@ -13,7 +13,11 @@ import {
   Sliders,
   ImagePlus,
 } from 'lucide-react';
-import { LIGHT_GRADIENTS, DESIGNER_TEMPLATES, QR_BG_STYLES } from './designerTemplates';
+import {
+  LIGHT_GRADIENTS,
+  DESIGNER_TEMPLATES,
+  QR_BG_STYLES,
+} from './designerTemplates';
 import { TACTILE_STYLES } from './tactileStyles';
 import { MaterialIcon } from './MaterialIcons';
 
@@ -195,7 +199,8 @@ export const CardThemeSelector = ({
             type="button"
             onClick={() => {
               setSubTab('gradient');
-              if (onSelectBgPreset && bgPreset === 'custom-image') onSelectBgPreset('opal-mint');
+              if (onSelectBgPreset && bgPreset === 'custom-image')
+                onSelectBgPreset('opal-mint');
             }}
             className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               subTab === 'gradient'
@@ -240,7 +245,12 @@ export const CardThemeSelector = ({
                 : 'text-neutral-400 hover:text-white'
             }`}
           >
-            <Sparkles size={12} className={subTab === 'qr-bg' ? 'text-indigo-600' : 'text-neutral-400'} />
+            <Sparkles
+              size={12}
+              className={
+                subTab === 'qr-bg' ? 'text-indigo-600' : 'text-neutral-400'
+              }
+            />
             <span>QR Glass BG</span>
           </button>
         </div>
@@ -308,14 +318,23 @@ export const CardThemeSelector = ({
                     <input
                       type="color"
                       value={startColor}
-                      onChange={(e) => handleColorChange('startColor', e.target.value)}
+                      onChange={(e) =>
+                        handleColorChange('startColor', e.target.value)
+                      }
                       className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                     />
-                    <div className="w-full h-full" style={{ backgroundColor: startColor }} />
+                    <div
+                      className="w-full h-full"
+                      style={{ backgroundColor: startColor }}
+                    />
                   </label>
                   <div className="truncate">
-                    <div className="text-[9px] uppercase font-mono text-neutral-400">Start</div>
-                    <div className="text-xs font-mono font-bold text-white truncate">{startColor}</div>
+                    <div className="text-[9px] uppercase font-mono text-neutral-400">
+                      Start
+                    </div>
+                    <div className="text-xs font-mono font-bold text-white truncate">
+                      {startColor}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-xs font-mono">
@@ -324,7 +343,9 @@ export const CardThemeSelector = ({
                     min="0"
                     max="100"
                     value={startStop}
-                    onChange={(e) => handleStopChange('startStop', e.target.value)}
+                    onChange={(e) =>
+                      handleStopChange('startStop', e.target.value)
+                    }
                     className="w-full bg-transparent text-white outline-none"
                   />
                   <span className="text-neutral-500">%</span>
@@ -338,14 +359,23 @@ export const CardThemeSelector = ({
                     <input
                       type="color"
                       value={endColor}
-                      onChange={(e) => handleColorChange('endColor', e.target.value)}
+                      onChange={(e) =>
+                        handleColorChange('endColor', e.target.value)
+                      }
                       className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                     />
-                    <div className="w-full h-full" style={{ backgroundColor: endColor }} />
+                    <div
+                      className="w-full h-full"
+                      style={{ backgroundColor: endColor }}
+                    />
                   </label>
                   <div className="truncate">
-                    <div className="text-[9px] uppercase font-mono text-neutral-400">End</div>
-                    <div className="text-xs font-mono font-bold text-white truncate">{endColor}</div>
+                    <div className="text-[9px] uppercase font-mono text-neutral-400">
+                      End
+                    </div>
+                    <div className="text-xs font-mono font-bold text-white truncate">
+                      {endColor}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-xs font-mono">
@@ -354,7 +384,9 @@ export const CardThemeSelector = ({
                     min="0"
                     max="100"
                     value={endStop}
-                    onChange={(e) => handleStopChange('endStop', e.target.value)}
+                    onChange={(e) =>
+                      handleStopChange('endStop', e.target.value)
+                    }
                     className="w-full bg-transparent text-white outline-none"
                   />
                   <span className="text-neutral-500">%</span>
@@ -364,7 +396,9 @@ export const CardThemeSelector = ({
 
             {/* Gradient Direction Controller (Dial & Input) */}
             <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between gap-3">
-              <span className="text-xs font-medium text-neutral-300">Direction</span>
+              <span className="text-xs font-medium text-neutral-300">
+                Direction
+              </span>
 
               <div className="flex items-center gap-2">
                 <button
@@ -378,7 +412,15 @@ export const CardThemeSelector = ({
                     style={{ transform: `rotate(${direction}deg)` }}
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <line x1="5" y1="19" x2="19" y2="5" stroke="#4F46E5" strokeWidth="3.5" strokeLinecap="round" />
+                      <line
+                        x1="5"
+                        y1="19"
+                        x2="19"
+                        y2="5"
+                        stroke="#4F46E5"
+                        strokeWidth="3.5"
+                        strokeLinecap="round"
+                      />
                       <circle cx="19" cy="5" r="2.5" fill="#4F46E5" />
                     </svg>
                   </div>
@@ -401,7 +443,9 @@ export const CardThemeSelector = ({
             {/* Scan Range Safety Note */}
             <div className="flex items-center gap-1.5 pt-1 text-[11px] text-emerald-400 font-mono">
               <ShieldCheck size={13} className="shrink-0" />
-              <span>This light background stays inside the tested scan range.</span>
+              <span>
+                This light background stays inside the tested scan range.
+              </span>
             </div>
           </div>
         </div>
@@ -420,11 +464,16 @@ export const CardThemeSelector = ({
                   src={bgImage}
                   alt="Custom Background"
                   className="w-full h-full object-cover transition-transform duration-300"
-                  style={{ filter: bgImageBlur ? `blur(${bgImageBlur}px)` : undefined }}
+                  style={{
+                    filter: bgImageBlur ? `blur(${bgImageBlur}px)` : undefined,
+                  }}
                 />
                 <div
                   className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-                  style={{ backgroundColor: '#000000', opacity: bgImageOverlay }}
+                  style={{
+                    backgroundColor: '#000000',
+                    opacity: bgImageOverlay,
+                  }}
                 />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2.5 backdrop-blur-[1px]">
                   <label className="px-3.5 py-1.5 rounded-xl bg-white text-black text-xs font-bold cursor-pointer hover:bg-neutral-200 shadow-md transition-all flex items-center gap-1.5">
@@ -457,7 +506,9 @@ export const CardThemeSelector = ({
                       <Sliders size={12} className="text-indigo-400" />
                       <span>Readability Tint Overlay</span>
                     </span>
-                    <span className="text-white font-bold">{Math.round(bgImageOverlay * 100)}%</span>
+                    <span className="text-white font-bold">
+                      {Math.round(bgImageOverlay * 100)}%
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -480,7 +531,9 @@ export const CardThemeSelector = ({
                       <Sparkles size={12} className="text-amber-400" />
                       <span>Frosted Glass Blur</span>
                     </span>
-                    <span className="text-white font-bold">{bgImageBlur}px</span>
+                    <span className="text-white font-bold">
+                      {bgImageBlur}px
+                    </span>
                   </div>
                   <input
                     type="range"
@@ -500,7 +553,10 @@ export const CardThemeSelector = ({
               {/* Safety Contrast Indicator */}
               <div className="flex items-center gap-1.5 pt-1 text-[11px] text-emerald-400 font-mono">
                 <ShieldCheck size={13} className="shrink-0" />
-                <span>Adjust tint to keep text & QR code high-contrast and easily scannable.</span>
+                <span>
+                  Adjust tint to keep text & QR code high-contrast and easily
+                  scannable.
+                </span>
               </div>
             </div>
           ) : (
@@ -538,7 +594,11 @@ export const CardThemeSelector = ({
                       className="group relative h-16 rounded-xl border border-white/10 hover:border-white/40 overflow-hidden cursor-pointer shadow-sm hover:scale-[1.03] transition-all"
                       title={wp.name}
                     >
-                      <img src={wp.url} alt={wp.name} className="w-full h-full object-cover" />
+                      <img
+                        src={wp.url}
+                        alt={wp.name}
+                        className="w-full h-full object-cover"
+                      />
                       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/15 transition-colors flex items-end p-1.5">
                         <span className="text-[10px] font-semibold text-white truncate drop-shadow-sm">
                           {wp.name}
@@ -617,7 +677,9 @@ export const CardThemeSelector = ({
                 <button
                   key={style.id}
                   type="button"
-                  onClick={() => onSelectQrBgStyle && onSelectQrBgStyle(style.id)}
+                  onClick={() =>
+                    onSelectQrBgStyle && onSelectQrBgStyle(style.id)
+                  }
                   className={`p-3 rounded-2xl text-left transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between h-20 border ${
                     isSelected
                       ? 'border-2 border-indigo-400 bg-indigo-500/10 shadow-[0_0_20px_rgba(129,140,248,0.25)] scale-[1.02]'

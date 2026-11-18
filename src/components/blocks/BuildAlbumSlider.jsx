@@ -202,7 +202,10 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
               onClick={onBackToHome}
               className="flex items-center gap-2 text-xs font-mono font-bold text-neutral-400 hover:text-white transition-colors cursor-pointer group"
             >
-              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+              <ArrowLeft
+                size={14}
+                className="group-hover:-translate-x-1 transition-transform"
+              />
               <span>RETURN TO HOME</span>
             </button>
           </div>
@@ -219,160 +222,165 @@ export const BuildAlbumSlider = ({ onSelectType, onBackToHome }) => {
       {/* 2. FOREGROUND CAROUSEL CONTAINER */}
       <PixelReveal delay={50} pixelSize={22} className="w-full">
         <div className="relative z-10 w-full pt-8 sm:pt-16 pb-4">
-        {/* MANUAL SLIDING TRACK (DRAGGABLE & TOUCH-SWIPEABLE) */}
-        <div
-          className="w-full overflow-hidden cursor-grab active:cursor-grabbing py-4 sm:py-6"
-          onMouseDown={(e) => handleDragStart(e.clientX)}
-          onMouseMove={(e) => handleDragMove(e.clientX)}
-          onMouseUp={handleDragEnd}
-          onMouseLeave={handleDragEnd}
-          onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
-          onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
-          onTouchEnd={handleDragEnd}
-        >
+          {/* MANUAL SLIDING TRACK (DRAGGABLE & TOUCH-SWIPEABLE) */}
           <div
-            className="flex items-stretch justify-start transition-transform will-change-transform"
-            style={{
-              gap: `${cardGap}px`,
-              transform: `translateX(${currentTranslateX}px)`,
-              transition: isDragging ? 'none' : 'transform 550ms cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
+            className="w-full overflow-hidden cursor-grab active:cursor-grabbing py-4 sm:py-6"
+            onMouseDown={(e) => handleDragStart(e.clientX)}
+            onMouseMove={(e) => handleDragMove(e.clientX)}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+            onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+            onTouchEnd={handleDragEnd}
           >
-            {SPECIMEN_CARDS.map((card, idx) => {
-              const isCenter = idx === activeIndex;
-              const IconComp = card.icon;
+            <div
+              className="flex items-stretch justify-start transition-transform will-change-transform"
+              style={{
+                gap: `${cardGap}px`,
+                transform: `translateX(${currentTranslateX}px)`,
+                transition: isDragging
+                  ? 'none'
+                  : 'transform 550ms cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              {SPECIMEN_CARDS.map((card, idx) => {
+                const isCenter = idx === activeIndex;
+                const IconComp = card.icon;
 
-              return (
-                <div
-                  key={card.id}
-                  onClick={() => {
-                    if (!isCenter) setActiveIndex(idx);
-                  }}
-                  style={{ width: `${cardWidth}px` }}
-                  className={`shrink-0 rounded-[24px] sm:rounded-[32px] p-5 sm:p-7 md:p-8 flex flex-col justify-between select-none transition-all duration-500 transform will-change-transform ${
-                    isCenter
-                      ? 'liquid-glass-active scale-100 sm:scale-105 z-20 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),0_0_35px_rgba(255,255,255,0.08)]'
-                      : 'liquid-glass scale-95 opacity-50 sm:opacity-55 hover:opacity-85 hover:scale-[0.98] z-10 cursor-pointer'
-                  }`}
-                >
-                  {/* Liquid Specular Glow for Center Active Card */}
-                  {isCenter && (
-                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-24 bg-white/20 rounded-full blur-2xl pointer-events-none" />
-                  )}
+                return (
+                  <div
+                    key={card.id}
+                    onClick={() => {
+                      if (!isCenter) setActiveIndex(idx);
+                    }}
+                    style={{ width: `${cardWidth}px` }}
+                    className={`shrink-0 rounded-[24px] sm:rounded-[32px] p-5 sm:p-7 md:p-8 flex flex-col justify-between select-none transition-all duration-500 transform will-change-transform ${
+                      isCenter
+                        ? 'liquid-glass-active scale-100 sm:scale-105 z-20 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),0_0_35px_rgba(255,255,255,0.08)]'
+                        : 'liquid-glass scale-95 opacity-50 sm:opacity-55 hover:opacity-85 hover:scale-[0.98] z-10 cursor-pointer'
+                    }`}
+                  >
+                    {/* Liquid Specular Glow for Center Active Card */}
+                    {isCenter && (
+                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-24 bg-white/20 rounded-full blur-2xl pointer-events-none" />
+                    )}
 
-                  <div className="space-y-4 sm:space-y-5 relative z-10">
-                    {/* Badge & Icon */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-400 font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
-                        {card.badge}
-                      </span>
-                      <div
-                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all ${
-                          isCenter
-                            ? 'liquid-glass text-white border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.25)]'
-                            : 'bg-white/5 text-neutral-400 border border-white/10'
-                        }`}
-                      >
-                        <IconComp size={16} />
+                    <div className="space-y-4 sm:space-y-5 relative z-10">
+                      {/* Badge & Icon */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-widest text-neutral-400 font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+                          {card.badge}
+                        </span>
+                        <div
+                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center transition-all ${
+                            isCenter
+                              ? 'liquid-glass text-white border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.25)]'
+                              : 'bg-white/5 text-neutral-400 border border-white/10'
+                          }`}
+                        >
+                          <IconComp size={16} />
+                        </div>
+                      </div>
+
+                      {/* Title & Subtitle */}
+                      <div>
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-heading text-white tracking-tight leading-snug">
+                          {card.name}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs text-neutral-400 font-mono mt-0.5 sm:mt-1">
+                          {card.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Feature Checkmarks */}
+                      <div className="pt-3 border-t border-white/[0.08] space-y-2 sm:space-y-2.5">
+                        {card.features.map((feature, fIdx) => (
+                          <div
+                            key={fIdx}
+                            className="flex items-start gap-2 sm:gap-2.5 text-[11px] sm:text-xs text-neutral-300"
+                          >
+                            <div
+                              className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                                isCenter
+                                  ? 'bg-white/20 text-white shadow-sm'
+                                  : 'bg-white/10 text-neutral-400'
+                              }`}
+                            >
+                              <Check size={10} strokeWidth={3} />
+                            </div>
+                            <span className="leading-snug">{feature}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Title & Subtitle */}
-                    <div>
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-heading text-white tracking-tight leading-snug">
-                        {card.name}
-                      </h3>
-                      <p className="text-[11px] sm:text-xs text-neutral-400 font-mono mt-0.5 sm:mt-1">
-                        {card.subtitle}
-                      </p>
-                    </div>
-
-                    {/* Feature Checkmarks */}
-                    <div className="pt-3 border-t border-white/[0.08] space-y-2 sm:space-y-2.5">
-                      {card.features.map((feature, fIdx) => (
-                        <div key={fIdx} className="flex items-start gap-2 sm:gap-2.5 text-[11px] sm:text-xs text-neutral-300">
-                          <div
-                            className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
-                              isCenter
-                                ? 'bg-white/20 text-white shadow-sm'
-                                : 'bg-white/10 text-neutral-400'
-                            }`}
-                          >
-                            <Check size={10} strokeWidth={3} />
-                          </div>
-                          <span className="leading-snug">{feature}</span>
-                        </div>
-                      ))}
+                    {/* Bottom Action Button */}
+                    <div className="pt-5 sm:pt-6 relative z-10">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectType(card.id);
+                        }}
+                        className={`w-full py-3 sm:py-3.5 rounded-full text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                          isCenter
+                            ? 'btn-chrome-primary shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:scale-[1.02]'
+                            : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:border-white/40'
+                        }`}
+                      >
+                        <span>Build {card.name}</span>
+                        <ArrowRight size={14} />
+                      </button>
                     </div>
                   </div>
-
-                  {/* Bottom Action Button */}
-                  <div className="pt-5 sm:pt-6 relative z-10">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectType(card.id);
-                      }}
-                      className={`w-full py-3 sm:py-3.5 rounded-full text-xs font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                        isCenter
-                          ? 'btn-chrome-primary shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:scale-[1.02]'
-                          : 'bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:border-white/40'
-                      }`}
-                    >
-                      <span>Build {card.name}</span>
-                      <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* 3. SLEEK BOTTOM INDICATOR DOTS & UNIFIED NAVIGATION CONTROLS */}
-        <div className="mt-6 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4 z-20">
-          {/* Backward Arrow */}
-          <button
-            type="button"
-            onClick={handlePrev}
-            className="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer"
-            title="Previous Specimen"
-            aria-label="Previous Specimen"
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          {/* Pagination Dots */}
-          <div className="flex items-center gap-2">
-            {SPECIMEN_CARDS.map((c, idx) => (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => setActiveIndex(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  activeIndex === idx
-                    ? 'w-7 sm:w-8 bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]'
-                    : 'w-1.5 sm:w-2 bg-white/20 hover:bg-white/40'
-                }`}
-                title={c.name}
-              />
-            ))}
+                );
+              })}
+            </div>
           </div>
 
-          {/* Forward Arrow */}
-          <button
-            type="button"
-            onClick={handleNext}
-            className="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer"
-            title="Next Specimen"
-            aria-label="Next Specimen"
-          >
-            <ChevronRight size={18} />
-          </button>
+          {/* 3. SLEEK BOTTOM INDICATOR DOTS & UNIFIED NAVIGATION CONTROLS */}
+          <div className="mt-6 sm:mt-8 flex items-center justify-center gap-3 sm:gap-4 z-20">
+            {/* Backward Arrow */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer"
+              title="Previous Specimen"
+              aria-label="Previous Specimen"
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center gap-2">
+              {SPECIMEN_CARDS.map((c, idx) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setActiveIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeIndex === idx
+                      ? 'w-7 sm:w-8 bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]'
+                      : 'w-1.5 sm:w-2 bg-white/20 hover:bg-white/40'
+                  }`}
+                  title={c.name}
+                />
+              ))}
+            </div>
+
+            {/* Forward Arrow */}
+            <button
+              type="button"
+              onClick={handleNext}
+              className="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white active:scale-90 hover:scale-105 hover:border-white/30 transition-all shadow-md cursor-pointer"
+              title="Next Specimen"
+              aria-label="Next Specimen"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
-      </div>
-    </PixelReveal>
-  </section>
-);
+      </PixelReveal>
+    </section>
+  );
 };

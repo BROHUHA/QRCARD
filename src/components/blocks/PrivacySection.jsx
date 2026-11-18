@@ -45,7 +45,10 @@ export const PrivacySection = ({ onGoToStudio, onGoToBuild }) => {
             onClick={onGoToBuild}
             className="flex items-center gap-2 text-xs font-mono font-bold text-neutral-400 hover:text-white transition-colors cursor-pointer group"
           >
-            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft
+              size={14}
+              className="group-hover:-translate-x-1 transition-transform"
+            />
             <span>RETURN TO BUILD ALBUMS</span>
           </button>
         </div>
@@ -62,7 +65,11 @@ export const PrivacySection = ({ onGoToStudio, onGoToBuild }) => {
             </h1>
 
             <p className="text-base sm:text-xl text-neutral-300 font-normal leading-relaxed pt-1">
-              ALL QR STUDIO is engineered from the ground up on the principle of unconditional client-side privacy. Unlike conventional online QR generators that route your sensitive Wi-Fi credentials, personal contact vCards, and payment identifiers through remote cloud logging databases, our architecture never touches a server.
+              ALL QR STUDIO is engineered from the ground up on the principle of
+              unconditional client-side privacy. Unlike conventional online QR
+              generators that route your sensitive Wi-Fi credentials, personal
+              contact vCards, and payment identifiers through remote cloud
+              logging databases, our architecture never touches a server.
             </p>
           </div>
         </PixelReveal>
@@ -119,7 +126,13 @@ export const PrivacySection = ({ onGoToStudio, onGoToBuild }) => {
                   <span>Wi-Fi Credentials</span>
                 </div>
                 <p className="text-neutral-400 leading-relaxed">
-                  Network SSIDs and WPA/WPA2/WPA3 pre-shared keys are formatted directly into standard <code className="text-white bg-white/10 px-1 py-0.5 rounded">WIFI:T:WPA;S:...</code> strings inside browser memory. They are never transmitted over HTTP/HTTPS.
+                  Network SSIDs and WPA/WPA2/WPA3 pre-shared keys are formatted
+                  directly into standard{' '}
+                  <code className="text-white bg-white/10 px-1 py-0.5 rounded">
+                    WIFI:T:WPA;S:...
+                  </code>{' '}
+                  strings inside browser memory. They are never transmitted over
+                  HTTP/HTTPS.
                 </p>
               </div>
 
@@ -129,7 +142,9 @@ export const PrivacySection = ({ onGoToStudio, onGoToBuild }) => {
                   <span>UPI Payment VPAs</span>
                 </div>
                 <p className="text-neutral-400 leading-relaxed">
-                  Beneficiary Virtual Payment Addresses (VPAs) and transaction amounts are converted directly into URI intents according to NPCI UPI specifications. No banking data is stored or proxied.
+                  Beneficiary Virtual Payment Addresses (VPAs) and transaction
+                  amounts are converted directly into URI intents according to
+                  NPCI UPI specifications. No banking data is stored or proxied.
                 </p>
               </div>
 
@@ -139,7 +154,9 @@ export const PrivacySection = ({ onGoToStudio, onGoToBuild }) => {
                   <span>Contact vCard 3.0</span>
                 </div>
                 <p className="text-neutral-400 leading-relaxed">
-                  Names, telephone numbers, emails, and organization credentials are built into standard vCard 3.0 MIME blocks on your machine, enabling safe generation of personal business identity tokens.
+                  Names, telephone numbers, emails, and organization credentials
+                  are built into standard vCard 3.0 MIME blocks on your machine,
+                  enabling safe generation of personal business identity tokens.
                 </p>
               </div>
             </div>

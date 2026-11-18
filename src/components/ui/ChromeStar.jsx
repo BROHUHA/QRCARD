@@ -56,7 +56,14 @@ export const ChromeStar = ({ className = 'w-24 h-24', size = 96 }) => {
       />
 
       {/* Internal highlight core reflection */}
-      <circle cx="48" cy="48" r="8" fill="#ffffff" fillOpacity="0.4" filter="blur(2px)" />
+      <circle
+        cx="48"
+        cy="48"
+        r="8"
+        fill="#ffffff"
+        fillOpacity="0.4"
+        filter="blur(2px)"
+      />
     </svg>
   );
 };

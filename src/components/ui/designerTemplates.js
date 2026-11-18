@@ -5,7 +5,8 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Minimalist Monochrome',
     category: 'Minimal',
     cardStyle: {
-      cardBg: 'bg-[#FFFFFF] text-[#0A0A0A] border-neutral-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.18)]',
+      cardBg:
+        'bg-[#FFFFFF] text-[#0A0A0A] border-neutral-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.18)]',
       headerBorder: 'border-neutral-100',
       textColor: 'text-[#0A0A0A]',
       subTextColor: 'text-neutral-500',
@@ -32,13 +33,17 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Champagne Bronze Foil',
     category: 'Luxury',
     cardStyle: {
-      cardBg: 'bg-gradient-to-br from-[#1C1814] via-[#120F0C] to-[#0A0806] text-[#F5E6D3] border-[#AA771C]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(212,175,55,0.15)]',
+      cardBg:
+        'bg-gradient-to-br from-[#1C1814] via-[#120F0C] to-[#0A0806] text-[#F5E6D3] border-[#AA771C]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(212,175,55,0.15)]',
       headerBorder: 'border-[#AA771C]/25',
       textColor: 'text-[#FBF2E6]',
       subTextColor: 'text-[#C9A975]',
-      badgeBg: 'bg-gradient-to-r from-[#D4AF37] to-[#AA771C] text-black font-extrabold shadow-md',
-      iconBox: 'bg-gradient-to-br from-[#D4AF37] to-[#8C6212] text-black font-extrabold shadow-[0_0_15px_rgba(212,175,55,0.4)]',
-      qrFrame: 'bg-[#FAF6F0] border border-[#D4AF37]/50 shadow-[0_0_20px_rgba(212,175,55,0.2)]',
+      badgeBg:
+        'bg-gradient-to-r from-[#D4AF37] to-[#AA771C] text-black font-extrabold shadow-md',
+      iconBox:
+        'bg-gradient-to-br from-[#D4AF37] to-[#8C6212] text-black font-extrabold shadow-[0_0_15px_rgba(212,175,55,0.4)]',
+      qrFrame:
+        'bg-[#FAF6F0] border border-[#D4AF37]/50 shadow-[0_0_20px_rgba(212,175,55,0.2)]',
       glow: 'bg-[#D4AF37]/[0.08]',
     },
     qrStyle: {
@@ -62,12 +67,15 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Mediterranean Clay & Blush',
     category: 'Artistic',
     cardStyle: {
-      cardBg: 'bg-gradient-to-br from-[#201311] via-[#160D0B] to-[#0B0605] text-[#FBEAE6] border-[#E06D53]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(224,109,83,0.18)]',
+      cardBg:
+        'bg-gradient-to-br from-[#201311] via-[#160D0B] to-[#0B0605] text-[#FBEAE6] border-[#E06D53]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(224,109,83,0.18)]',
       headerBorder: 'border-[#E06D53]/25',
       textColor: 'text-[#FFF2EE]',
       subTextColor: 'text-[#E59886]',
-      badgeBg: 'bg-gradient-to-r from-[#E06D53] to-[#B8432A] text-white font-extrabold shadow-md',
-      iconBox: 'bg-gradient-to-br from-[#E06D53] to-[#B8432A] text-white font-extrabold shadow-[0_0_15px_rgba(224,109,83,0.4)]',
+      badgeBg:
+        'bg-gradient-to-r from-[#E06D53] to-[#B8432A] text-white font-extrabold shadow-md',
+      iconBox:
+        'bg-gradient-to-br from-[#E06D53] to-[#B8432A] text-white font-extrabold shadow-[0_0_15px_rgba(224,109,83,0.4)]',
       qrFrame: 'bg-[#FFF8F5] border border-[#E06D53]/40 shadow-xl',
       glow: 'bg-[#E06D53]/[0.08]',
     },
@@ -92,12 +100,15 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Deep Forest & Sage Mint',
     category: 'Nature',
     cardStyle: {
-      cardBg: 'bg-gradient-to-br from-[#0B1712] via-[#070F0C] to-[#030705] text-[#E0F2E9] border-[#10B981]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(16,185,129,0.18)]',
+      cardBg:
+        'bg-gradient-to-br from-[#0B1712] via-[#070F0C] to-[#030705] text-[#E0F2E9] border-[#10B981]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(16,185,129,0.18)]',
       headerBorder: 'border-[#10B981]/25',
       textColor: 'text-[#E8F8F0]',
       subTextColor: 'text-[#6EE7B7]',
-      badgeBg: 'bg-gradient-to-r from-[#10B981] to-[#047857] text-white font-extrabold shadow-md',
-      iconBox: 'bg-gradient-to-br from-[#10B981] to-[#047857] text-white font-extrabold shadow-[0_0_15px_rgba(16,185,129,0.4)]',
+      badgeBg:
+        'bg-gradient-to-r from-[#10B981] to-[#047857] text-white font-extrabold shadow-md',
+      iconBox:
+        'bg-gradient-to-br from-[#10B981] to-[#047857] text-white font-extrabold shadow-[0_0_15px_rgba(16,185,129,0.4)]',
       qrFrame: 'bg-[#F2FAF6] border border-[#10B981]/40 shadow-xl',
       glow: 'bg-[#10B981]/[0.08]',
     },
@@ -122,12 +133,15 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Electric Violet & Magenta',
     category: 'Cyber',
     cardStyle: {
-      cardBg: 'bg-gradient-to-br from-[#180E24] via-[#0F0818] to-[#08040C] text-[#F3E8FF] border-[#A855F7]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_35px_rgba(168,85,247,0.22)]',
+      cardBg:
+        'bg-gradient-to-br from-[#180E24] via-[#0F0818] to-[#08040C] text-[#F3E8FF] border-[#A855F7]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_35px_rgba(168,85,247,0.22)]',
       headerBorder: 'border-[#A855F7]/25',
       textColor: 'text-[#FAF5FF]',
       subTextColor: 'text-[#D8B4FE]',
-      badgeBg: 'bg-gradient-to-r from-[#A855F7] to-[#7E22CE] text-white font-extrabold shadow-md',
-      iconBox: 'bg-gradient-to-br from-[#A855F7] to-[#6B21A8] text-white font-extrabold shadow-[0_0_15px_rgba(168,85,247,0.45)]',
+      badgeBg:
+        'bg-gradient-to-r from-[#A855F7] to-[#7E22CE] text-white font-extrabold shadow-md',
+      iconBox:
+        'bg-gradient-to-br from-[#A855F7] to-[#6B21A8] text-white font-extrabold shadow-[0_0_15px_rgba(168,85,247,0.45)]',
       qrFrame: 'bg-[#FAF5FF] border border-[#A855F7]/40 shadow-2xl',
       glow: 'bg-[#A855F7]/[0.09]',
     },
@@ -152,12 +166,15 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Royal Blue & Cyan Sky',
     category: 'Corporate',
     cardStyle: {
-      cardBg: 'bg-gradient-to-br from-[#0C1524] via-[#070D18] to-[#03060C] text-[#E0EFFF] border-[#3B82F6]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(59,130,246,0.2)]',
+      cardBg:
+        'bg-gradient-to-br from-[#0C1524] via-[#070D18] to-[#03060C] text-[#E0EFFF] border-[#3B82F6]/40 shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(59,130,246,0.2)]',
       headerBorder: 'border-[#3B82F6]/25',
       textColor: 'text-[#EFF6FF]',
       subTextColor: 'text-[#93C5FD]',
-      badgeBg: 'bg-gradient-to-r from-[#3B82F6] to-[#1D4ED8] text-white font-extrabold shadow-md',
-      iconBox: 'bg-gradient-to-br from-[#3B82F6] to-[#1D4ED8] text-white font-extrabold shadow-[0_0_15px_rgba(59,130,246,0.4)]',
+      badgeBg:
+        'bg-gradient-to-r from-[#3B82F6] to-[#1D4ED8] text-white font-extrabold shadow-md',
+      iconBox:
+        'bg-gradient-to-br from-[#3B82F6] to-[#1D4ED8] text-white font-extrabold shadow-[0_0_15px_rgba(59,130,246,0.4)]',
       qrFrame: 'bg-[#F0F7FF] border border-[#3B82F6]/40 shadow-xl',
       glow: 'bg-[#3B82F6]/[0.08]',
     },
@@ -182,7 +199,8 @@ export const DESIGNER_TEMPLATES = [
     subtitle: 'Stealth Black & Chrome',
     category: 'Modern',
     cardStyle: {
-      cardBg: 'bg-gradient-to-b from-[#141416] via-[#0E0E10] to-[#060608] text-white border-white/15 shadow-[0_30px_70px_rgba(0,0,0,0.95)]',
+      cardBg:
+        'bg-gradient-to-b from-[#141416] via-[#0E0E10] to-[#060608] text-white border-white/15 shadow-[0_30px_70px_rgba(0,0,0,0.95)]',
       headerBorder: 'border-white/10',
       textColor: 'text-white',
       subTextColor: 'text-neutral-400',
@@ -350,7 +368,8 @@ export const QR_BG_STYLES = [
     name: 'Lucid Glass',
     subtitle: 'Ultra-clear liquid glass with specular gloss rim',
     tag: 'LUCID',
-    frameClass: 'bg-white/40 backdrop-blur-xl border border-white/60 shadow-2xl ring-1 ring-white/30',
+    frameClass:
+      'bg-white/40 backdrop-blur-xl border border-white/60 shadow-2xl ring-1 ring-white/30',
     bgColor: 'transparent',
     fgColor: '#0F172A',
     svgFill: 'rgba(255, 255, 255, 0.45)',
@@ -363,7 +382,8 @@ export const QR_BG_STYLES = [
     name: 'Frosted Glass',
     subtitle: 'Milky translucent diffusion with backdrop blur',
     tag: 'FROSTED',
-    frameClass: 'bg-white/70 backdrop-blur-2xl border border-white/80 shadow-2xl',
+    frameClass:
+      'bg-white/70 backdrop-blur-2xl border border-white/80 shadow-2xl',
     bgColor: 'transparent',
     fgColor: '#0F172A',
     svgFill: 'rgba(255, 255, 255, 0.75)',
@@ -376,7 +396,8 @@ export const QR_BG_STYLES = [
     name: 'Gaussian Glass',
     subtitle: 'Soft Gaussian blur scrim with ambient depth',
     tag: 'GAUSSIAN',
-    frameClass: 'bg-white/50 backdrop-blur-3xl border border-white/40 shadow-xl',
+    frameClass:
+      'bg-white/50 backdrop-blur-3xl border border-white/40 shadow-xl',
     bgColor: 'transparent',
     fgColor: '#0F172A',
     svgFill: 'rgba(255, 255, 255, 0.55)',
@@ -389,7 +410,8 @@ export const QR_BG_STYLES = [
     name: 'Inverted Glass',
     subtitle: 'Smoked dark glass with inverted white optical matrix',
     tag: 'INVERTED',
-    frameClass: 'bg-black/60 backdrop-blur-2xl border border-white/20 shadow-2xl ring-1 ring-white/10',
+    frameClass:
+      'bg-black/60 backdrop-blur-2xl border border-white/20 shadow-2xl ring-1 ring-white/10',
     bgColor: 'transparent',
     fgColor: '#FFFFFF',
     svgFill: 'rgba(0, 0, 0, 0.65)',
@@ -398,5 +420,3 @@ export const QR_BG_STYLES = [
     previewText: 'text-white',
   },
 ];
-
-

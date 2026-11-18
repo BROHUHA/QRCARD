@@ -126,8 +126,14 @@ export const PixelReveal = ({
               );
 
               // Optical matrix luminous white edge accent on dissolve
-              if (showBorderGlitch && pixelProgress > 0.05 && pixelProgress < 0.75) {
-                ctx.strokeStyle = `rgba(255, 255, 255, ${0.75 * (1 - pixelProgress)})`;
+              if (
+                showBorderGlitch &&
+                pixelProgress > 0.05 &&
+                pixelProgress < 0.75
+              ) {
+                ctx.strokeStyle = `rgba(255, 255, 255, ${
+                  0.75 * (1 - pixelProgress)
+                })`;
                 ctx.lineWidth = 1;
                 ctx.strokeRect(p.x, p.y, p.w, p.h);
               }
@@ -172,9 +178,7 @@ export const PixelReveal = ({
 
   return (
     <div ref={containerRef} className={wrapperClass}>
-      <div className="w-full h-full">
-        {children}
-      </div>
+      <div className="w-full h-full">{children}</div>
 
       {!isRevealed && (
         <canvas

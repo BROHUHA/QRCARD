@@ -83,7 +83,10 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
 
       if (elapsed < decodeDuration) {
         // --- PHASE 1: FULL SOLID PIXEL CURTAIN + CENTER PIXEL QR DECODE ---
-        const currentProgress = Math.min(100, Math.round((elapsed / decodeDuration) * 100));
+        const currentProgress = Math.min(
+          100,
+          Math.round((elapsed / decodeDuration) * 100)
+        );
         setProgress(currentProgress);
 
         // Draw solid dark pixel backdrop with matrix grid
@@ -114,10 +117,17 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
         // Frame
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
         ctx.lineWidth = 1;
-        ctx.strokeRect(matrixX - 6, matrixY - 6, matrixPixelWidth + 12, matrixPixelWidth + 12);
+        ctx.strokeRect(
+          matrixX - 6,
+          matrixY - 6,
+          matrixPixelWidth + 12,
+          matrixPixelWidth + 12
+        );
 
         // Render cells up to current decode progress
-        const activeCellsThreshold = Math.floor((currentProgress / 100) * (MATRIX_SIZE * MATRIX_SIZE));
+        const activeCellsThreshold = Math.floor(
+          (currentProgress / 100) * (MATRIX_SIZE * MATRIX_SIZE)
+        );
         let cellIndex = 0;
 
         for (let r = 0; r < MATRIX_SIZE; r++) {
@@ -126,13 +136,28 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
               const val = QR_PATTERN[r][c];
               if (val === 1) {
                 ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(matrixX + c * cellSize + 1, matrixY + r * cellSize + 1, cellSize - 2, cellSize - 2);
+                ctx.fillRect(
+                  matrixX + c * cellSize + 1,
+                  matrixY + r * cellSize + 1,
+                  cellSize - 2,
+                  cellSize - 2
+                );
               } else if (val === 2) {
                 ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(matrixX + c * cellSize + 1, matrixY + r * cellSize + 1, cellSize - 2, cellSize - 2);
+                ctx.fillRect(
+                  matrixX + c * cellSize + 1,
+                  matrixY + r * cellSize + 1,
+                  cellSize - 2,
+                  cellSize - 2
+                );
                 ctx.shadowColor = '#FFFFFF';
                 ctx.shadowBlur = 10;
-                ctx.fillRect(matrixX + c * cellSize + 2, matrixY + r * cellSize + 2, cellSize - 4, cellSize - 4);
+                ctx.fillRect(
+                  matrixX + c * cellSize + 2,
+                  matrixY + r * cellSize + 2,
+                  cellSize - 4,
+                  cellSize - 4
+                );
                 ctx.shadowBlur = 0;
               }
             }
@@ -145,7 +170,10 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
         // --- PHASE 2: PIXEL CURTAIN DISSOLVE INTO SITE ---
         setProgress(100);
         const dissolveElapsed = elapsed - decodeDuration;
-        const dissolveProgress = Math.min(1, dissolveElapsed / dissolveDuration);
+        const dissolveProgress = Math.min(
+          1,
+          dissolveElapsed / dissolveDuration
+        );
 
         let activeCount = 0;
 
@@ -160,13 +188,21 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
             ctx.strokeRect(p.x, p.y, p.w, p.h);
             activeCount++;
           } else {
-            const pixelP = Math.min(1, (dissolveProgress - p.dissolveDelay) / 0.32);
+            const pixelP = Math.min(
+              1,
+              (dissolveProgress - p.dissolveDelay) / 0.32
+            );
             if (pixelP < 1) {
               const alpha = 1 - pixelP;
               ctx.fillStyle = '#030303';
               ctx.globalAlpha = alpha;
               const shrink = pixelP * (pixelSize * 0.6);
-              ctx.fillRect(p.x + shrink / 2, p.y + shrink / 2, p.w - shrink, p.h - shrink);
+              ctx.fillRect(
+                p.x + shrink / 2,
+                p.y + shrink / 2,
+                p.w - shrink,
+                p.h - shrink
+              );
 
               // Optical white glint
               if (pixelP > 0.05 && pixelP < 0.65) {
@@ -213,10 +249,7 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
         isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-      />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
       {/* Modern High-Performance Progress Bar during initial load */}
       {showProgressBadge && progress < 100 && (
@@ -233,7 +266,9 @@ export const Preloader = ({ onFinish, triggerKey = '' }) => {
                 style={{ width: `${Math.max(progress, 6)}%` }}
               />
             </div>
-            <span className="w-8 text-right font-bold text-white font-mono">{progress}%</span>
+            <span className="w-8 text-right font-bold text-white font-mono">
+              {progress}%
+            </span>
           </div>
         </div>
       )}

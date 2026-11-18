@@ -109,7 +109,11 @@ export const AppHeader = ({
                 {[
                   { id: '/', label: 'HOME' },
                   { id: '/build', label: 'BUILD ALBUMS' },
-                  { id: 'about', label: 'ABOUT', href: 'https://4bin.vercel.app' },
+                  {
+                    id: 'about',
+                    label: 'ABOUT',
+                    href: 'https://4bin.vercel.app',
+                  },
                   { id: '/privacy', label: 'PRIVACY' },
                 ].map((item) => {
                   const isActive = currentRoute === item.id;
@@ -144,7 +148,11 @@ export const AppHeader = ({
                     className="bg-transparent border-none text-neutral-400 hover:text-white text-xs outline-none cursor-pointer"
                   >
                     {Translations.map((lang) => (
-                      <option key={lang.id} value={lang.id} className="bg-neutral-900 text-white">
+                      <option
+                        key={lang.id}
+                        value={lang.id}
+                        className="bg-neutral-900 text-white"
+                      >
                         {lang.name}
                       </option>
                     ))}

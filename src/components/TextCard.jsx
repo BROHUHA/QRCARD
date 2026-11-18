@@ -38,7 +38,9 @@ export const TextCard = ({ id, settings }) => {
       {/* 1. CARD HEADER (Omitted in 1:1 QR-Only mode) */}
       {!isQrOnly && (
         <div
-          className={`flex items-center justify-between border-b ${cfg.headerPadding || 'pb-3.5 mb-4'} relative z-10 ${headerBorder}`}
+          className={`flex items-center justify-between border-b ${
+            cfg.headerPadding || 'pb-3.5 mb-4'
+          } relative z-10 ${headerBorder}`}
         >
           <div className="flex items-center gap-3">
             <div
@@ -47,10 +49,14 @@ export const TextCard = ({ id, settings }) => {
               <FileText size={18} />
             </div>
             <div>
-              <div className={`text-sm font-extrabold tracking-tight font-heading leading-tight ${textColor}`}>
+              <div
+                className={`text-sm font-extrabold tracking-tight font-heading leading-tight ${textColor}`}
+              >
                 Text Note
               </div>
-              <div className={`text-[11px] font-mono opacity-65 ${subTextColor}`}>
+              <div
+                className={`text-[11px] font-mono opacity-65 ${subTextColor}`}
+              >
                 Scan to read
               </div>
             </div>
@@ -66,7 +72,13 @@ export const TextCard = ({ id, settings }) => {
       )}
 
       {/* 2. MAIN CARD BODY */}
-      <div className={`relative z-10 w-full ${isQrOnly ? 'flex-1 flex items-center justify-center my-auto h-full' : cfg.body}`}>
+      <div
+        className={`relative z-10 w-full ${
+          isQrOnly
+            ? 'flex-1 flex items-center justify-center my-auto h-full'
+            : cfg.body
+        }`}
+      >
         {isQrOnly ? (
           /* 1:1 Pure QR Hero Display */
           <div className="relative shrink-0 flex items-center justify-center animate-fade-in my-auto">
@@ -84,7 +96,9 @@ export const TextCard = ({ id, settings }) => {
             <div className={`space-y-3 w-full flex-1 ${cfg.textAlign}`}>
               {title && (
                 <div>
-                  <div className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize} ${textColor}`}>
+                  <div
+                    className={`font-heading font-extrabold tracking-tight break-all ${cfg.nameSize} ${textColor}`}
+                  >
                     {title}
                   </div>
                 </div>
@@ -103,7 +117,9 @@ export const TextCard = ({ id, settings }) => {
               </div>
 
               <div className="pt-1">
-                <div className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}>
+                <div
+                  className={`text-[11px] font-mono opacity-60 flex items-center gap-1.5 ${subTextColor}`}
+                >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                   <span>Scan with camera to copy or read text</span>
                 </div>

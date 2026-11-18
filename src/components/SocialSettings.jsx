@@ -35,7 +35,8 @@ export const SocialSettings = ({
   };
 
   const currentPlat =
-    PLATFORMS_CONFIG.find((p) => p.id === settings.platform) || PLATFORMS_CONFIG[0];
+    PLATFORMS_CONFIG.find((p) => p.id === settings.platform) ||
+    PLATFORMS_CONFIG[0];
 
   return (
     <div className="space-y-5 text-white">
@@ -89,7 +90,9 @@ export const SocialSettings = ({
                   <button
                     key={plat.id}
                     type="button"
-                    onClick={() => setSettings((prev) => ({ ...prev, platform: plat.id }))}
+                    onClick={() =>
+                      setSettings((prev) => ({ ...prev, platform: plat.id }))
+                    }
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium border transition-all cursor-pointer truncate ${
                       isSelected
                         ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)] font-bold scale-[1.02]'
@@ -133,7 +136,9 @@ export const SocialSettings = ({
               />
             </div>
             {errors.value && (
-              <p className="text-xs text-[#ff0047] font-medium">{errors.value}</p>
+              <p className="text-xs text-[#ff0047] font-medium">
+                {errors.value}
+              </p>
             )}
           </div>
 
@@ -222,7 +227,9 @@ export const SocialSettings = ({
         <div className="space-y-4 animate-fade-in">
           {/* Combined Background & QR Material Customisation (Scanfolk Technique) */}
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

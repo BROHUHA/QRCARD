@@ -4,9 +4,9 @@
 
 /* Signature Brush Font: Grindy Brush */
 @font-face {
-  font-family: "Grindy Brush";
-  src: url("/fonts/grindy-brush/grindy-brush.otf") format("opentype"),
-       url("/fonts/grindy-brush/Grindy Brush.otf") format("opentype");
+  font-family: 'Grindy Brush';
+  src: url('/fonts/grindy-brush/grindy-brush.otf') format('opentype'),
+    url('/fonts/grindy-brush/Grindy Brush.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -31,7 +31,8 @@
   body {
     background-color: #030303;
     color: #ffffff;
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont,
+      sans-serif;
     overflow-x: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -50,7 +51,7 @@
 
 /* Typography Utility Classes */
 .font-brush {
-  font-family: "Grindy Brush", cursive, -apple-system, sans-serif !important;
+  font-family: 'Grindy Brush', cursive, -apple-system, sans-serif !important;
   font-weight: 400;
   letter-spacing: -0.01em;
 }
@@ -68,32 +69,54 @@
 
 /* Background Grids & Ambient Lighting */
 .dark-grid-bg {
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.04) 1px,
+      transparent 1px
+    ),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 4rem 4rem;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 50%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 50%, transparent 100%);
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    #000 50%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    #000 50%,
+    transparent 100%
+  );
 }
 
 .ambient-spotlight {
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 255, 255, 0.12), transparent 70%);
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(255, 255, 255, 0.12),
+    transparent 70%
+  );
 }
 
 .ambient-spotlight-bottom {
-  background: radial-gradient(ellipse 80% 50% at 50% 120%, rgba(255, 255, 255, 0.06), transparent 70%);
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 120%,
+    rgba(255, 255, 255, 0.06),
+    transparent 70%
+  );
 }
 
 /* AUTHENTIC LIQUID GLASS (Exact match to reference image mockup) */
 .liquid-glass {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(12, 12, 12, 0.75) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    rgba(12, 12, 12, 0.75) 100%
+  );
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 
-    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6),
-    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+  box-shadow: inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6), 0 25px 50px -12px rgba(0, 0, 0, 0.8),
     0 0 25px rgba(255, 255, 255, 0.02);
   position: relative;
   overflow: hidden;
@@ -107,32 +130,37 @@
   left: 0;
   right: 0;
   height: 45%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, transparent 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
   pointer-events: none;
   border-radius: inherit;
 }
 
 .liquid-glass:hover {
   border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: 
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6),
-    0 30px 60px -15px rgba(0, 0, 0, 0.9),
+  box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6), 0 30px 60px -15px rgba(0, 0, 0, 0.9),
     0 0 35px rgba(255, 255, 255, 0.05);
   transform: translateY(-4px);
 }
 
 /* Active Highlighted Liquid Glass (Elevated Center Card) */
 .liquid-glass-active {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.03) 40%, rgba(15, 15, 15, 0.85) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(15, 15, 15, 0.85) 100%
+  );
   backdrop-filter: blur(35px) saturate(200%);
   -webkit-backdrop-filter: blur(35px) saturate(200%);
   border: 1.5px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 
-    inset 0 2px 3px 0 rgba(255, 255, 255, 0.6),
+  box-shadow: inset 0 2px 3px 0 rgba(255, 255, 255, 0.6),
     inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.8),
-    0 35px 80px -15px rgba(0, 0, 0, 0.95),
-    0 0 40px rgba(255, 255, 255, 0.08);
+    0 35px 80px -15px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -145,7 +173,11 @@
   left: 0;
   right: 0;
   height: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    transparent 100%
+  );
   pointer-events: none;
   border-radius: inherit;
 }
@@ -153,11 +185,9 @@
 .liquid-glass-active:hover {
   border-color: rgba(255, 255, 255, 0.45);
   transform: translateY(-6px) scale(1.01);
-  box-shadow: 
-    inset 0 2px 3px 0 rgba(255, 255, 255, 0.7),
+  box-shadow: inset 0 2px 3px 0 rgba(255, 255, 255, 0.7),
     inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.8),
-    0 40px 90px -15px rgba(0, 0, 0, 0.95),
-    0 0 50px rgba(255, 255, 255, 0.12);
+    0 40px 90px -15px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 255, 255, 0.12);
 }
 
 /* Progressive Liquid Glass Gradient Blur System (Reduced Height: 84px, Smooth Blending) */
@@ -276,7 +306,7 @@
 
 /* Chrome Metallic Gradient Text */
 .chrome-text {
-  background: linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #9E9E9E 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 45%, #9e9e9e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -319,10 +349,11 @@
     margin: 10mm;
   }
 
-  html, body {
+  html,
+  body {
     margin: 0 !important;
     padding: 0 !important;
-    background: #FFFFFF !important;
+    background: #ffffff !important;
     color: #000000 !important;
     width: 100% !important;
     height: 100% !important;

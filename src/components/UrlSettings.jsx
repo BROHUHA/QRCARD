@@ -60,7 +60,9 @@ export const UrlSettings = ({
                 <Globe size={14} className="text-neutral-400" />
                 <span>Target Web URL *</span>
               </span>
-              <span className="text-[10px] text-neutral-500 font-mono">https://</span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                https://
+              </span>
             </label>
             <input
               type="url"
@@ -108,7 +110,9 @@ export const UrlSettings = ({
       {activeStepTab === 'style' && (
         <div className="space-y-4 animate-fade-in">
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

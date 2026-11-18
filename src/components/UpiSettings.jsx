@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { CreditCard, DollarSign, User, FileText, Info, ArrowRight, ArrowLeft } from 'lucide-react';
+import {
+  CreditCard,
+  DollarSign,
+  User,
+  FileText,
+  Info,
+  ArrowRight,
+  ArrowLeft,
+} from 'lucide-react';
 import { CardThemeSelector } from './ui/CardThemeSelector';
 
 export const UpiSettings = ({
@@ -60,7 +68,9 @@ export const UpiSettings = ({
                 <CreditCard size={14} className="text-neutral-400" />
                 <span>UPI ID / VPA *</span>
               </span>
-              <span className="text-[10px] text-neutral-500 font-mono">e.g. mobile@upi</span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                e.g. mobile@upi
+              </span>
             </label>
             <input
               type="text"
@@ -82,7 +92,9 @@ export const UpiSettings = ({
                 <User size={14} className="text-neutral-400" />
                 <span>Beneficiary Name *</span>
               </span>
-              <span className="text-[10px] text-neutral-500 font-mono">Displayed to scanner</span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                Displayed to scanner
+              </span>
             </label>
             <input
               type="text"
@@ -93,7 +105,9 @@ export const UpiSettings = ({
               className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-sans text-sm outline-none transition-all"
             />
             {errors.name && (
-              <p className="text-xs text-[#ff0047] font-medium">{errors.name}</p>
+              <p className="text-xs text-[#ff0047] font-medium">
+                {errors.name}
+              </p>
             )}
           </div>
 
@@ -134,7 +148,8 @@ export const UpiSettings = ({
           <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-start gap-2.5 text-neutral-400">
             <Info size={15} className="shrink-0 mt-0.5 text-white/80" />
             <p className="text-xs leading-relaxed">
-              Standard NPCI QR format supported by Google Pay, PhonePe, Paytm, BHIM, Cred, and mobile banking apps.
+              Standard NPCI QR format supported by Google Pay, PhonePe, Paytm,
+              BHIM, Cred, and mobile banking apps.
             </p>
           </div>
 
@@ -155,7 +170,9 @@ export const UpiSettings = ({
       {activeStepTab === 'style' && (
         <div className="space-y-4 animate-fade-in">
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

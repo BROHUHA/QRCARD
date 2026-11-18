@@ -60,7 +60,9 @@ export const Settings = ({
                 <Wifi size={14} className="text-neutral-400" />
                 <span>Network SSID *</span>
               </span>
-              <span className="text-[10px] text-neutral-500 font-mono">Wi-Fi Name</span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                Wi-Fi Name
+              </span>
             </label>
             <input
               type="text"
@@ -71,7 +73,9 @@ export const Settings = ({
               className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-sans text-sm outline-none transition-all"
             />
             {errors.ssid && (
-              <p className="text-xs text-[#ff0047] font-medium">{errors.ssid}</p>
+              <p className="text-xs text-[#ff0047] font-medium">
+                {errors.ssid}
+              </p>
             )}
           </div>
 
@@ -86,7 +90,9 @@ export const Settings = ({
                 <button
                   key={mode}
                   type="button"
-                  onClick={() => setSettings((prev) => ({ ...prev, encryptionMode: mode }))}
+                  onClick={() =>
+                    setSettings((prev) => ({ ...prev, encryptionMode: mode }))
+                  }
                   className={`py-2 px-3 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
                     settings.encryptionMode === mode
                       ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)] font-semibold'
@@ -107,7 +113,9 @@ export const Settings = ({
                   <Lock size={14} className="text-neutral-400" />
                   <span>Password *</span>
                 </span>
-                <span className="text-[10px] text-neutral-500 font-mono">Min 8 chars for WPA</span>
+                <span className="text-[10px] text-neutral-500 font-mono">
+                  Min 8 chars for WPA
+                </span>
               </label>
               <input
                 type="text"
@@ -118,7 +126,9 @@ export const Settings = ({
                 className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-mono text-sm outline-none transition-all"
               />
               {errors.password && (
-                <p className="text-xs text-[#ff0047] font-medium">{errors.password}</p>
+                <p className="text-xs text-[#ff0047] font-medium">
+                  {errors.password}
+                </p>
               )}
             </div>
           )}
@@ -126,7 +136,9 @@ export const Settings = ({
           {/* Toggles */}
           <div className="space-y-3 pt-2 border-t border-white/[0.08]">
             <label className="flex items-center justify-between cursor-pointer py-1">
-              <span className="text-xs text-neutral-300 font-medium">Hide Password on Card</span>
+              <span className="text-xs text-neutral-300 font-medium">
+                Hide Password on Card
+              </span>
               <input
                 type="checkbox"
                 name="hidePassword"
@@ -137,7 +149,9 @@ export const Settings = ({
             </label>
 
             <label className="flex items-center justify-between cursor-pointer py-1">
-              <span className="text-xs text-neutral-300 font-medium">Hidden SSID Network</span>
+              <span className="text-xs text-neutral-300 font-medium">
+                Hidden SSID Network
+              </span>
               <input
                 type="checkbox"
                 name="hiddenSSID"
@@ -152,7 +166,9 @@ export const Settings = ({
           <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-start gap-2.5 text-neutral-400">
             <Info size={15} className="shrink-0 mt-0.5 text-white/80" />
             <p className="text-xs leading-relaxed">
-              The generated Wi-Fi optical token connects visitors instantly when scanned by any iPhone or Android camera without typing credentials.
+              The generated Wi-Fi optical token connects visitors instantly when
+              scanned by any iPhone or Android camera without typing
+              credentials.
             </p>
           </div>
 
@@ -173,7 +189,9 @@ export const Settings = ({
       {activeStepTab === 'style' && (
         <div className="space-y-4 animate-fade-in">
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

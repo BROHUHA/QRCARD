@@ -21,30 +21,47 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          minHeight: '100vh',
-          backgroundColor: '#030303',
-          color: '#ffffff',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2rem',
-          fontFamily: 'Space Grotesk, sans-serif',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            maxWidth: '500px',
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '16px',
-            padding: '2rem'
-          }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>
+        <div
+          style={{
+            minHeight: '100vh',
+            backgroundColor: '#030303',
+            color: '#ffffff',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem',
+            fontFamily: 'Space Grotesk, sans-serif',
+            textAlign: 'center',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: '500px',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '16px',
+              padding: '2rem',
+            }}
+          >
+            <h2
+              style={{
+                fontSize: '1.5rem',
+                fontWeight: 800,
+                marginBottom: '0.5rem',
+              }}
+            >
               Specimen Rendering Notice
             </h2>
-            <p style={{ fontSize: '0.875rem', color: '#888', marginBottom: '1.5rem' }}>
-              {this.state.error?.message || 'An unexpected rendering condition occurred.'}
+            <p
+              style={{
+                fontSize: '0.875rem',
+                color: '#888',
+                marginBottom: '1.5rem',
+              }}
+            >
+              {this.state.error?.message ||
+                'An unexpected rendering condition occurred.'}
             </p>
             <button
               onClick={() => window.location.reload()}
@@ -56,7 +73,7 @@ class ErrorBoundary extends React.Component {
                 padding: '0.625rem 1.5rem',
                 fontSize: '0.875rem',
                 fontWeight: 600,
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               Reload Studio

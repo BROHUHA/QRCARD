@@ -76,7 +76,9 @@ export const TextSettings = ({
                 <FileText size={14} className="text-neutral-400" />
                 <span>Raw Text Content *</span>
               </span>
-              <span className="text-[10px] text-neutral-500 font-mono">Any custom text</span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                Any custom text
+              </span>
             </label>
             <textarea
               name="text"
@@ -87,7 +89,9 @@ export const TextSettings = ({
               className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-mono text-sm outline-none transition-all resize-y"
             />
             {errors.text && (
-              <p className="text-xs text-[#ff0047] font-medium">{errors.text}</p>
+              <p className="text-xs text-[#ff0047] font-medium">
+                {errors.text}
+              </p>
             )}
           </div>
 
@@ -108,7 +112,9 @@ export const TextSettings = ({
       {activeStepTab === 'style' && (
         <div className="space-y-4 animate-fade-in">
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

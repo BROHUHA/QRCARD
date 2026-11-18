@@ -60,7 +60,9 @@ export const EmailSettings = ({
                 <Mail size={14} className="text-neutral-400" />
                 <span>Target Email *</span>
               </span>
-              <span className="text-[10px] text-neutral-500 font-mono">Recipient Inbox</span>
+              <span className="text-[10px] text-neutral-500 font-mono">
+                Recipient Inbox
+              </span>
             </label>
             <input
               type="email"
@@ -71,7 +73,9 @@ export const EmailSettings = ({
               className="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-mono text-sm outline-none transition-all"
             />
             {errors.email && (
-              <p className="text-xs text-[#ff0047] font-medium">{errors.email}</p>
+              <p className="text-xs text-[#ff0047] font-medium">
+                {errors.email}
+              </p>
             )}
           </div>
 
@@ -124,7 +128,9 @@ export const EmailSettings = ({
       {activeStepTab === 'style' && (
         <div className="space-y-4 animate-fade-in">
           <CardThemeSelector
-            bgPreset={currentTheme.bgPreset || currentTheme.theme || 'opal-mint'}
+            bgPreset={
+              currentTheme.bgPreset || currentTheme.theme || 'opal-mint'
+            }
             onSelectBgPreset={(presetId) =>
               updateTheme((prev) => ({
                 ...prev,

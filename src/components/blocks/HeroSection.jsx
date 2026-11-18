@@ -99,7 +99,11 @@ export const HeroSection = ({ onSelectCategory, onGoToBuildSection }) => {
 
             {/* Clean, Readable Body Description */}
             <p className="text-base sm:text-xl text-neutral-300 font-normal leading-relaxed max-w-4xl pt-1">
-              An all-in-one optical studio to craft high-precision, tactile QR cards. Build production-ready, scan-verified tokens for instant Wi-Fi connectivity, zero-fee UPI settlement, digital vCard identities, multi-channel social matrices, direct emails, and web gateways with razor-sharp 4X Ultra-HD export.
+              An all-in-one optical studio to craft high-precision, tactile QR
+              cards. Build production-ready, scan-verified tokens for instant
+              Wi-Fi connectivity, zero-fee UPI settlement, digital vCard
+              identities, multi-channel social matrices, direct emails, and web
+              gateways with razor-sharp 4X Ultra-HD export.
             </p>
 
             {/* Action CTAs: CREATE button directing to /build album section */}
@@ -121,7 +125,10 @@ export const HeroSection = ({ onSelectCategory, onGoToBuildSection }) => {
         <div className="pt-6 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4 text-xs text-neutral-400 font-medium">
           <div className="flex items-center gap-2.5">
             <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
-            <span className="text-xs sm:text-sm text-neutral-300">100% Client-Side Offline &bull; Zero Server Tracking &bull; 4X Ultra-HD Vector &amp; PNG Export</span>
+            <span className="text-xs sm:text-sm text-neutral-300">
+              100% Client-Side Offline &bull; Zero Server Tracking &bull; 4X
+              Ultra-HD Vector &amp; PNG Export
+            </span>
           </div>
 
           <div className="hidden md:flex items-center gap-3 font-mono text-[11px] text-neutral-400">
@@ -149,7 +156,9 @@ export const HeroSection = ({ onSelectCategory, onGoToBuildSection }) => {
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>SELECT CARD TYPE</span>
               </div>
-              <span className="text-xs text-neutral-400 font-mono hidden sm:inline">INSTANT STUDIO ACCESS</span>
+              <span className="text-xs text-neutral-400 font-mono hidden sm:inline">
+                INSTANT STUDIO ACCESS
+              </span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">

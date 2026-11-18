@@ -134,7 +134,8 @@ export const DownloadModal = ({
               Export Aspect Ratio & Resolution
             </h2>
             <p className="text-xs text-neutral-400 mt-1">
-              Select target aspect ratio before download. Scaled with 4x pixel density.
+              Select target aspect ratio before download. Scaled with 4x pixel
+              density.
             </p>
           </div>
           <button
@@ -150,7 +151,9 @@ export const DownloadModal = ({
         <div className="space-y-2">
           <label className="text-xs font-mono uppercase tracking-wider text-neutral-400 flex items-center justify-between">
             <span>1. Select Aspect Ratio ({ASPECT_RATIOS.length} Options)</span>
-            <span className="text-indigo-400 font-bold">{currentRatioObj.name} ({currentRatioObj.ratio})</span>
+            <span className="text-indigo-400 font-bold">
+              {currentRatioObj.name} ({currentRatioObj.ratio})
+            </span>
           </label>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -171,21 +174,27 @@ export const DownloadModal = ({
                   <div className="flex items-center justify-between mb-2">
                     <div
                       className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                        isSelected ? 'bg-black text-white' : 'bg-white/10 text-neutral-300'
+                        isSelected
+                          ? 'bg-black text-white'
+                          : 'bg-white/10 text-neutral-300'
                       }`}
                     >
                       <IconComp size={15} />
                     </div>
                     <span
                       className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
-                        isSelected ? 'bg-black/10 text-black font-extrabold' : 'bg-white/10 text-neutral-400'
+                        isSelected
+                          ? 'bg-black/10 text-black font-extrabold'
+                          : 'bg-white/10 text-neutral-400'
                       }`}
                     >
                       {r.ratio}
                     </span>
                   </div>
 
-                  <div className="text-xs font-bold truncate leading-snug">{r.name}</div>
+                  <div className="text-xs font-bold truncate leading-snug">
+                    {r.name}
+                  </div>
                   <div
                     className={`text-[10px] font-mono mt-0.5 truncate ${
                       isSelected ? 'text-neutral-700' : 'text-neutral-400'
@@ -220,8 +229,16 @@ export const DownloadModal = ({
           <div className="grid grid-cols-3 gap-2">
             {[
               { id: 'png', name: 'PNG Image', desc: '4X Lossless Ultra-HD' },
-              { id: 'jpeg', name: 'JPEG Photo', desc: 'High Quality Compressed' },
-              { id: 'svg', name: 'SVG Vector', desc: 'Infinitely Scalable Vector' },
+              {
+                id: 'jpeg',
+                name: 'JPEG Photo',
+                desc: 'High Quality Compressed',
+              },
+              {
+                id: 'svg',
+                name: 'SVG Vector',
+                desc: 'Infinitely Scalable Vector',
+              },
             ].map((f) => {
               const isSelected = format === f.id;
               return (
@@ -236,7 +253,9 @@ export const DownloadModal = ({
                   }`}
                 >
                   <div className="text-xs font-bold">{f.name}</div>
-                  <div className="text-[10px] text-neutral-400 font-mono mt-0.5">{f.desc}</div>
+                  <div className="text-[10px] text-neutral-400 font-mono mt-0.5">
+                    {f.desc}
+                  </div>
                 </button>
               );
             })}
@@ -246,7 +265,9 @@ export const DownloadModal = ({
         {/* Action Buttons */}
         <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs font-mono text-neutral-400">
-            Output: <span className="text-white font-bold">{currentRatioObj.dims}</span> &bull; {format.toUpperCase()}
+            Output:{' '}
+            <span className="text-white font-bold">{currentRatioObj.dims}</span>{' '}
+            &bull; {format.toUpperCase()}
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -264,7 +285,11 @@ export const DownloadModal = ({
               className="flex-1 sm:flex-none btn-chrome-primary px-6 py-2.5 rounded-full text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
             >
               <Download size={14} />
-              <span>{downloading ? 'Rendering...' : `Download ${currentRatioObj.name}`}</span>
+              <span>
+                {downloading
+                  ? 'Rendering...'
+                  : `Download ${currentRatioObj.name}`}
+              </span>
             </button>
           </div>
         </div>

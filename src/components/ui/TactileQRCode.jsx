@@ -79,7 +79,13 @@ export const TactileQRCode = ({
           <stop offset="100%" stopColor="#190B04" />
         </linearGradient>
         <filter id="beanShadow" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="0.08" dy="0.14" stdDeviation="0.1" floodColor="#0D0603" floodOpacity="0.55" />
+          <feDropShadow
+            dx="0.08"
+            dy="0.14"
+            stdDeviation="0.1"
+            floodColor="#0D0603"
+            floodOpacity="0.55"
+          />
         </filter>
 
         {/* ========================================================
@@ -91,31 +97,61 @@ export const TactileQRCode = ({
           <stop offset="100%" stopColor="#1E3A20" />
         </linearGradient>
         <filter id="mossRelief" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="0.06" dy="0.12" stdDeviation="0.1" floodColor="#0D200E" floodOpacity="0.45" />
+          <feDropShadow
+            dx="0.06"
+            dy="0.12"
+            stdDeviation="0.1"
+            floodColor="#0D200E"
+            floodOpacity="0.45"
+          />
         </filter>
 
         {/* ========================================================
             3. AZULEJO CERAMIC TILES DEFS
            ======================================================== */}
-        <linearGradient id="ceramicTileGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient
+          id="ceramicTileGrad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
           <stop offset="0%" stopColor="#2563EB" />
           <stop offset="60%" stopColor="#1D4ED8" />
           <stop offset="100%" stopColor="#172554" />
         </linearGradient>
         <filter id="tileShadow" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="0.06" dy="0.1" stdDeviation="0.08" floodColor="#0A1633" floodOpacity="0.38" />
+          <feDropShadow
+            dx="0.06"
+            dy="0.1"
+            stdDeviation="0.08"
+            floodColor="#0A1633"
+            floodOpacity="0.38"
+          />
         </filter>
 
         {/* ========================================================
             4. CANDIED CITRUS JELLY DEFS
            ======================================================== */}
-        <linearGradient id="citrusJellyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient
+          id="citrusJellyGrad"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
           <stop offset="0%" stopColor="#F59E0B" />
           <stop offset="50%" stopColor="#EA580C" />
           <stop offset="100%" stopColor="#C2410C" />
         </linearGradient>
         <filter id="jellyGlow" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="0.06" dy="0.12" stdDeviation="0.12" floodColor="#C2410C" floodOpacity="0.45" />
+          <feDropShadow
+            dx="0.06"
+            dy="0.12"
+            stdDeviation="0.12"
+            floodColor="#C2410C"
+            floodOpacity="0.45"
+          />
         </filter>
 
         {/* ========================================================
@@ -126,7 +162,13 @@ export const TactileQRCode = ({
           <stop offset="100%" stopColor="#301506" />
         </linearGradient>
         <filter id="furShadow" x="-30%" y="-30%" width="160%" height="160%">
-          <feDropShadow dx="0.08" dy="0.14" stdDeviation="0.12" floodColor="#1F0D04" floodOpacity="0.4" />
+          <feDropShadow
+            dx="0.08"
+            dy="0.14"
+            stdDeviation="0.12"
+            floodColor="#1F0D04"
+            floodOpacity="0.4"
+          />
         </filter>
       </defs>
 
@@ -164,7 +206,9 @@ export const TactileQRCode = ({
               return (
                 <g
                   key={`${r}-${c}`}
-                  transform={`translate(${x + 0.5}, ${y + 0.5}) rotate(${angle})`}
+                  transform={`translate(${x + 0.5}, ${
+                    y + 0.5
+                  }) rotate(${angle})`}
                   filter="url(#beanShadow)"
                 >
                   {/* Bean Body */}
@@ -259,7 +303,9 @@ export const TactileQRCode = ({
                   />
                   {/* Top-Left Specular Glaze Sheen */}
                   <path
-                    d={`M ${x + 0.15} ${y + 0.7} L ${x + 0.15} ${y + 0.2} L ${x + 0.7} ${y + 0.15}`}
+                    d={`M ${x + 0.15} ${y + 0.7} L ${x + 0.15} ${y + 0.2} L ${
+                      x + 0.7
+                    } ${y + 0.15}`}
                     stroke="#FFFFFF"
                     strokeWidth="0.06"
                     strokeLinecap="round"
@@ -362,7 +408,11 @@ export const TactileQRCode = ({
             { cx: margin + count - 3.5, cy: margin + 3.5 },
             { cx: margin + 3.5, cy: margin + count - 3.5 },
           ].map((corner, i) => (
-            <g key={`corner-${i}`} transform={`translate(${corner.cx}, ${corner.cy})`} pointerEvents="none">
+            <g
+              key={`corner-${i}`}
+              transform={`translate(${corner.cx}, ${corner.cy})`}
+              pointerEvents="none"
+            >
               <circle r="0.4" fill="#F59E0B" opacity="0.9" />
               <circle r="0.18" fill="#FFFFFF" />
             </g>
@@ -375,7 +425,9 @@ export const TactileQRCode = ({
          ======================================================== */}
       {styleId === 'fluffy-plush' && (
         <g
-          transform={`translate(${margin + centerCoord + 0.5}, ${margin + centerCoord + 0.5})`}
+          transform={`translate(${margin + centerCoord + 0.5}, ${
+            margin + centerCoord + 0.5
+          })`}
           pointerEvents="none"
         >
           {/* Fluffy Circular Head */}
@@ -405,14 +457,25 @@ export const TactileQRCode = ({
             fill="#EA580C"
             filter="url(#furShadow)"
           />
-          <polygon
-            points="0,0.1 0.45,0.4 -0.45,0.4"
-            fill="#F97316"
-          />
+          <polygon points="0,0.1 0.45,0.4 -0.45,0.4" fill="#F97316" />
 
           {/* Subtle Cheek Blush */}
-          <ellipse cx="-1.5" cy="0.2" rx="0.4" ry="0.25" fill="#F43F5E" opacity="0.22" />
-          <ellipse cx="1.5" cy="0.2" rx="0.4" ry="0.25" fill="#F43F5E" opacity="0.22" />
+          <ellipse
+            cx="-1.5"
+            cy="0.2"
+            rx="0.4"
+            ry="0.25"
+            fill="#F43F5E"
+            opacity="0.22"
+          />
+          <ellipse
+            cx="1.5"
+            cy="0.2"
+            rx="0.4"
+            ry="0.25"
+            fill="#F43F5E"
+            opacity="0.22"
+          />
         </g>
       )}
     </svg>
