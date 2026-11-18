@@ -1,5 +1,11 @@
 {
-    "buildCommand": "CI=false NODE_OPTIONS=--openssl-legacy-provider npm run build",
-    "framework": "create-react-app",
-    "installCommand": "npm install --legacy-peer-deps"
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
