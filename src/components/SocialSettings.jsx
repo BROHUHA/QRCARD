@@ -251,13 +251,9 @@ export const SocialSettings = ({
                   }
                 }}
                 placeholder={
-                  currentPlat.id === 'whatsapp'
-                    ? '+12 3455678'
-                    : 'username'
+                  currentPlat.id === 'whatsapp' ? '+12 3455678' : 'username'
                 }
-                className={`w-full ${
-                  currentPlat.prefix ? 'pl-9' : 'px-4'
-                } ${
+                className={`w-full ${currentPlat.prefix ? 'pl-9' : 'px-4'} ${
                   currentPlat.id !== 'whatsapp' ? 'pr-24' : 'pr-4'
                 } py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-white/40 focus:ring-1 focus:ring-white/40 text-white placeholder-neutral-500 font-mono text-sm outline-none transition-all`}
               />
@@ -271,7 +267,10 @@ export const SocialSettings = ({
                 >
                   {isFetchingAvatar ? (
                     <>
-                      <Loader2 size={12} className="animate-spin text-amber-300" />
+                      <Loader2
+                        size={12}
+                        className="animate-spin text-amber-300"
+                      />
                       <span>Fetching</span>
                     </>
                   ) : (

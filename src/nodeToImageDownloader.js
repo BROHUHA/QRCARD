@@ -198,7 +198,9 @@ export const downloadHDCard = async (
         : '';
     const dimTag = exportDims
       ? `-${exportDims.width}x${exportDims.height}`
-      : `-${Math.round(sourceWidth * effectivePixelRatio)}x${Math.round(sourceHeight * effectivePixelRatio)}`;
+      : `-${Math.round(sourceWidth * effectivePixelRatio)}x${Math.round(
+          sourceHeight * effectivePixelRatio
+        )}`;
     const fileExt = cleanFormat === 'jpeg' ? 'jpg' : cleanFormat;
     link.download = `${imageName}${ratioTag}${dimTag}-${timestamp}.${fileExt}`;
     link.href = dataUrl;

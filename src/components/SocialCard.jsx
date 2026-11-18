@@ -42,9 +42,7 @@ export const SocialCard = ({ id, settings }) => {
   const isPhonePlat = platform === 'whatsapp';
   const cleanVal = isPhonePlat
     ? value.replace(/[^\d+]/g, '')
-    : value
-        .replace(/^@/, '')
-        .replace(/^https?:\/\/[^/]+\//, '');
+    : value.replace(/^@/, '').replace(/^https?:\/\/[^/]+\//, '');
   const finalUrl = isPhonePlat
     ? `${base}${cleanVal.replace(/^\+/, '')}`
     : `${base}${cleanVal}`;

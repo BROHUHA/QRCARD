@@ -26,7 +26,9 @@ export const UrlSettings = ({
   const updateTheme = setThemeSettings || setSettings;
 
   const fetchCoverImage = async (overrideUrl) => {
-    const rawVal = (overrideUrl !== undefined ? overrideUrl : settings.url || '').trim();
+    const rawVal = (
+      overrideUrl !== undefined ? overrideUrl : settings.url || ''
+    ).trim();
     if (!rawVal) {
       setFetchStatus({
         type: 'error',
@@ -158,7 +160,10 @@ export const UrlSettings = ({
               >
                 {isFetchingCover ? (
                   <>
-                    <Loader2 size={12} className="animate-spin text-amber-300" />
+                    <Loader2
+                      size={12}
+                      className="animate-spin text-amber-300"
+                    />
                     <span>Fetching</span>
                   </>
                 ) : (

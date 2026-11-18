@@ -316,7 +316,10 @@ export const CardThemeSelector = ({
               >
                 {isFetchingUrl ? (
                   <>
-                    <Loader2 size={12} className="animate-spin text-amber-300" />
+                    <Loader2
+                      size={12}
+                      className="animate-spin text-amber-300"
+                    />
                     <span>Fetching</span>
                   </>
                 ) : (
@@ -702,8 +705,6 @@ export const CardThemeSelector = ({
           </div>
         </div>
       )}
-
-
 
       {/* ========================================================
           TAB 2: QR CODE STYLE & MATERIAL (Moved to Top Pill)

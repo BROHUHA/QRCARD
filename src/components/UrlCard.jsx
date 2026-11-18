@@ -32,7 +32,12 @@ const WebsiteFavicon = ({ url, size = 18, className = '' }) => {
   }, [domain]);
 
   if (!domain || providerIndex >= FAVICON_PROVIDERS.length) {
-    return <Globe size={size} className={`w-full h-full object-contain p-0.5 ${className}`} />;
+    return (
+      <Globe
+        size={size}
+        className={`w-full h-full object-contain p-0.5 ${className}`}
+      />
+    );
   }
 
   const src = FAVICON_PROVIDERS[providerIndex](domain);
@@ -110,7 +115,10 @@ export const UrlCard = ({ id, settings }) => {
         ''
       );
     } catch {
-      return validUrl.replace(/^https?:\/\//i, '').replace(/^www\./i, '') || 'yourwebsite.com';
+      return (
+        validUrl.replace(/^https?:\/\//i, '').replace(/^www\./i, '') ||
+        'yourwebsite.com'
+      );
     }
   }, [validUrl, url]);
 
