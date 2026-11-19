@@ -10,6 +10,8 @@ const BOT_USER_AGENTS = [
 const STANDARD_IMAGE_UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024; // 8MB limit to protect serverless memory
+
 async function fetchWithTimeout(url, options = {}, timeoutMs = 4000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -35,8 +37,11 @@ async function fetchImageAsDataUri(imageUrl, referer = '') {
     const contentType = res.headers.get('content-type') || 'image/jpeg';
     if (!contentType.startsWith('image/')) return null;
 
+    const contentLength = parseInt(res.headers.get('content-length') || '0', 10);
+    if (contentLength > MAX_IMAGE_SIZE) return null;
+
     const buffer = await res.arrayBuffer();
-    if (buffer.byteLength < 200) return null; // Avoid empty/corrupt 1x1 pixels
+    if (buffer.byteLength < 200 || buffer.byteLength > MAX_IMAGE_SIZE) return null; // Avoid empty or oversized payloads
 
     const base64 = Buffer.from(buffer).toString('base64');
     return {
@@ -116,6 +121,7 @@ export default async function handler(req, res) {
     const cleanUser = rawUsername
       .replace(/^@/, '')
       .replace(/^https?:\/\/[^/]+\//, '')
+      .replace(/[^a-zA-Z0-9._-]/g, '')
       .trim();
 
     if (!cleanUser) {

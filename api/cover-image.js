@@ -7,6 +7,60 @@ const USER_AGENTS = [
   'Twitterbot/1.0',
 ];
 
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024; // 8MB limit to protect serverless memory
+
+// SSRF Protection: block private IPs, cloud metadata, and loopback addresses
+function isSafeUrl(urlObj) {
+  if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
+    return false;
+  }
+
+  const hostname = urlObj.hostname.toLowerCase();
+
+  // Block localhost and internal names
+  if (
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === '0.0.0.0' ||
+    hostname === '::1' ||
+    hostname.endsWith('.local') ||
+    hostname.endsWith('.internal') ||
+    hostname.endsWith('.localhost')
+  ) {
+    return false;
+  }
+
+  // Block cloud metadata IPs (AWS/GCP/Azure)
+  if (hostname === '169.254.169.254' || hostname === 'metadata.google.internal') {
+    return false;
+  }
+
+  // Block RFC 1918 IPv4 private networks & link-local
+  const ipv4Regex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+  const match = hostname.match(ipv4Regex);
+  if (match) {
+    const a = Number(match[1]);
+    const b = Number(match[2]);
+    if (a === 10) return false;
+    if (a === 172 && b >= 16 && b <= 31) return false;
+    if (a === 192 && b === 168) return false;
+    if (a === 169 && b === 254) return false;
+    if (a === 127 || a === 0) return false;
+  }
+
+  // Block IPv6 loopback / unique local / link-local
+  if (
+    hostname.startsWith('[fc') ||
+    hostname.startsWith('[fd') ||
+    hostname.startsWith('[fe80') ||
+    hostname === '[::1]'
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
 async function fetchWithTimeout(url, options = {}, timeoutMs = 4500) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -20,6 +74,9 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 4500) {
 
 async function fetchImageAsDataUri(imageUrl, referer = '') {
   try {
+    const imgUrlObj = new URL(imageUrl);
+    if (!isSafeUrl(imgUrlObj)) return null;
+
     const res = await fetchWithTimeout(imageUrl, {
       headers: {
         'User-Agent':
@@ -33,8 +90,11 @@ async function fetchImageAsDataUri(imageUrl, referer = '') {
     const contentType = res.headers.get('content-type') || 'image/jpeg';
     if (!contentType.startsWith('image/')) return null;
 
+    const contentLength = parseInt(res.headers.get('content-length') || '0', 10);
+    if (contentLength > MAX_IMAGE_SIZE) return null;
+
     const buffer = await res.arrayBuffer();
-    if (buffer.byteLength < 200) return null; // Avoid broken/empty pixels
+    if (buffer.byteLength < 200 || buffer.byteLength > MAX_IMAGE_SIZE) return null;
 
     const base64 = Buffer.from(buffer).toString('base64');
     return {
@@ -90,6 +150,11 @@ export default async function handler(req, res) {
       parsedTarget = new URL(targetUrl);
     } catch {
       return send(400, { success: false, error: 'Invalid URL provided' });
+    }
+
+    // SSRF Check: disallow private IP spaces and metadata services
+    if (!isSafeUrl(parsedTarget)) {
+      return send(403, { success: false, error: 'Target URL is not permitted' });
     }
 
     for (const ua of USER_AGENTS) {
