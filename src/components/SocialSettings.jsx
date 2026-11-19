@@ -31,6 +31,63 @@ export const SocialSettings = ({
   const currentTheme = themeSettings || settings;
   const updateTheme = setThemeSettings || setSettings;
 
+  const tryClientFallbackAvatar = async (platform, username) => {
+    const candidates = [];
+    if (platform === 'github') {
+      candidates.push(`https://avatars.githubusercontent.com/${username}`);
+      candidates.push(`https://github.com/${username}.png`);
+    } else if (platform === 'telegram') {
+      candidates.push(`https://t.me/i/userpic/320/${username}.jpg`);
+    } else if (platform === 'instagram') {
+      candidates.push(`https://unavatar.io/instagram/${username}`);
+    } else if (platform === 'x' || platform === 'twitter') {
+      candidates.push(`https://unavatar.io/twitter/${username}`);
+      candidates.push(`https://unavatar.io/x/${username}`);
+    } else if (platform === 'youtube') {
+      candidates.push(`https://unavatar.io/youtube/${username}`);
+    }
+    candidates.push(`https://unavatar.io/${platform}/${username}`);
+
+    for (const url of candidates) {
+      try {
+        const dataUri = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          const timeout = setTimeout(() => reject(new Error('Timeout')), 4000);
+          img.onload = () => {
+            clearTimeout(timeout);
+            if (img.naturalWidth <= 1 || img.naturalHeight <= 1) {
+              return reject(new Error('Invalid image dimensions'));
+            }
+            try {
+              const canvas = document.createElement('canvas');
+              canvas.width = img.naturalWidth || img.width;
+              canvas.height = img.naturalHeight || img.height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0);
+              const uri = canvas.toDataURL('image/jpeg', 0.92);
+              resolve(uri);
+            } catch (err) {
+              reject(err);
+            }
+          };
+          img.onerror = () => {
+            clearTimeout(timeout);
+            reject(new Error('Image failed to load'));
+          };
+          img.src = url;
+        });
+
+        if (dataUri) {
+          return dataUri;
+        }
+      } catch {
+        // try next candidate
+      }
+    }
+    return null;
+  };
+
   const fetchProfileImage = async (overrideValue) => {
     const rawVal = overrideValue !== undefined ? overrideValue : settings.value;
     if (!rawVal || settings.platform === 'whatsapp') {
@@ -60,21 +117,39 @@ export const SocialSettings = ({
     });
 
     try {
+      // 1. Try serverless backend resolver
       const res = await fetch(
         `/api/profile-image?platform=${encodeURIComponent(
           settings.platform
         )}&username=${encodeURIComponent(cleanUser)}`
       );
-      if (!res.ok) {
-        setAvatarFound(false);
-        setFetchStatus({
-          type: 'error',
-          message: 'Profile picture not accessible for this handle',
-        });
-        return;
+
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data.success && data.dataUri) {
+          setAvatarFound(true);
+          setFetchStatus({
+            type: 'success',
+            message: 'Profile picture found & set as card background',
+          });
+          updateTheme((prev) => ({
+            ...prev,
+            bgImage: data.dataUri,
+            bgPreset: 'custom-image',
+            bgImageBlur: prev.bgImageBlur ?? 4,
+            bgImageOverlay: prev.bgImageOverlay ?? 0.35,
+          }));
+          return;
+        }
       }
-      const data = await res.json();
-      if (data.success && data.dataUri) {
+
+      // 2. Client-side fallback if serverless resolver returns 404 or non-JSON
+      const fallbackUri = await tryClientFallbackAvatar(
+        settings.platform,
+        cleanUser
+      );
+      if (fallbackUri) {
         setAvatarFound(true);
         setFetchStatus({
           type: 'success',
@@ -82,23 +157,49 @@ export const SocialSettings = ({
         });
         updateTheme((prev) => ({
           ...prev,
-          bgImage: data.dataUri,
+          bgImage: fallbackUri,
           bgPreset: 'custom-image',
           bgImageBlur: prev.bgImageBlur ?? 4,
           bgImageOverlay: prev.bgImageOverlay ?? 0.35,
         }));
-      } else {
-        setAvatarFound(false);
-        setFetchStatus({
-          type: 'error',
-          message: 'Profile picture not accessible for this handle',
-        });
+        return;
       }
-    } catch (err) {
+
       setAvatarFound(false);
       setFetchStatus({
         type: 'error',
-        message: 'Error fetching profile picture',
+        message: 'Profile picture not accessible for this handle',
+      });
+    } catch (err) {
+      // 3. Fallback on network or unexpected error
+      try {
+        const fallbackUri = await tryClientFallbackAvatar(
+          settings.platform,
+          cleanUser
+        );
+        if (fallbackUri) {
+          setAvatarFound(true);
+          setFetchStatus({
+            type: 'success',
+            message: 'Profile picture found & set as card background',
+          });
+          updateTheme((prev) => ({
+            ...prev,
+            bgImage: fallbackUri,
+            bgPreset: 'custom-image',
+            bgImageBlur: prev.bgImageBlur ?? 4,
+            bgImageOverlay: prev.bgImageOverlay ?? 0.35,
+          }));
+          return;
+        }
+      } catch {
+        // Fallback failed
+      }
+
+      setAvatarFound(false);
+      setFetchStatus({
+        type: 'error',
+        message: 'Profile picture not accessible for this handle',
       });
     } finally {
       setIsFetchingAvatar(false);

@@ -89,7 +89,8 @@ export const CardThemeSelector = ({
       const res = await fetch(
         `/api/cover-image?url=${encodeURIComponent(rawVal)}`
       );
-      if (!res.ok) {
+      const contentType = res.headers.get('content-type') || '';
+      if (!res.ok || !contentType.includes('application/json')) {
         setUrlFetchStatus({
           type: 'error',
           message: 'No cover image found for this URL',
